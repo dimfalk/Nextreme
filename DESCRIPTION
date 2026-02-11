@@ -1,6 +1,6 @@
 Package: Nextreme
 Title: Statistische Analyse der Niederschlagsextremwerte nach Arbeitsblatt DWA-A 531
-Version: 1.2.4
+Version: 1.2.5
 Date: 2026-02-11
 Author: Dr.-Ing. Bora Shehu, Dr.-Ing. Winfrid Willems, Thomas Junghaenel, Jennifer Ostermoeller, Angelika Palarz 
 Maintainer: Bora Shehu <bora.shehu@uni-potsdam.de>, Thomas Junghaenel <Thomas.Junghaenel@dwd.de>
@@ -14,10 +14,10 @@ Imports:
     evd, 
     lmomco, 
     lubridate, 
-    scales,
     terra
 Suggests: 
     knitr, 
     rmarkdown
 LazyData: true
+LazyDataCompression: xz
 VignetteBuilder: knitr

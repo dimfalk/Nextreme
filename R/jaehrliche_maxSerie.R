@@ -19,10 +19,12 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Anwendung Beispiel
 #' head(Regendaten_01684)
-#' jaehrlicheSerie_VOL = jaehrliche_maxSerie(Regendaten_01684, SerieTyp="VOL")
-#' jaehrlicheSerie_INT = jaehrliche_maxSerie(Regendaten_01684, SerieTyp="INT")
+#' jaehrlicheSerie_VOL = jaehrliche_maxSerie(Regendaten_01684, SerieTyp = "VOL")
+#' jaehrlicheSerie_INT = jaehrliche_maxSerie(Regendaten_01684, SerieTyp = "INT")
+#' }
 jaehrliche_maxSerie = function(Regendaten,
                                Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
                                Intervall = 5,

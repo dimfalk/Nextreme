@@ -54,6 +54,7 @@ Die Unsicherheit wird auf der Basis der Breite der Konfidenzgrenzen geschaetzt, 
 Die folgende Formel kann verwendet werden:
 }
 \examples{
+\dontrun{
 # Beispiel 1
 # Berechnung der Stichprobenunsicherheit durch 50 Realisierungen
 # fuer die jaehrlichen Serien in Goerlitz von 1991 bis 2020:
@@ -104,4 +105,5 @@ legend_order <- matrix(1:12,ncol=6,byrow = TRUE)
 legend("top",legend=dauern[legend_order],
  fill=hcl.colors(12, palette = "viridis")[legend_order],
  bty="n",title="Daurn [min]", cex=0.6, ncol=6)
+}
 }

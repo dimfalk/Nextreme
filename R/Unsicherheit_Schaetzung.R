@@ -25,6 +25,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Beispiel 1
 #' # Berechnung der Stichprobenunsicherheit durch 50 Realisierungen
 #' # fuer die jaehrlichen Serien in Goerlitz von 1991 bis 2020:
@@ -75,6 +76,7 @@
 #' legend("top",legend=dauern[legend_order],
 #'  fill=hcl.colors(12, palette = "viridis")[legend_order],
 #'  bty="n",title="Daurn [min]", cex=0.6, ncol=6)
+#' }
 Unsicherheit_Schaetzung = function(Serie,
                                    Tn = c(2, 5, 10, 20, 50, 100),
                                    Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
