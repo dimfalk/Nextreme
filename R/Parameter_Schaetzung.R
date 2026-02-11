@@ -83,45 +83,73 @@ Parameter_Schaetzung = function(Serie,
   else if(length(SerieTyp)!=1) stop("Das SerieTyp Input sollte nur 1 Element haben!")
 
   Dauern_inStunden = round(Dauern/60,3)
-  j = 1:length(Dauern_inStunden)
-  nD = apply(Serie[,1:(length(Dauern_inStunden))],2, function(i){
-    if(length(which(is.na(i)==T))>0) out = length(i[-which(is.na(i)==T)])
-    else out = length(i)
+  j <- 1:length(Dauern_inStunden)
+  nD <- apply(Serie[,1:(length(Dauern_inStunden))],2, function(i){
+    if(length(which(is.na(i)==T))>0) out <- length(i[-which(is.na(i)==T)])
+    else out <- length(i)
     return(out)
   })
   ##### Converting to Intensities
-  if(SerieTyp=="INT") Serie = Serie
-  else if(SerieTyp =="VOL") Serie = round(Serie/as.data.frame(t(replicate(dim(Serie)[1],Dauern_inStunden))),3)
+  if(SerieTyp == "INT") Serie = Serie
+  else if(SerieTyp == "VOL") Serie = round(Serie/as.data.frame(t(replicate(dim(Serie)[1],Dauern_inStunden))),3)
   else stop(paste0("Die gegebene Charakter fuer den SerieTyp [", SerieTyp, "] existiert nicht! Bitte INT fuer die Regenintensitaet (mm/h) or VOL fuer die Regenhoehe (mm/h) eingeben."))
 
   ##### Intensitaeten sollten mm/Stunde sein!
-  Inten.Daten  = do.call(cbind, lapply(1:length(Dauern_inStunden), function(i) sort(round(Serie[,i],3),na.last=TRUE, decreasing=T)))
-  Partition = round(as.numeric(min(nD[1], na.rm=T)),0)
+  Inten.Daten  <- do.call(cbind, lapply(1:length(Dauern_inStunden), function(i) sort(round(Serie[,i],3),na.last=TRUE, decreasing=T)))
+  Partition <- round(as.numeric(min(nD[1], na.rm = TRUE)), 0)
 
   # SCHRITT 1 Berechnung der Koutsoyiannis Parameter
-  m = Partition*length(Dauern_inStunden)
-  Theta.Werte = stats::optimize(kw_koupar1, lower=0, upper=1,  Inten.Daten = Inten.Daten, Dauern=Dauern_inStunden, Partition = Partition, nD=nD, m=m, maximum=FALSE)
-  Eta.Werte = stats::optimize(kw_koupar2, lower=0, upper=1, Dauern = Dauern_inStunden, Theta=Theta.Werte$minimum, Inten.Daten = Inten.Daten,Partition=Partition,nD=nD,m=m, maximum=FALSE)
-  output = data.frame(Theta=Theta.Werte$minimum, Eta= Eta.Werte$minimum, KW = Eta.Werte$objective)
-  bD = (Dauern_inStunden+output$Theta)^output$Eta
-  alle.Inten = do.call(c, lapply(1:length(Dauern_inStunden), function(i) Inten.Daten[,i]*bD[i]))
+  m <- Partition * length(Dauern_inStunden)
+
+  Theta.Werte <- stats::optimize(kw_koupar1,
+                                 lower = 0,
+                                 upper = 1,
+                                 Inten.Daten = Inten.Daten,
+                                 Dauern = Dauern_inStunden,
+                                 Partition = Partition,
+                                 nD = nD,
+                                 m = m,
+                                 maximum = FALSE)
+
+  Eta.Werte <- stats::optimize(kw_koupar2,
+                               lower = 0,
+                               upper = 1,
+                               Dauern = Dauern_inStunden,
+                               Theta = Theta.Werte$minimum,
+                               Inten.Daten = Inten.Daten,
+                               Partition = Partition,
+                               nD = nD,
+                               m = m,
+                               maximum = FALSE)
+
+  output <- data.frame(Theta = Theta.Werte$minimum, Eta = Eta.Werte$minimum, KW = Eta.Werte$objective)
+  bD <- (Dauern_inStunden + output$Theta) ^ output$Eta
+  alle.Inten <- do.call(c, lapply(1:length(Dauern_inStunden), function(i) Inten.Daten[,i] * bD[i]))
   # falls vorhanden, fehlende Werte entfernen
-  if(length(which(is.na(alle.Inten)==T))>0) alle.Inten = alle.Inten[-which(is.na(alle.Inten)==T)]
+  if(length(which(is.na(alle.Inten) == TRUE)) > 0) alle.Inten <- alle.Inten[-which(is.na(alle.Inten) == TRUE)]
 
   # SCHRITT 2 Berechnung der GEV-Parameter
-  lmoments = lmomco::lmom.ub(unlist(alle.Inten))
+  lmoments <- lmomco::lmom.ub(unlist(alle.Inten))
   if(methGEV == "GEV"){
-    if(formTyp == "FIX") gev.par  = pargev2(lmoments, kappa=Gamma)
-    else if (formTyp=="CON") gev.par  = lmomco::pargev(lmoments)
+    if(formTyp == "FIX") gev.par  = pargev2(lmoments, kappa = Gamma)
+    else if (formTyp == "CON") gev.par  = lmomco::pargev(lmoments)
     else stop(paste0("Die gegebene Chararakter fuer den Formtyp [", formTyp, "] existiert nicht! Bitte FIX oder CON eingeben."))
-    extrem.Parameter  = data.frame(Mu = gev.par$para[1], Sigma=gev.par$para[2],Gamma=gev.par$para[3], Theta=output$Theta, Eta=output$Eta,
+    extrem.Parameter  = data.frame(Mu = gev.par$para[1],
+                                   Sigma = gev.par$para[2],
+                                   Gamma = gev.par$para[3],
+                                   Theta = output$Theta,
+                                   Eta = output$Eta,
                                    KW = output$KW)
   } else if (methGEV == "GUM"){
-    gum.par = lmomco::pargum(lmoments)
-    extrem.Parameter  = data.frame(Mu = gum.par$para[1], Sigma=gum.par$para[2], Gamma=0, Theta=output$Theta, Eta=output$Eta,
+    gum.par <- lmomco::pargum(lmoments)
+    extrem.Parameter  = data.frame(Mu = gum.par$para[1],
+                                   Sigma = gum.par$para[2],
+                                   Gamma = 0,
+                                   Theta = output$Theta,
+                                   Eta = output$Eta,
                                    KW = output$KW)
   }else stop(paste0("Die gegebene Chararakter fuer den methGEV [", methGEV, "] existiert nicht! Bitte GEV fuer Generalized Extreme Value oder GUM fuer Gumbell Verteilung eingeben"))
-  rownames(extrem.Parameter) = NULL
+  rownames(extrem.Parameter) <- NULL
 
   return(extrem.Parameter)
 }

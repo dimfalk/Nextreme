@@ -47,7 +47,7 @@ Trend_vs_Sprung = function(Zeit,
                            ifAnova = FALSE,
                            skaliereZeit = TRUE){
 
-  Fgev=function(...){ res=list(mo="",Aic=as.numeric(NA),Bic=as.numeric(NA));  mo=try(evd::fgev(...,std.err=F),sil=T); if(!is.character(mo)){mo$Aic=stats::AIC(mo);mo$Bic=stats::AIC(mo,k=length(mo$est))};  mo }
+  Fgev=function(...){ res=list(mo="",Aic=as.numeric(NA),Bic=as.numeric(NA));  mo=try(evd::fgev(...,std.err=F), silent = TRUE); if(!is.character(mo)){mo$Aic=stats::AIC(mo);mo$Bic=stats::AIC(mo,k=length(mo$est))};  mo }
   Anova=function(...){res=try(stats::anova(...)[2,5]);if(is.character(res))res=as.numeric(NA);res}
 
   # if(!is.null(PrintLine))print(PrintLine)
@@ -57,8 +57,8 @@ Trend_vs_Sprung = function(Zeit,
   if(skaliereZeit)DTR = data.frame(Tr=(Zeit-min(Zeit))/length(Zeit)-0.5)
   DSP=DTRSP=""
   if(!is.null(Sensor)){
-    DSP   = try(data.frame(stats::model.matrix(~factor(Sensor),data.frame(Sensor)))[,-1],sil=T) # ohne intercept
-    DTRSP = try(data.frame(DTR,DSP),sil=T)
+    DSP   = try(data.frame(stats::model.matrix(~factor(Sensor),data.frame(Sensor)))[,-1], silent = TRUE) # ohne intercept
+    DTRSP = try(data.frame(DTR,DSP), silent = TRUE)
   }
   # model
   mo=mTr=mSp=mTrSp=list(mo="",Aic=as.numeric(NA),Bic=as.numeric(NA))
