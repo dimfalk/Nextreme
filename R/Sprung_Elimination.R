@@ -19,9 +19,9 @@
 #' Wert <- c(rnorm(n1, m1), rnorm(n2, m2))
 #'
 #' plot(Wert, Sprung_Elimination(Wert, Sensor)$SerieNeu, xlab = "Original", ylab = "Korrektur")
-Sprung_Elimination=function(Serie,
-                            Sensor,
-                            ZielSensor = Sensor[length(Sensor)]){
+Sprung_Elimination <- function(Serie,
+                               Sensor,
+                               ZielSensor = Sensor[length(Sensor)]){
 
   Sensor <- factor(Sensor)
   LEV <- levels(Sensor)

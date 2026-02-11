@@ -28,14 +28,14 @@
 #' print(Kostra_UC)
 #' Kostra_UK_HN = Kostra_Hn[,-(1:3)] - Kostra_UC[,-(1:3)]*Kostra_Hn[,-(1:3)]/100
 #' Kostra_OK_HN = Kostra_Hn[,-(1:3)] + Kostra_UC[,-(1:3)]*Kostra_Hn[,-(1:3)]/100
-Kostra2020_hN_Schaetzung = function(Standorte,
-                                    Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                                    Tn = c(1,5,10,20,50,100),
-                                    Temp_Pfad = "./",
-                                    Unsicherheit = TRUE){
+Kostra2020_hN_Schaetzung <- function(Standorte,
+                                     Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+                                     Tn = c(1, 5, 10, 20, 50, 100),
+                                     Temp_Pfad = "./",
+                                     Unsicherheit = TRUE){
 
-  Kostra_Dauern = c(5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 540, 720, 1080, 1440, 2880, 4320, 5760, 7200, 8640, 10080)
-  Kostra_Tn     = c(1, 2, 3, 5, 10, 20, 30, 50, 100)
+  Kostra_Dauern <- c(5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 540, 720, 1080, 1440, 2880, 4320, 5760, 7200, 8640, 10080)
+  Kostra_Tn <- c(1, 2, 3, 5, 10, 20, 30, 50, 100)
   if(missing(Standorte)) stop("Das Standorte Input ist nicht vorhanden! Bitte geben Sie die Standorte als data.frame an.")
   else if(class(Standorte)!="data.frame") stop("Das Standorte Input sollte als data.frame sein! Bitte geben Sie die Standorte als data.frame an.")
   else if(dim(Standorte)[1]<1) stop("Das Standorte Input soll mindestens eine Zeile enthalten!")

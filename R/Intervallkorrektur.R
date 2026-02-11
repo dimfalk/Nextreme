@@ -13,7 +13,8 @@
 #' #Korrektur der Goerlitzer jaehrlichen Serie bezueglich der Intervalllaenge:
 #' korrigierteSerie = Intervallkorrektur(Serie=Goerlitz_maxIntSerie)
 #' print(korrigierteSerie)
-Intervallkorrektur <- function(Serie, Intervall = 5){
+Intervallkorrektur <- function(Serie,
+                               Intervall = 5){
 
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.

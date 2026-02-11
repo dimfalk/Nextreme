@@ -14,9 +14,9 @@
 #' ShapeFix = 0.1 #(nach Koutsoyiannis 2008)
 #' Formparameter = ShapeFix * -1 # vorzeichenwechsel aufgrund unterschiedl. Formeln beachten!
 #' pargev2(lmomco::lmoms(1:10),kappa= Formparameter )$para
-pargev2 = function (lmom,
-                    checklmom = TRUE,
-                    kappa = NULL) { # aus lmomco, erweitert um kappa = NULL, wenn kappa != NULL, dann wird mit fixiertem kappa geschuetzt
+pargev2 <- function (lmom,
+                     checklmom = TRUE,
+                     kappa = NULL) { # aus lmomco, erweitert um kappa = NULL, wenn kappa != NULL, dann wird mit fixiertem kappa geschuetzt
 
   para <- rep(NA, 3)
   names(para) <- c("xi", "alpha", "kappa")

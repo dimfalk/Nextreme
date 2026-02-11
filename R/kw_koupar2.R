@@ -28,13 +28,13 @@
 #'   }
 #' @return KW Kruskal-Wallis Teststatistik
 #' @export
-kw_koupar2 = function(Eta,
-                      Theta = Theta,
-                      Dauern = Dauern,
-                      Inten.Daten = Inten.Daten,
-                      Partition = Partition,
-                      nD = nD,
-                      m = m){
+kw_koupar2 <- function(Eta,
+                       Theta = Theta,
+                       Dauern = Dauern,
+                       Inten.Daten = Inten.Daten,
+                       Partition = Partition,
+                       nD = nD,
+                       m = m){
 
   bD = (Dauern+Theta)^Eta
   alle.Inten = do.call(c, lapply(1:length(Dauern), function(i) Inten.Daten[1:Partition,i]*bD[i]))

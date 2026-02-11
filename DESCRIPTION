@@ -1,6 +1,6 @@
 Package: Nextreme
 Title: Statistische Analyse der Niederschlagsextremwerte nach Arbeitsblatt DWA-A 531
-Version: 1.2.6
+Version: 1.2.7
 Date: 2026-02-11
 Authors@R: 
     c(person("Dr.-Ing. Bora", "Shehu", role = c("aut", "cre"), email = "bora.shehu@uni-potsdam.de"),

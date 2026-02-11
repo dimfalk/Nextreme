@@ -34,11 +34,11 @@
 #' Dauern <- c(60, 120, 360, 720, 1440, 2880, 4320, 10080)
 #' Tn <- c(1, 5, 10, 20, 50, 100)
 #' DDF_Tabelle <- Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV = "GEV", SerieTyp = "VOL")
-Quantil_Schaetzung = function(extrem.Parameter,
-                              Dauern=c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                              Tn=c(1, 5, 10, 20, 50, 100),
-                              methGEV = "GEV",
-                              SerieTyp = "VOL"){
+Quantil_Schaetzung <- function(extrem.Parameter,
+                               Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+                               Tn = c(1, 5, 10, 20, 50, 100),
+                               methGEV = "GEV",
+                               SerieTyp = "VOL"){
 
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input extrem.Parameter sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.

@@ -7,8 +7,8 @@
 #' 3. fuer jeden Parametersatz wird die Regenhoehe/-intensitaet fuer die gewuenschten Dauern und Wiederkehrintervalle berechnet, wobei die Konfidenzgrenzen fuer jeden Wert aus nBoots errechnet werden.
 #'
 #' @param Serie Jaehrliche Maximum Serien (als Regenintensitaet in mm/h) werden als Tabelle (data.frame Format), wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen.
-#' @param Tn die Wiederkehrintervalle, fuer die die Regenhoehe/Intensitaet berechnet werden sollen. Die Wiederkehrintervalle sollten in Jahren angegeben werden!
 #' @param Dauern Dauern, die fuer die Berechnung der Jaehrliche Maximum Serien verwendet sind. Die gleiche Einheit (entweder Minuten oder Stunden) wie das Intervall. Standartwerte sind: 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320 und 10080min.
+#' @param Tn die Wiederkehrintervalle, fuer die die Regenhoehe/Intensitaet berechnet werden sollen. Die Wiederkehrintervalle sollten in Jahren angegeben werden!
 #' @param methGEV  den Typ der Generalized Extreme Value-Verteilung, die an die jaehrlichen Serien angepasst werden soll. Optionen sind: "GEV" fuer Typ 2 oder Typ 3 (Formparameter ist nicht gleich Null) und "GUM" fuer Typ 1 (Formparameter ist gleich Null – Gumbel Verteilung)
 #' @param formTyp kontrolliert, wie der Formparameter der Generalized Extreme Value Distribution (nur bei methGEV=„GEV“) geschaetzt werden soll. Die Option „CON“ berechnet die Formparameter auf der Basis der L-Momente, und die Option „FIX“ erzwingt einen bestimmten Wert fuer den Formparameter (zum Beispiel -0,1).
 #' @param Gamma den vorbestimmten Wert des GEV-Formparameters angeben. Nur wichtig fuer die Variante von methGEV=„GEV“ und formTyp=„FIX“.
@@ -77,16 +77,16 @@
 #'  fill=hcl.colors(12, palette = "viridis")[legend_order],
 #'  bty="n",title="Daurn [min]", cex=0.6, ncol=6)
 #' }
-Unsicherheit_Schaetzung = function(Serie,
-                                   Tn = c(2, 5, 10, 20, 50, 100),
-                                   Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                                   methGEV = "GEV",
-                                   formTyp = "FIX",
-                                   Gamma = -0.1,
-                                   nBoots = 100,
-                                   rSeed = 1232,
-                                   SerieTyp = "VOL",
-                                   Konfidenzgrenzen = c(0.05, 0.95)){
+Unsicherheit_Schaetzung <- function(Serie,
+                                    Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+                                    Tn = c(2, 5, 10, 20, 50, 100),
+                                    methGEV = "GEV",
+                                    formTyp = "FIX",
+                                    Gamma = -0.1,
+                                    nBoots = 100,
+                                    rSeed = 1232,
+                                    SerieTyp = "VOL",
+                                    Konfidenzgrenzen = c(0.05, 0.95)){
 
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.

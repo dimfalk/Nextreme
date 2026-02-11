@@ -20,7 +20,8 @@
 #' wechselDatum = as.Date("1992-12-31", format = c("%Y-%m-%d"))
 #' korrigierte_maxSerie = Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum)
 #' print(korrigierte_maxSerie)
-Sprung_Korrektur  <- function(Serie, wechselDatum){
+Sprung_Korrektur <- function(Serie,
+                             wechselDatum){
 
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.

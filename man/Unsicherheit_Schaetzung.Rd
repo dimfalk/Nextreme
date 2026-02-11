@@ -6,8 +6,8 @@
 \usage{
 Unsicherheit_Schaetzung(
   Serie,
-  Tn = c(2, 5, 10, 20, 50, 100),
   Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+  Tn = c(2, 5, 10, 20, 50, 100),
   methGEV = "GEV",
   formTyp = "FIX",
   Gamma = -0.1,
@@ -20,9 +20,9 @@ Unsicherheit_Schaetzung(
 \arguments{
 \item{Serie}{Jaehrliche Maximum Serien (als Regenintensitaet in mm/h) werden als Tabelle (data.frame Format), wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen.}
 
-\item{Tn}{die Wiederkehrintervalle, fuer die die Regenhoehe/Intensitaet berechnet werden sollen. Die Wiederkehrintervalle sollten in Jahren angegeben werden!}
-
 \item{Dauern}{Dauern, die fuer die Berechnung der Jaehrliche Maximum Serien verwendet sind. Die gleiche Einheit (entweder Minuten oder Stunden) wie das Intervall. Standartwerte sind: 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320 und 10080min.}
+
+\item{Tn}{die Wiederkehrintervalle, fuer die die Regenhoehe/Intensitaet berechnet werden sollen. Die Wiederkehrintervalle sollten in Jahren angegeben werden!}
 
 \item{methGEV}{den Typ der Generalized Extreme Value-Verteilung, die an die jaehrlichen Serien angepasst werden soll. Optionen sind: "GEV" fuer Typ 2 oder Typ 3 (Formparameter ist nicht gleich Null) und "GUM" fuer Typ 1 (Formparameter ist gleich Null – Gumbel Verteilung)}
 

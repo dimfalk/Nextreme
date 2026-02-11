@@ -34,12 +34,12 @@
 #' # Fall 2: ueber alle Dauern mit der Gumbel-Verteilung
 #' extremParameter = Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GUM")
 #' print(extremParameter)
-Parameter_Schaetzung = function(Serie,
-                                Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                                methGEV = "GEV",
-                                formTyp = "FIX",
-                                Gamma = -0.1,
-                                SerieTyp = "INT"){
+Parameter_Schaetzung <- function(Serie,
+                                 Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+                                 methGEV = "GEV",
+                                 formTyp = "FIX",
+                                 Gamma = -0.1,
+                                 SerieTyp = "INT"){
 
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.

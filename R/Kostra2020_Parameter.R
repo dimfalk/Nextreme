@@ -15,7 +15,8 @@
 #' @examples
 #' Station = data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
 #' kostraParameter = Kostra2020_Parameter(Standorte = Station )
-Kostra2020_Parameter = function(Standorte, Temp_Pfad = "./"){
+Kostra2020_Parameter <- function(Standorte,
+                                 Temp_Pfad = "./"){
 
   if(missing(Standorte)) stop("Das Standorte Input ist nicht vorhanden! Bitte geben Sie einen data.frame mit den Standorten der Stationen ein.")
   else if(class(Standorte)!="data.frame") stop("Das Standorte Input sollte als data.frame sein! Bitte geben Sie einen data.frame mit den Standorten der Stationen ein.")

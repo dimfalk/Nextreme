@@ -40,12 +40,12 @@
 #' Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xStat"], Sensor = X[, "Sensor"])
 #' Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xTrend"], Sensor = X[, "Sensor"])
 #' Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xSprung"], Sensor = X[, "Sensor"])
-Trend_vs_Sprung = function(Zeit,
-                           Serienwerte,
-                           Sensor = NULL,
-                           ifTS = FALSE,
-                           ifAnova = FALSE,
-                           skaliereZeit = TRUE){
+Trend_vs_Sprung <- function(Zeit,
+                            Serienwerte,
+                            Sensor = NULL,
+                            ifTS = FALSE,
+                            ifAnova = FALSE,
+                            skaliereZeit = TRUE){
 
   Fgev=function(...){ res=list(mo="",Aic=as.numeric(NA),Bic=as.numeric(NA));  mo=try(evd::fgev(...,std.err=F), silent = TRUE); if(!is.character(mo)){mo$Aic=stats::AIC(mo);mo$Bic=stats::AIC(mo,k=length(mo$est))};  mo }
   Anova=function(...){res=try(stats::anova(...)[2,5]);if(is.character(res))res=as.numeric(NA);res}

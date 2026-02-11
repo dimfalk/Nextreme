@@ -27,12 +27,12 @@
 #'   }
 #' @return KW Kruskal-Wallis Teststatistik
 #' @export
-kw_koupar1 = function(Theta,
-                      Inten.Daten = Inten.Daten,
-                      Dauern = Dauern,
-                      Partition = Partition,
-                      nD = nD,
-                      m = m){
+kw_koupar1 <- function(Theta,
+                       Inten.Daten = Inten.Daten,
+                       Dauern = Dauern,
+                       Partition = Partition,
+                       nD = nD,
+                       m = m){
 
   Eta = stats::optimize(kw_koupar2, lower=0, upper=1, Theta=Theta, Dauern=Dauern, Inten.Daten = Inten.Daten, Partition=Partition,nD=nD,m=m, maximum=FALSE)$minimum
   bD = (Dauern+Theta)^Eta

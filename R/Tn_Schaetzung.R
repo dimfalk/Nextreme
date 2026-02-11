@@ -32,10 +32,11 @@
 #' # die Niederschlagsmenge hN=c(50,90,95) mm und Dauern 240, 720 und 1440 Minuten:
 #' Ta_Ereignis = Tn_Schaetzung(extremParameter, Dauern = c(240,720,1440), hN= c(50,90,95),
 #'  methGEV="GEV")
-Tn_Schaetzung = function(extrem.Parameter,
-                         Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                         hN = c(5, 10, 12, 20, 30, 40, 60, 70, 100, 100, 120, 150),
-                         methGEV = "GEV"){
+Tn_Schaetzung <- function(extrem.Parameter,
+                          Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+                          hN = c(5, 10, 12, 20, 30, 40, 60, 70, 100, 100, 120, 150),
+                          methGEV = "GEV"){
+
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input extrem.Parameter sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.
 
