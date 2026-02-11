@@ -6,3 +6,4 @@
 ^Einfuehrung_Nextreme\.pdf$
 ^build$
 ^inst/doc$
+^README\.Rmd$
