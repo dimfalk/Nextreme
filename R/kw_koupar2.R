@@ -1,15 +1,17 @@
 #' Optimierung des 2. Koutsoyiannis-Parameters
+#'
 #' @description
 #' Optimierung des 2. Koutsoyiannis-Parameters zur Skalierung der Intensitaeten je nach Dauer entsprechend der robusten Methode (basierend auf der Kruskal-Wallis-Statistik) wie in Koutsoyiannis et al. 1998
-#' @param Inten.Daten  der extrahierten jaehrlichen Serien, nicht als maximale Niederschlagsvolume, sondern als maximale Niederschlagsintensitaet in mm/h, angegeben fuer jede Dauer (D) und jedes Jahr. Format ist data.frame(ncol = Dauer, nrow=Jahre)
+#'
 #' @param Eta zweite Koutsoyiannis-Parameter
 #' @param Theta erste Koutsoyiannis-Parameter
 #' @param Dauern Dauern (h), die fuer die Berechnung der jaehrlichen Serien verwendet sind, in Stunden!
-#' @param nD Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer
+#' @param Inten.Daten  der extrahierten jaehrlichen Serien, nicht als maximale Niederschlagsvolume, sondern als maximale Niederschlagsintensitaet in mm/h, angegeben fuer jede Dauer (D) und jedes Jahr. Format ist data.frame(ncol = Dauer, nrow=Jahre)
 #' @param Partition  die Anzahl der Extremwerte pro Dauer, die in die Berechnung der Gesamtintensitaet einbezogen werden sollen.
+#' @param nD Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer
 #' @param m Hoechster Rang fuer die Intensitaeten
-#' @details
-#' Die Optimierung der Koutsoyiannis-Parameter durch Minimierung der Kruskal-Wallis-Statistik (KW):
+#'
+#' @details Die Optimierung der Koutsoyiannis-Parameter durch Minimierung der Kruskal-Wallis-Statistik (KW):
 #' \deqn{KW =  \frac{12}{m(m+1)} \sum_{D=1}^{k} n_D \left( \bar{r}_D - \frac{m+1}{2} \right)^2}
 #' wo:
 #' \itemize{
@@ -25,7 +27,15 @@
 #'   \item \eqn{\eta} Der 2. Koutsoyiannis-Parameter
 #'   }
 #' @return KW Kruskal-Wallis Teststatistik
-kw_koupar2 = function(Eta, Theta=Theta, Dauern=Dauern, Inten.Daten=Inten.Daten, Partition=Partition, nD =nD, m=m){
+#' @export
+kw_koupar2 = function(Eta,
+                      Theta = Theta,
+                      Dauern = Dauern,
+                      Inten.Daten = Inten.Daten,
+                      Partition = Partition,
+                      nD = nD,
+                      m = m){
+
   bD = (Dauern+Theta)^Eta
   alle.Inten = do.call(c, lapply(1:length(Dauern), function(i) Inten.Daten[1:Partition,i]*bD[i]))
   if(length(which(is.na(alle.Inten)==T))>0) alle.Inten = alle.Inten[-which(is.na(alle.Inten)==T)]

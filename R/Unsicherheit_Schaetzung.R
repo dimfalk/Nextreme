@@ -1,9 +1,11 @@
 #' Schaetzung der Stichprobenunsicherheit durch Bootstrapping.
+#'
 #' @description
 #' Die Stichprobenunsicherheit der extremen Niederschlagsparameter und der erforderlichen Quantile wird auf der Grundlage des Bootstrapping-Algorithmus berechnet, wie in Kapitel 6.3 des DWA-A 531 Merkblattes beschrieben.
 #' 1. die Jahre der jaehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden nBoots mal mit Ersetzung neu gesampelt. Die neu gesampelten Jahre werden fuer jede Dauer selektiert und bilden so nBoots neue jaehrliche Serien.
 #' 2. fuer jede aehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden die Parameter berechnet. Die Konfidenzgrenzen fuer jeden Parameter werden aus nBoots berechnet.
 #' 3. fuer jeden Parametersatz wird die Regenhoehe/-intensitaet fuer die gewuenschten Dauern und Wiederkehrintervalle berechnet, wobei die Konfidenzgrenzen fuer jeden Wert aus nBoots errechnet werden.
+#'
 #' @param Serie Jaehrliche Maximum Serien (als Regenintensitaet in mm/h) werden als Tabelle (data.frame Format), wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen.
 #' @param Tn die Wiederkehrintervalle, fuer die die Regenhoehe/Intensitaet berechnet werden sollen. Die Wiederkehrintervalle sollten in Jahren angegeben werden!
 #' @param Dauern Dauern, die fuer die Berechnung der Jaehrliche Maximum Serien verwendet sind. Die gleiche Einheit (entweder Minuten oder Stunden) wie das Intervall. Standartwerte sind: 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320 und 10080min.
@@ -14,10 +16,14 @@
 #' @param rSeed Random Seed fuer das Bootstrapping und die Realisationen, um die gleiche Ausgabe fuer jede gleiche Eingabe zu garantieren.
 #' @param SerieTyp Kontrolle ueber die Einheiten der Ausgabetabelle. Die Optionen sind: "VOL" fuer Regenhoehe in mm/Dauer, und "INT" fuer Regenintensitaet in mm/h.
 #' @param Konfidenzgrenzen  Perzentile der nBoots-Realisierungen, die die Funktion zurueckbringen soll. Das Format sollte Vektor sein, wobei der erste Wert fuer die untere Konfidenzgrenze und der zweite Wert fuer die obere Konfidenzgrenze steht.
+#'
 #' @details
 #' Die Unsicherheit wird auf der Basis der Breite der Konfidenzgrenzen geschaetzt, die aus nBoots-Realisierungen fuer einen bestimmten Wert (entweder Parameter oder Quantil) erhalten sind.
 #' Die folgende Formel kann verwendet werden:
+#'
 #' @return Eine Liste, die die erhaltenen nBoots-Realisierungen fuer die Quantile (erster Eintrag ~  QUA_INFO) und fuer die Parameter (zweiter Eintrag ~ PAR_INFO) enthaelt.
+#' @export
+#'
 #' @examples
 #' # Beispiel 1
 #' # Berechnung der Stichprobenunsicherheit durch 50 Realisierungen
@@ -70,15 +76,16 @@
 #'  fill=hcl.colors(12, palette = "viridis")[legend_order],
 #'  bty="n",title="Daurn [min]", cex=0.6, ncol=6)
 Unsicherheit_Schaetzung = function(Serie,
-                                   Tn=c(2,5,10,20,50,100),
-                                   Dauern=c(5, 10, 15,30,60,120,360,720,1440, 2880, 4320, 10080),
-                                   methGEV="GEV",
-                                   formTyp="FIX",
-                                   Gamma=-0.1,
+                                   Tn = c(2, 5, 10, 20, 50, 100),
+                                   Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+                                   methGEV = "GEV",
+                                   formTyp = "FIX",
+                                   Gamma = -0.1,
                                    nBoots = 100,
                                    rSeed = 1232,
                                    SerieTyp = "VOL",
-                                   Konfidenzgrenzen = c(0.05,0.95)){
+                                   Konfidenzgrenzen = c(0.05, 0.95)){
+
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.
   if(missing(Serie)) stop("Das Serie Input ist nicht vorhanden! Bitte geben Sie einen data.frame() der jaehrlichen Intensitaetsserie an (in mm/h), wobei die Zeile die Jahre und die Spalte die Dauer entsprechen.")
@@ -139,7 +146,7 @@ Unsicherheit_Schaetzung = function(Serie,
   else if(nBoots<=1) stop("Das Input nBoots darf nicht kleiner als 1 sein!")
 
   All_Boots = lapply(1:nBoots, function(Boot){
-    set.seed(rSeed+Boot)
+    set.seed(rSeed + Boot)
     newAMS   = Serie[sample(1:dim(Serie)[1], size = dim(Serie)[1], replace=T),]
     newStats = Parameter_Schaetzung(newAMS, Dauern = Dauern, methGEV = methGEV, Gamma=Gamma, formTyp = formTyp)
     newQuans = Quantil_Schaetzung(newStats, Dauern=Dauern, Tn= Tn, methGEV=methGEV, SerieTyp = SerieTyp)
@@ -174,6 +181,7 @@ Unsicherheit_Schaetzung = function(Serie,
   PAR_INFO = do.call(rbind, PAR_INFO)
 
   CI_INFO = list(QUA_INFO = QUA_INFO, PAR_INFO = PAR_INFO)
+
   return(CI_INFO)
 }
 

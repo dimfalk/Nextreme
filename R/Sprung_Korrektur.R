@@ -1,21 +1,27 @@
 #' Spruengkorrektur bei kleinen Dauerstufen (D<= 30min)
+#'
 #' @description
 #' Die jaehrlichen Serien von kurzen Dauern werden vom Sprung-Instationaritaet korrigiert, der durch den Wechsel der Messsensoren von analoger zu digitaler Technologie verursacht werden koennte.
 #' Analogsensoren: Regenschreiber, Unbekannt oder unbekannt
 #' Digitalsensoren: H3, Tropfengeber, Wippengeber, Pluvio oder PLUVIO
 #' 1. Zuerst wird ein Instationaritaet Test fuer die Jahresreihen mit einer Dauer von 30 Minuten oder weniger durchgefuehrt.
 #' 2. Wenn die Instationaritaet vom Typ "Sprung" ist, dann wird eine Sprungkorrektur angewendet.
+#'
 #' @param Serie Jaehrliche Reihen als Tabelle, wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen (in Minuten!).
 #' @param wechselDatum Der Zeitpunkt, zu dem der Sensor von einem analogen auf einen digitalen Sensor umgestellt wurde. Angegeben als as.POSIXct-Format.
+#'
 #' @details
 #' Wenn es einen Sprung gibt - Typ Instationaritaet auf der jaehrlichen Serie von kurzen Dauern, wird der Sprung eliminiert und eine korrigierte jaehrliche Serientabelle zurueckgegeben.
-#' @return
-#' Die korrigierte jaehrlichen Serien als data.frame wird zurueckgegeben (das gleiche Format wie die Eingabe).
+#'
+#' @return Die korrigierte jaehrlichen Serien als data.frame wird zurueckgegeben (das gleiche Format wie die Eingabe).
+#' @export
+#'
 #' @examples
-#' wechselDatum = as.Date("1992-12-31", format=c("%Y-%m-%d"))
+#' wechselDatum = as.Date("1992-12-31", format = c("%Y-%m-%d"))
 #' korrigierte_maxSerie = Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum)
 #' print(korrigierte_maxSerie)
 Sprung_Korrektur  <- function(Serie, wechselDatum){
+
   # ueberpruefung der Bedingungen, die erfuellt sein muessen, damit die Funktion ohne Probleme laufen kann
   # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.
   if(missing(Serie)) stop("Das Serie Input ist nicht vorhanden! Bitte geben Sie einen data.frame() der jaehrlichen Intensitaetsserie an (in mm/h), wobei die Zeile die Jahre und Spalte die Dauer entsprechen.")
@@ -55,5 +61,6 @@ Sprung_Korrektur  <- function(Serie, wechselDatum){
     }
   }
   })
+
   return(Serie)
 }

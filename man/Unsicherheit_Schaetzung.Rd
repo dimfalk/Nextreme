@@ -43,9 +43,11 @@ Eine Liste, die die erhaltenen nBoots-Realisierungen fuer die Quantile (erster E
 }
 \description{
 Die Stichprobenunsicherheit der extremen Niederschlagsparameter und der erforderlichen Quantile wird auf der Grundlage des Bootstrapping-Algorithmus berechnet, wie in Kapitel 6.3 des DWA-A 531 Merkblattes beschrieben.
-1. die Jahre der jaehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden nBoots mal mit Ersetzung neu gesampelt. Die neu gesampelten Jahre werden fuer jede Dauer selektiert und bilden so nBoots neue jaehrliche Serien.
-2. fuer jede aehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden die Parameter berechnet. Die Konfidenzgrenzen fuer jeden Parameter werden aus nBoots berechnet.
-3. fuer jeden Parametersatz wird die Regenhoehe/-intensitaet fuer die gewuenschten Dauern und Wiederkehrintervalle berechnet, wobei die Konfidenzgrenzen fuer jeden Wert aus nBoots errechnet werden.
+\enumerate{
+\item die Jahre der jaehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden nBoots mal mit Ersetzung neu gesampelt. Die neu gesampelten Jahre werden fuer jede Dauer selektiert und bilden so nBoots neue jaehrliche Serien.
+\item fuer jede aehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden die Parameter berechnet. Die Konfidenzgrenzen fuer jeden Parameter werden aus nBoots berechnet.
+\item fuer jeden Parametersatz wird die Regenhoehe/-intensitaet fuer die gewuenschten Dauern und Wiederkehrintervalle berechnet, wobei die Konfidenzgrenzen fuer jeden Wert aus nBoots errechnet werden.
+}
 }
 \details{
 Die Unsicherheit wird auf der Basis der Breite der Konfidenzgrenzen geschaetzt, die aus nBoots-Realisierungen fuer einen bestimmten Wert (entweder Parameter oder Quantil) erhalten sind.

@@ -18,14 +18,16 @@ Die korrigierte jaehrlichen Serien als data.frame wird zurueckgegeben (das gleic
 Die jaehrlichen Serien von kurzen Dauern werden vom Sprung-Instationaritaet korrigiert, der durch den Wechsel der Messsensoren von analoger zu digitaler Technologie verursacht werden koennte.
 Analogsensoren: Regenschreiber, Unbekannt oder unbekannt
 Digitalsensoren: H3, Tropfengeber, Wippengeber, Pluvio oder PLUVIO
-1. Zuerst wird ein Instationaritaet Test fuer die Jahresreihen mit einer Dauer von 30 Minuten oder weniger durchgefuehrt.
-2. Wenn die Instationaritaet vom Typ "Sprung" ist, dann wird eine Sprungkorrektur angewendet.
+\enumerate{
+\item Zuerst wird ein Instationaritaet Test fuer die Jahresreihen mit einer Dauer von 30 Minuten oder weniger durchgefuehrt.
+\item Wenn die Instationaritaet vom Typ "Sprung" ist, dann wird eine Sprungkorrektur angewendet.
+}
 }
 \details{
 Wenn es einen Sprung gibt - Typ Instationaritaet auf der jaehrlichen Serie von kurzen Dauern, wird der Sprung eliminiert und eine korrigierte jaehrliche Serientabelle zurueckgegeben.
 }
 \examples{
-wechselDatum = as.Date("1992-12-31", format=c("\%Y-\%m-\%d"))
+wechselDatum = as.Date("1992-12-31", format = c("\%Y-\%m-\%d"))
 korrigierte_maxSerie = Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum)
 print(korrigierte_maxSerie)
 }

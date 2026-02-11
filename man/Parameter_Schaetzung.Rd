@@ -31,15 +31,17 @@ GEV- und Koutsoyiannis-Parameter fuer die angegebene Serie als einzeiliger data.
 }
 \description{
 Berechnung der GEV-Parameter und der Koutsoyiannis-Parameter fuer die gegebenen jaehrlichen Serien mit unterschiedlichen Dauern.
-1. Die Koutsoyiannis-Parameter, die die Intensitaeten ueber alle Dauern normalisieren, werden auf der Grundlage der Kruskal-Wallis-Statistik geschaetzt.
-2. Die GEV-Parameter werden nach der Methode der L-Momente geschaetzt (mit Ausnahme des Formparameters, der im Voraus auf einen bestimmten Wert festgelegt werden kann
+\enumerate{
+\item Die Koutsoyiannis-Parameter, die die Intensitaeten ueber alle Dauern normalisieren, werden auf der Grundlage der Kruskal-Wallis-Statistik geschaetzt.
+\item Die GEV-Parameter werden nach der Methode der L-Momente geschaetzt (mit Ausnahme des Formparameters, der im Voraus auf einen bestimmten Wert festgelegt werden kann
+}
 }
 \details{
 Funktion zur Berechnung der Parameter, die die Niederschlagsextremwerte an einer einzelnen Station auf der Grundlage der extrahierten jaehrlichen Maximum Serien (als Regenintensitaet in mm/h) verschiedener Dauern beschreiben.
-
-1. Die Koutsoyiannis-Parameter normalisieren die Intensitaeten ueber alle Dauern und werden auf der Grundlage der Kruskal-Wallis-Statistik geschaetzt.
-
-2. Die GEV-Parameter werden nach der Methode der L-Momente geschaetzt (mit Ausnahme des Formparameters, der im Voraus auf einen bestimmten Wert festgelegt werden kann).
+\enumerate{
+\item Die Koutsoyiannis-Parameter normalisieren die Intensitaeten ueber alle Dauern und werden auf der Grundlage der Kruskal-Wallis-Statistik geschaetzt.
+\item Die GEV-Parameter werden nach der Methode der L-Momente geschaetzt (mit Ausnahme des Formparameters, der im Voraus auf einen bestimmten Wert festgelegt werden kann).
+}
 }
 \examples{
 # Berechnung der dauerstufenübergreifenden Verteilungsparameter fuer die Station Goerlitz im Zeitraum 1991-2020
@@ -48,6 +50,7 @@ Funktion zur Berechnung der Parameter, die die Niederschlagsextremwerte an einer
 Dauern = c(5, 10, 15,30,60,120,360,720,1440, 2880, 4320, 10080)
 extremParameter = Parameter_Schaetzung(Goerlitz_maxIntSerie,Dauern, methGEV="GEV", formTyp="FIX", Gamma=-0.1)
 print(extremParameter)
+
 # Fall 2: ueber alle Dauern mit der Gumbel-Verteilung
 extremParameter = Parameter_Schaetzung(Goerlitz_maxIntSerie,Dauern, methGEV="GUM")
 print(extremParameter)

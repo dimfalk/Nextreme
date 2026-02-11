@@ -1,15 +1,23 @@
 #' Berechnung der GEV-Parameter mit einer festen Formparameter
+#'
 #' @param lmom die L-Momente, die zuvor mit dem Paket lmomco berechnet wurden
-#' @param kappa der feste Wert des Formparameters. Wenn kappa=NULL ist, wird der Formparameter aus den L-Momenten berechnet.
 #' @param checklmom logische Variable, die entweder TRUE oder FALSE sein kann. Gibt an, ob die L-Momente geprueft werden sollen oder nicht.
+#' @param kappa der feste Wert des Formparameters. Wenn kappa=NULL ist, wird der Formparameter aus den L-Momenten berechnet.
+#'
 #' @details
 #' R-Funktion zur Berechnung der GEV-Parameter, wenn der Formparameter auf einen bestimmten Wert eingestellt ist.
+#'
 #' @return  Die GEV-Parameter
+#' @export
+#'
 #' @examples
 #' ShapeFix = 0.1 #(nach Koutsoyiannis 2008)
 #' Formparameter = ShapeFix * -1 # vorzeichenwechsel aufgrund unterschiedl. Formeln beachten!
 #' pargev2(lmomco::lmoms(1:10),kappa= Formparameter )$para
-pargev2 = function (lmom, checklmom = TRUE, kappa=NULL) { # aus lmomco, erweitert um kappa = NULL, wenn kappa != NULL, dann wird mit fixiertem kappa geschuetzt
+pargev2 = function (lmom,
+                    checklmom = TRUE,
+                    kappa = NULL) { # aus lmomco, erweitert um kappa = NULL, wenn kappa != NULL, dann wird mit fixiertem kappa geschuetzt
+
   para <- rep(NA, 3)
   names(para) <- c("xi", "alpha", "kappa")
   SMALL <- 1e-05
@@ -31,13 +39,16 @@ pargev2 = function (lmom, checklmom = TRUE, kappa=NULL) { # aus lmomco, erweiter
   C3 <- 0.01573152
   D1 <- -0.64363929
   D2 <- 0.08985247
+
   if (length(lmom$L1) == 0) {
     lmom <- lmomco::lmorph(lmom)
   }
+
   if (checklmom & !lmomco::are.lmom.valid(lmom)) {
     warning("L-moments are invalid")
     return()
   }
+
   T3 <- lmom$TAU3
   if (T3 > 0) {
     Z <- 1 - T3
@@ -83,5 +94,6 @@ pargev2 = function (lmom, checklmom = TRUE, kappa=NULL) { # aus lmomco, erweiter
   GAM <- exp(lgamma(1 + G))
   para[2] <- lmom$L2 * G/(GAM * (1 - 2^(-G)))
   para[1] <- lmom$L1 - para[2] * (1 - GAM)/G
+
   return(list(type = "gev", para = para, source = "pargev"))
 }

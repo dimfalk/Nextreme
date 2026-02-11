@@ -8,9 +8,9 @@ Trend_vs_Sprung(
   Zeit,
   Serienwerte,
   Sensor = NULL,
-  ifTS = F,
-  ifAnova = F,
-  skaliereZeit = T
+  ifTS = FALSE,
+  ifAnova = FALSE,
+  skaliereZeit = TRUE
 )
 }
 \arguments{
@@ -31,13 +31,13 @@ AicRes character, "Stat|Trend|Sprung", Ergebnis auf der Grundlage des AIC-Kriter
 
 BicRes character, "Stat|Trend|Sprung", Ergebnis auf der Grundlage des BIC-Kriteriums
 
-Aic.<Modell> numeric vector, AIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
+Aic.\if{html}{\out{<Modell>}} numeric vector, AIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
 
-Bic.<Modell> numeric vector, BIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
+Bic.\if{html}{\out{<Modell>}} numeric vector, BIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
 
 AnovaRes character, "Stat|Trend|Sprung", Ergebnis auf Grundlage des Devianztests
 
-Anova.<Modell> numeric vector, pValues fuer Uebergang von Nullmodell Stat zu einem der drei anderen Modelle Trend|Sprung
+Anova.\if{html}{\out{<Modell>}} numeric vector, pValues fuer Uebergang von Nullmodell Stat zu einem der drei anderen Modelle Trend|Sprung
 }
 \description{
 TrendVsSprung
@@ -50,17 +50,21 @@ Optional kann zusaetzlich auch ein partieller Devianztest (ifAnova=TRUE) durchge
 }
 \examples{
 library(evd)
-n=100
+
+n = 100
 set.seed(1234)
+
 # synthetische GEV-verteilte Daten, stationaer:
-xStat   = rgev(n,10,2,0.1)
+xStat = rgev(n, 10, 2, 0.1)
 # synthetische GEV-verteilte Daten, mit Trend:
-xTrend  = rgev(n,10,2,0.1) + 1:n*0.05
+xTrend = rgev(n, 10, 2, 0.1) + 1:n * 0.05
 # synthetische GEV-verteilte Daten, mit Sprung:
-xSprung = c(rgev(n/2,10,1,0.1),rgev(n/2,20,2,0.1))
-Sensor = factor(c(rep("analog",n/2),rep("digital",n/2)))
-X = data.frame(Jahr=1:n,Sensor=Sensor,xStat,xTrend,xSprung)
-Trend_vs_Sprung(Zeit=X[,"Jahr"],Serienwerte=X[,"xStat"],Sensor=X[,"Sensor"])
-Trend_vs_Sprung(Zeit=X[,"Jahr"],Serienwerte=X[,"xTrend"],Sensor=X[,"Sensor"])
-Trend_vs_Sprung(Zeit=X[,"Jahr"],Serienwerte=X[,"xSprung"],Sensor=X[,"Sensor"])
+xSprung = c(rgev(n/2, 10, 1, 0.1), rgev(n/2, 20, 2, 0.1))
+
+Sensor = factor(c(rep("analog", n/2), rep("digital", n/2)))
+X = data.frame(Jahr = 1:n, Sensor = Sensor, xStat, xTrend, xSprung)
+
+Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xStat"], Sensor = X[, "Sensor"])
+Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xTrend"], Sensor = X[, "Sensor"])
+Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xSprung"], Sensor = X[, "Sensor"])
 }

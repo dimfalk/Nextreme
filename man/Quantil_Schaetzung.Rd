@@ -36,17 +36,19 @@ R-Funktion zur Ableitung der Regenhoehe (hN) oder Regenintesitaet (iN) fuer die 
 # Berechnung der Starkregenparameter fuer die Station Goerlitz im Zeitraum 1991-2020
 # ohne Intervall-oder Sprungkorrektur
 # ueber alle Dauern mit der GEV-Verteilung und dem Formparameter von -0,1
-Dauern=c(5, 10, 15,30,60,120,360,720,1440, 2880, 4320, 10080)
-extremParameter = Parameter_Schaetzung(Goerlitz_maxIntSerie,Dauern, methGEV="GEV", formTyp="FIX", Gamma=-0.1)
+Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
+extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GEV", formTyp = "FIX", Gamma = -0.1)
 print(extremParameter)
+
 # Berechnung der Regenintensitaet-Dauer-Wiederkehrintervall Tabelle
 # fuer 6 Wiederkehrintervalle und 12 Dauern von der berechneten Parameter
-Dauern=c(5, 10, 15,30,60,120,360,720,1440, 2880, 4320, 10080)
-Tn=c(1,5,10,20,50,100)
-IDF_Tabelle = Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV="GEV", SerieTyp="INT")
+Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
+Tn <- c(1, 5, 10, 20, 50, 100)
+IDF_Tabelle <- Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV = "GEV", SerieTyp = "INT")
+
 # Berechnung der Regenhoehe-Dauer-Wiederkehrintervall Tabelle
 # fuer 6 Wiederkehrintervalle und 8 Dauern von der berechneten Parameter.
-Dauern=c(60,120,360,720,1440, 2880, 4320, 10080)
-Tn=c(1,5,10,20,50,100)
-DDF_Tabelle = Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV="GEV", SerieTyp="VOL")
+Dauern <- c(60, 120, 360, 720, 1440, 2880, 4320, 10080)
+Tn <- c(1, 5, 10, 20, 50, 100)
+DDF_Tabelle <- Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV = "GEV", SerieTyp = "VOL")
 }

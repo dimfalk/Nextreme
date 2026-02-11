@@ -1,14 +1,16 @@
 #' Optimierung des 1. Koutsoyiannis-Parameters
+#'
 #' @description
 #' Optimierung des 1. Koutsoyiannis-Parameters zur Skalierung der Intensitaeten je nach Dauer entsprechend der robusten Methode (basierend auf der Kruskal-Wallis-Statistik) wie in Koutsoyiannis et al. 1998
-#' @param Inten.Daten der extrahierten jaehrlichen Serien, nicht als maximale Niederschlagsvolume, sondern als maximale Niederschlagsintensitaet in mm/h, angegeben fuer jede Dauer (D) und jedes Jahr. Format ist data.frame(ncol = Dauer, nrow=Jahre)
+#'
 #' @param Theta Der erste Koutsoyiannis-Parameter
+#' @param Inten.Daten der extrahierten jaehrlichen Serien, nicht als maximale Niederschlagsvolume, sondern als maximale Niederschlagsintensitaet in mm/h, angegeben fuer jede Dauer (D) und jedes Jahr. Format ist data.frame(ncol = Dauer, nrow=Jahre)
 #' @param Dauern Dauern (h), die fuer die Berechnung der jaehrlichen Serien verwendet sind, in Stunden!
-#' @param nD Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer
 #' @param Partition die Anzahl der Extremwerte pro Dauer, die in die Berechnung der Gesamtintensitaet einbezogen werden sollen.
+#' @param nD Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer
 #' @param m Hoechster Rang fuer die Intensitaeten
-#' @details
-#' Die Optimierung der Koutsoyiannis-Parameter durch Minimierung der Kruskal-Wallis-Statistik (KW):
+#'
+#' @details Die Optimierung der Koutsoyiannis-Parameter durch Minimierung der Kruskal-Wallis-Statistik (KW):
 #' \deqn{KW =  \frac{12}{m(m+1)} \sum_{D=1}^{k} n_D ( \bar{r}_D - \frac{m+1}{2} )^2}
 #' wo:
 #' \itemize{
@@ -24,7 +26,14 @@
 #'   \item \eqn{\eta} Der 2. Koutsoyiannis-Parameter
 #'   }
 #' @return KW Kruskal-Wallis Teststatistik
-kw_koupar1 = function(Theta, Inten.Daten=Inten.Daten, Dauern=Dauern, Partition=Partition, nD=nD, m=m){
+#' @export
+kw_koupar1 = function(Theta,
+                      Inten.Daten = Inten.Daten,
+                      Dauern = Dauern,
+                      Partition = Partition,
+                      nD = nD,
+                      m = m){
+
   Eta = stats::optimize(kw_koupar2, lower=0, upper=1, Theta=Theta, Dauern=Dauern, Inten.Daten = Inten.Daten, Partition=Partition,nD=nD,m=m, maximum=FALSE)$minimum
   bD = (Dauern+Theta)^Eta
   alle.Inten = do.call(c, lapply(1:length(Dauern), function(i) Inten.Daten[1:Partition,i]*bD[i]))

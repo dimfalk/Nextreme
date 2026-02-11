@@ -37,15 +37,15 @@ Die Optimierung der Koutsoyiannis-Parameter durch Minimierung der Kruskal-Wallis
 \deqn{KW =  \frac{12}{m(m+1)} \sum_{D=1}^{k} n_D ( \bar{r}_D - \frac{m+1}{2} )^2}
 wo:
 \itemize{
-  \item \eqn{m} Hoechster Rang fuer die Intensitaeten: Anzahl aller Beobachtungen fuer die gesamten Dauern
-  \item \eqn{k} Anzahl aller Dauern, die fuer die Berechnung der jaehrlichen Serien verwendet sind
-  \item \eqn{n_D} Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer \eqn{D} .
-  \item \eqn{\bar{r}_D} Mittlerer Rang fuer die Stichprobe jede Dauer \eqn{D}
+\item \eqn{m} Hoechster Rang fuer die Intensitaeten: Anzahl aller Beobachtungen fuer die gesamten Dauern
+\item \eqn{k} Anzahl aller Dauern, die fuer die Berechnung der jaehrlichen Serien verwendet sind
+\item \eqn{n_D} Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer \eqn{D} .
+\item \eqn{\bar{r}_D} Mittlerer Rang fuer die Stichprobe jede Dauer \eqn{D}
 }
 \deqn{KW\left( \theta,\eta \right) \rightarrow Min}
 wo:
 \itemize{
-  \item \eqn{\theta} Der 1. Koutsoyiannis-Parameter
-  \item \eqn{\eta} Der 2. Koutsoyiannis-Parameter
-  }
+\item \eqn{\theta} Der 1. Koutsoyiannis-Parameter
+\item \eqn{\eta} Der 2. Koutsoyiannis-Parameter
+}
 }
