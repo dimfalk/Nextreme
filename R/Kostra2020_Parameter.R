@@ -13,8 +13,8 @@
 #' @export
 #'
 #' @examples
-#' station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
-#' kostraParameter <- Kostra2020_Parameter(station)
+#' Station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
+#' kostraParameter <- Kostra2020_Parameter(Station)
 Kostra2020_Parameter <- function(Standorte,
                                  Temp_Pfad = "./"){
 
@@ -38,13 +38,11 @@ Kostra2020_Parameter <- function(Standorte,
 
   KOSTRA_ParFile <- grep("Parameter", KOSTRA_AllFiles, value = TRUE)
 
-  # Koordinatenreferenzsystem für die eingegebenen Stationsdaten
-  station_CRS <- "+proj=longlat +datum=WGS84"
   # Koordinatenreferenzsystem für die Ausgabedaten
   Kostra_CRS <- "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs"
 
   # Reprojektion der Koordinaten der Stationen in das Ausgabekoordinatensystem.
-  station_shp <- terra::vect(Standorte, geom = c("geoLaenge", "geoBreite"), crs = station_CRS)
+  station_shp <- terra::vect(Standorte, geom = c("geoLaenge", "geoBreite"), crs = "+proj=longlat +datum=WGS84")
   station_shp <- terra::project(station_shp, Kostra_CRS)
 
   if (dir.exists(Temp_Pfad) == TRUE) {
@@ -61,7 +59,7 @@ Kostra2020_Parameter <- function(Standorte,
 
   unlink(temp)
 
-  fnames <- list.files(path = Temp_Pfad, pattern = "^Parameter")
+  fnames <- list.files(path = Temp_Pfad, pattern = "^Parameter_KOSTRA-DWD-2020_.*asc$")
 
   r <- terra::rast(fnames)
   terra::crs(r) <- Kostra_CRS

@@ -33,16 +33,21 @@ Die geschaetzten Regenhoehe (mm/Dauer) von KOSTRA-DWD-2020 werden aus dem DWD-Cl
 R-Funktion, die die von KOSTRA-DWD-2020 geschaetzten Regenhoehen in eine bestimmte oder temporaere Datei (Folder) herunterlaedt, die entsprechenden Regenhoehe- und Unsicherheitsabschaetzungen fuer die gewuenschten Standorte, Regendauern und Wiederkehrintervalle liest und zurueckgibt.
 }
 \examples{
-Station = data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
-Dauern = c(5,10,15)
-Tn = c(50,100)
-Kostra_Hn = Kostra2020_hN_Schaetzung(Station, Dauern, Tn, Unsicherheit=FALSE)
+Station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
+Dauern <- c(5, 10, 15)
+Tn <- c(50, 100)
+
+Kostra_Hn <- Kostra2020_hN_Schaetzung(Station, Dauern, Tn, Unsicherheit = FALSE)
 print(Kostra_Hn)
-Kostra_Werte = Kostra2020_hN_Schaetzung(Station, Dauern, Tn, Unsicherheit=TRUE)
-Kostra_Hn = Kostra_Werte$Kostra_HN
+
+Kostra_Werte <- Kostra2020_hN_Schaetzung(Station, Dauern, Tn, Unsicherheit = TRUE)
+
+Kostra_Hn <- Kostra_Werte$Kostra_HN
 print(Kostra_Hn)
-Kostra_UC = Kostra_Werte$Kostra_UC
+
+Kostra_UC <- Kostra_Werte$Kostra_UC
 print(Kostra_UC)
-Kostra_UK_HN = Kostra_Hn[,-(1:3)] - Kostra_UC[,-(1:3)]*Kostra_Hn[,-(1:3)]/100
-Kostra_OK_HN = Kostra_Hn[,-(1:3)] + Kostra_UC[,-(1:3)]*Kostra_Hn[,-(1:3)]/100
+
+Kostra_UK_HN <- Kostra_Hn[, -(1:3)] - Kostra_UC[, -(1:3)] * Kostra_Hn[, -(1:3)] / 100
+Kostra_OK_HN <- Kostra_Hn[, -(1:3)] + Kostra_UC[, -(1:3)] * Kostra_Hn[, -(1:3)] / 100
 }

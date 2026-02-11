@@ -21,6 +21,6 @@ Die geschaetzten Parameter von KOSTRA-DWD-2020 werden aus dem DWD-Climate Data C
 R-Funktion, die die von KOSTRA-DWD-2020 geschaetzten Parameter in eine bestimmte oder temporaere Datei (Folder) herunterlaedt und die entsprechenden Parameterwerte (Theta - Koutsoyiannis erster Parameter, Eta - Koutsoyiannis zweiter Parameter, Mu - GEV Lokationsparameter, Sigma - GEV Skalenparameter und Gamma - GEV Formparameter) fuer die gewuenschten Positionen liest und zurueckgibt.
 }
 \examples{
-Station = data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
-kostraParameter = Kostra2020_Parameter(Standorte = Station )
+Station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
+kostraParameter <- Kostra2020_Parameter(Station)
 }
