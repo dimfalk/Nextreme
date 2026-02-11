@@ -27,4 +27,4 @@ Eine Einführung in das Paket mit entsprechenden Beispielen findet sich
 unter “inst/doc/Nextreme.pdf”.
 
 Eine Liste aller verfügbaren Funktionen und kurze Beispiele finden Sie
-unter “inst/doc/manual.pdf”.
+unter “inst/doc/Nextreme_1.2.6.pdf”.
