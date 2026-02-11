@@ -59,7 +59,7 @@ devtools::install_github("dimfalk/Nextreme")
 
 Um die notwendige Pakete in R-Studio und zu laden, verwenden Sie den folgenden Befehl:
 
-```{r, echo = FALSE}
+```{r, eval = FALSE}
 library("Nextreme")
 
 library("evd")
