@@ -10,13 +10,13 @@
 	 
 	 b) jährliche Minimun an verfügbaren Messungen - hierzu wurden zwei Bedingungen implementiert:
 	 
-			     - zwischen März und Oktober mindestens 172 Tage mit vollständigen Beobachtungen,
-			     - zwischen April und September mindestens 127 Tage mit vollständigen Beobachtungen.
+	    - zwischen März und Oktober mindestens 172 Tage mit vollständigen Beobachtungen.
+	    - zwischen April und September mindestens 127 Tage mit vollständigen Beobachtungen.
 			     
    c) Unabhängigkeit von Ereignissen - es wurde eine Bedingung für Maximalwerte (mit einer Dauer von mehr als 4 Stunden) hinzugefügt, die am Ende des Kalenderjahres auftreten. 
-   
-			     - Wenn die Bedingung erfüllt ist, wird die Fortsetzung des Ereignisses im nächsten Jahr auf 0 gesetzt. 
-			     - Die Fortsetzung des Ereignisses basiert auf einer Trockenheitsdauer (`DSDmin`) von 4 Stunden. 
+      
+      - Wenn die Bedingung erfüllt ist, wird die Fortsetzung des Ereignisses im nächsten Jahr auf 0 gesetzt. 
+      - Die Fortsetzung des Ereignisses basiert auf einer Trockenheitsdauer (`DSDmin`) von 4 Stunden. 
 
 2. **Sprung_Elimination.R** (vorgeschlagen am 16.12.2024 von Thomas Junghänel und Winfrid Willems):
    
@@ -37,9 +37,9 @@
 			 
 5. **README.md** hinzugefügt (vorgeschlagen am 19.09.2024 von Thomas Junghänel):
 
-    - Paketbeschreibung
-    - Installationsanweisungen
-    - Grundlegende Anwendungsbeispiele
+   - Paketbeschreibung
+   - Installationsanweisungen
+   - Grundlegende Anwendungsbeispiele
 			
 6. **NEWS.md** hinzugefügt (vorgeschlagen am 23.05.2025 von Bora Shehu):
 
