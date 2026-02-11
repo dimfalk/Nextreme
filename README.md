@@ -7,13 +7,13 @@
 
 <!-- badges: end -->
 
-Dieses Paket wird zusammen mit dem DWA-A 531 Arbeitsblatt zur Verfügung
+Dieses Paket wird zusammen mit dem Arbeitsblatt DWA-A 531 zur Verfügung
 gestellt und dient als Grundlage für stationsbasierte Auswertungen in
 Deutschland.
 
 ## Installation
 
-Sie können die Entwicklungsversion von Nextreme von
+Sie können die Entwicklungsversion von Nextreme direkt von
 [GitHub](https://github.com/) installieren:
 
 ``` r
