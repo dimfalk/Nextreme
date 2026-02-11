@@ -39,7 +39,7 @@ Nach der Installation der beiden Programme ein neues R-Skript oeffnen (File \> N
 
 Als erstes sollten Sie sicherstellen, dass alle von Nextreme verwendeten Pakete in Ihrem Rstudio / R installiert sind:
 
-```{r, eval=F}
+```{r, eval = FALSE}
 install.packages("evd")
 install.packages("lmomco")
 install.packages("lubridate")
@@ -50,16 +50,16 @@ Als naechstes ist es erforderlich, dass fuer das Arbeitsblatt DWA-A 531 entwicke
 
 a)  Das Paket kann aus der bereitgestellten Archiv-Datei (Nextreme.zip) mit folgenden Schritten installiert werden: Tools \> Install Packages \> Install from: Package Archive File (.zip; .tar.gz) \> Browse to the package location \> Install.
 
-b)  Das Paket kann auch von [GitHub](https://github.com/) installiert werden:
+b)  Das Paket kann auch direkt von [GitHub](https://github.com/) installiert werden:
 
-```{r, eval=F}
+```{r, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("DWA-A-531/Nextreme", build_vignettes = TRUE)
+devtools::install_github("dimfalk/Nextreme")
 ```
 
 Um die notwendige Pakete in R-Studio und zu laden, verwenden Sie den folgenden Befehl:
 
-```{r}
+```{r, echo = FALSE}
 library("Nextreme")
 
 library("evd")
