@@ -11,15 +11,16 @@
 #' @export
 #'
 #' @examples
-#' ShapeFix = 0.1 #(nach Koutsoyiannis 2008)
-#' Formparameter = ShapeFix * -1 # vorzeichenwechsel aufgrund unterschiedl. Formeln beachten!
-#' pargev2(lmomco::lmoms(1:10),kappa= Formparameter )$para
-pargev2 <- function (lmom,
-                     checklmom = TRUE,
-                     kappa = NULL) { # aus lmomco, erweitert um kappa = NULL, wenn kappa != NULL, dann wird mit fixiertem kappa geschuetzt
+#' ShapeFix <- 0.1 # (nach Koutsoyiannis 2008)
+#' Formparameter <- ShapeFix * -1 # vorzeichenwechsel aufgrund unterschiedl. Formeln beachten!
+#' pargev2(lmomco::lmoms(1:10), kappa = Formparameter)$para
+pargev2 <- function(lmom,
+                    checklmom = TRUE,
+                    kappa = NULL) { # aus lmomco, erweitert um kappa = NULL, wenn kappa != NULL, dann wird mit fixiertem kappa geschuetzt
 
   para <- rep(NA, 3)
   names(para) <- c("xi", "alpha", "kappa")
+
   SMALL <- 1e-05
   EPS <- 1e-06
   MAXIT <- 20
@@ -52,23 +53,19 @@ pargev2 <- function (lmom,
   T3 <- lmom$TAU3
   if (T3 > 0) {
     Z <- 1 - T3
-    G <- (-1 + Z * (C1 + Z * (C2 + Z * C3)))/(1 + Z * (D1 +
-                                                         Z * D2))
+    G <- (-1 + Z * (C1 + Z * (C2 + Z * C3))) / (1 + Z * (D1 + Z * D2))
     if (abs(G) < SMALL) {
       para[3] <- 0
-      para[2] <- lmom$L2/DL2
+      para[2] <- lmom$L2 / DL2
       para[1] <- lmom$L1 - EU * para[2]
       return(list(type = "gev", para = para))
     }
-  }
-  else {
-    G <- (A0 + T3 * (A1 + T3 * (A2 + T3 * (A3 + T3 * A4))))/(1 +
-                                                               T3 * (B1 + T3 * (B2 + T3 * B3)))
-    if (T3 >= -0.8) {
-    }
-    else {
-      if (T3 <= -0.97)
-        G <- 1 - log(1 + T3)/DL2
+  } else {
+    G <- (A0 + T3 * (A1 + T3 * (A2 + T3 * (A3 + T3 * A4)))) / (1 + T3 * (B1 + T3 * (B2 + T3 * B3)))
+    if (T3 >= -0.8) {} else {
+      if (T3 <= -0.97) {
+        G <- 1 - log(1 + T3) / DL2
+      }
       T0 <- (T3 + 3) * 0.5
       CONVERGE <- FALSE
       for (it in seq(1, MAXIT)) {
@@ -76,24 +73,24 @@ pargev2 <- function (lmom,
         X3 <- 3^-G
         XX2 <- 1 - X2
         XX3 <- 1 - X3
-        T <- XX3/XX2
-        DERIV <- (XX2 * X3 * DL3 - XX3 * X2 * DL2)/(XX2 *
-                                                      XX2)
+        T <- XX3 / XX2
+        DERIV <- (XX2 * X3 * DL3 - XX3 * X2 * DL2) / (XX2 * XX2)
         GOLD <- G
-        G <- G - (T - T0)/DERIV
-        if (abs(G - GOLD) <= EPS * G)
+        G <- G - (T - T0) / DERIV
+        if (abs(G - GOLD) <= EPS * G) {
           CONVERGE <- TRUE
+        }
       }
       if (CONVERGE == FALSE) {
         warning("Noconvergence---results might be unreliable")
       }
     }
   }
-  if(!is.null(kappa))G = kappa
+  if (!is.null(kappa)) G <- kappa
   para[3] <- G
   GAM <- exp(lgamma(1 + G))
-  para[2] <- lmom$L2 * G/(GAM * (1 - 2^(-G)))
-  para[1] <- lmom$L1 - para[2] * (1 - GAM)/G
+  para[2] <- lmom$L2 * G / (GAM * (1 - 2^(-G)))
+  para[1] <- lmom$L1 - para[2] * (1 - GAM) / G
 
   return(list(type = "gev", para = para, source = "pargev"))
 }

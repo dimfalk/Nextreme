@@ -47,11 +47,11 @@ Funktion zur Berechnung der Parameter, die die Niederschlagsextremwerte an einer
 # Berechnung der dauerstufenuebergreifenden Verteilungsparameter fuer die Station Goerlitz im Zeitraum 1991-2020
 # ohne Intervall-oder Sprungkorrektur
 # Fall 1: ueber alle Dauern mit der GEV-Verteilung und dem Formparameter von -0,1
-Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
-extremParameter = Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GEV", formTyp = "FIX", Gamma = -0.1)
+Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
+extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GEV", formTyp = "FIX", Gamma = -0.1)
 print(extremParameter)
 
 # Fall 2: ueber alle Dauern mit der Gumbel-Verteilung
-extremParameter = Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GUM")
+extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GUM")
 print(extremParameter)
 }

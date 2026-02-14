@@ -18,7 +18,7 @@ Die Regenhoehe von Regendauern, die kuerzer oder gleich dem 4-maliger Intervalll
 Korrektur der Regenhoehen fuer Dauern bis zum 4-mal die Intervalllaenge. Fuer weitere Informationen siehe Kapitel 5.3 und Tabelle 1 des Merkblatts DWA-A 531.
 }
 \examples{
-#Korrektur der Goerlitzer jaehrlichen Serie bezueglich der Intervalllaenge:
-korrigierteSerie = Intervallkorrektur(Serie=Goerlitz_maxIntSerie)
+# Korrektur der Goerlitzer jaehrlichen Serie bezueglich der Intervalllaenge:
+korrigierteSerie <- Intervallkorrektur(Serie = Goerlitz_maxIntSerie)
 print(korrigierteSerie)
 }

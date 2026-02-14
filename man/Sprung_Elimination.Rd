@@ -25,7 +25,10 @@ Ist der Zielsensor nicht in Sensor enthalten, dann wird der Eingabevektor wieder
 }
 \examples{
 # synthetische Daten, ein Sensorwechsel ab dem 51. Wert
-n1 = 50; n2 = 50; m1 = 10; m2 = 20
+n1 <- 50
+n2 <- 50
+m1 <- 10
+m2 <- 20
 
 Sensor <- c(rep("analog", n1), rep("digital", n2))
 Wert <- c(rnorm(n1, m1), rnorm(n2, m2))

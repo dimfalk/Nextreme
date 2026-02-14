@@ -16,16 +16,21 @@
 #' Station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
 #' kostraParameter <- Kostra2020_Parameter(Station)
 Kostra2020_Parameter <- function(Standorte,
-                                 Temp_Pfad = "./"){
+                                 Temp_Pfad = "./") {
 
-  if(missing(Standorte)) stop("Das Standorte Input ist nicht vorhanden! Bitte geben Sie einen data.frame mit den Standorten der Stationen ein.")
-  else if(class(Standorte) != "data.frame") stop("Das Standorte Input sollte als data.frame sein! Bitte geben Sie einen data.frame mit den Standorten der Stationen ein.")
-  else if(dim(Standorte)[1] < 1) stop("Das Standorte Input soll mindestens eine Zeile enthalten!")
-  else if(dim(Standorte)[2] < 3) stop("Das Standorte Input soll mindestens 3 Spalten enthalten (bzw. fuer Stations_id, geoLaenge,geoBreite)!")
-  else if(any(is.na(Standorte) == TRUE)) stop("Das Standorte Input enthaelt mindestens einen fehlenden Wert! Entfernen Sie die fehlenden Werte")
-  else if(any(c("Stations_id", "geoLaenge", "geoBreite") %in% names(Standorte) == FALSE)) stop("Das Standorte Input sollte alle der folgenden Spaltennamen enthalten: Stations_id, geoLaenge, geoBreite!")
+  if (missing(Standorte)) {
+    stop("Das Standorte Input ist nicht vorhanden! Bitte geben Sie einen data.frame mit den Standorten der Stationen ein.")
+  } else if (class(Standorte) != "data.frame") {
+    stop("Das Standorte Input sollte als data.frame sein! Bitte geben Sie einen data.frame mit den Standorten der Stationen ein.")
+  } else if (dim(Standorte)[1] < 1) {
+    stop("Das Standorte Input soll mindestens eine Zeile enthalten!")
+  } else if (dim(Standorte)[2] < 3) {
+    stop("Das Standorte Input soll mindestens 3 Spalten enthalten (bzw. fuer Stations_id, geoLaenge,geoBreite)!")
+  } else if (any(is.na(Standorte) == TRUE)) {
+    stop("Das Standorte Input enthaelt mindestens einen fehlenden Wert! Entfernen Sie die fehlenden Werte")
+  } else if (any(c("Stations_id", "geoLaenge", "geoBreite") %in% names(Standorte) == FALSE)) stop("Das Standorte Input sollte alle der folgenden Spaltennamen enthalten: Stations_id, geoLaenge, geoBreite!")
 
-  if(dir.exists(Temp_Pfad) == FALSE) warning("Das Temp_Pfad Input existiert nicht! Es wird ein weiterer temporaerer Pfad erstellt.")
+  if (dir.exists(Temp_Pfad) == FALSE) warning("Das Temp_Pfad Input existiert nicht! Es wird ein weiterer temporaerer Pfad erstellt.")
 
   KOSTRA_Link <- "https://opendata.dwd.de/climate_environment/CDC/grids_germany/return_periods/precipitation/KOSTRA/KOSTRA_DWD_2020/asc/"
   KOSTRA_htmllines <- readLines(KOSTRA_Link, warn = FALSE)
@@ -34,7 +39,7 @@ Kostra2020_Parameter <- function(Standorte,
   zip_lines <- grep("_ASC\\.zip", KOSTRA_htmllines, value = TRUE)
 
   # extract the filenames
-  KOSTRA_AllFiles <- gsub('.*href="([^"]+_ASC\\.zip)".*', '\\1', zip_lines)
+  KOSTRA_AllFiles <- gsub('.*href="([^"]+_ASC\\.zip)".*', "\\1", zip_lines)
 
   KOSTRA_ParFile <- grep("Parameter", KOSTRA_AllFiles, value = TRUE)
 
@@ -46,11 +51,8 @@ Kostra2020_Parameter <- function(Standorte,
   station_shp <- terra::project(station_shp, Kostra_CRS)
 
   if (dir.exists(Temp_Pfad) == TRUE) {
-
     temp <- tempfile(tmpdir = Temp_Pfad, fileext = ".zip")
-
   } else {
-
     temp <- tempfile(fileext = ".zip")
   }
 
@@ -64,14 +66,16 @@ Kostra2020_Parameter <- function(Standorte,
   r <- terra::rast(fnames)
   terra::crs(r) <- Kostra_CRS
 
-  Kostra_Parameter <- data.frame("ID" = Standorte$Stations_id,
-                                 "geoBreite" = Standorte$geoBreite,
-                                 "geoLaenge" = Standorte$geoLaenge,
-                                 "Theta" = terra::extract(r[[1]], station_shp)[,-1],
-                                 "Eta" = terra::extract(r[[2]], station_shp)[,-1],
-                                 "Mu" = terra::extract(r[[3]], station_shp)[,-1],
-                                 "Sigma" = terra::extract(r[[4]], station_shp)[,-1],
-                                 "Gamma" = terra::extract(r[[5]], station_shp)[,-1])
+  Kostra_Parameter <- data.frame(
+    "ID" = Standorte$Stations_id,
+    "geoBreite" = Standorte$geoBreite,
+    "geoLaenge" = Standorte$geoLaenge,
+    "Theta" = terra::extract(r[[1]], station_shp)[, -1],
+    "Eta" = terra::extract(r[[2]], station_shp)[, -1],
+    "Mu" = terra::extract(r[[3]], station_shp)[, -1],
+    "Sigma" = terra::extract(r[[4]], station_shp)[, -1],
+    "Gamma" = terra::extract(r[[5]], station_shp)[, -1]
+  )
 
   unlink(fnames)
 

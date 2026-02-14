@@ -13,7 +13,10 @@
 #'
 #' @examples
 #' # synthetische Daten, ein Sensorwechsel ab dem 51. Wert
-#' n1 = 50; n2 = 50; m1 = 10; m2 = 20
+#' n1 <- 50
+#' n2 <- 50
+#' m1 <- 10
+#' m2 <- 20
 #'
 #' Sensor <- c(rep("analog", n1), rep("digital", n2))
 #' Wert <- c(rnorm(n1, m1), rnorm(n2, m2))
@@ -21,23 +24,25 @@
 #' plot(Wert, Sprung_Elimination(Wert, Sensor)$SerieNeu, xlab = "Original", ylab = "Korrektur")
 Sprung_Elimination <- function(Serie,
                                Sensor,
-                               ZielSensor = Sensor[length(Sensor)]){
+                               ZielSensor = Sensor[length(Sensor)]) {
 
   Sensor <- factor(Sensor)
   LEV <- levels(Sensor)
-  if(length(LEV) == 1 | !(ZielSensor %in% LEV)) return(data.frame(SensorZ = Sensor, SerieNeu = Serie))
+  if (length(LEV) == 1 | !(ZielSensor %in% LEV)) {
+    return(data.frame(SensorZ = Sensor, SerieNeu = Serie))
+  }
   mo <- stats::lm(Serie ~ factor(Sensor))
   SensorZ <- rep(ZielSensor, length(Sensor))
   PR0 <- stats::predict(mo)
   PR1 <- stats::predict(mo, new = data.frame(Sensor = SensorZ))
 
   # Bedingung fuer die Aufnahme von Stationen, bei denen der Mittelwert des analogen PR0 groeßer ist als der Mittelwert des digitalen PR1
-  if(mean(mo$model[mo$model[,2] == "analog",]$Serie, na.rm = TRUE) > mean(mo$model[mo$model[,2] == "digital",]$Serie, na.rm = TRUE)){
+  if (mean(mo$model[mo$model[, 2] == "analog", ]$Serie, na.rm = TRUE) > mean(mo$model[mo$model[, 2] == "digital", ]$Serie, na.rm = TRUE)) {
     SerieNeu <- Serie
-    #print("Sprungkorrektur: Analog > Digital, keine Korrektur!")
+    # print("Sprungkorrektur: Analog > Digital, keine Korrektur!")
   } else {
     SerieNeu <- Serie - PR0 + PR1 # sensorspez. mittelwert abziehen, zielsensor-mittelwert aufaddieren
-    #print("Sprungkorrektur durchgefuehrt!")
+    # print("Sprungkorrektur durchgefuehrt!")
   }
 
   data.frame(SensorZ, SerieNeu)

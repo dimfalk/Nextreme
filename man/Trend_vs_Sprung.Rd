@@ -51,18 +51,18 @@ Optional kann zusaetzlich auch ein partieller Devianztest (ifAnova=TRUE) durchge
 \examples{
 library(evd)
 
-n = 100
+n <- 100
 set.seed(1234)
 
 # synthetische GEV-verteilte Daten, stationaer:
-xStat = rgev(n, 10, 2, 0.1)
+xStat <- rgev(n, 10, 2, 0.1)
 # synthetische GEV-verteilte Daten, mit Trend:
-xTrend = rgev(n, 10, 2, 0.1) + 1:n * 0.05
+xTrend <- rgev(n, 10, 2, 0.1) + 1:n * 0.05
 # synthetische GEV-verteilte Daten, mit Sprung:
-xSprung = c(rgev(n/2, 10, 1, 0.1), rgev(n/2, 20, 2, 0.1))
+xSprung <- c(rgev(n / 2, 10, 1, 0.1), rgev(n / 2, 20, 2, 0.1))
 
-Sensor = factor(c(rep("analog", n/2), rep("digital", n/2)))
-X = data.frame(Jahr = 1:n, Sensor = Sensor, xStat, xTrend, xSprung)
+Sensor <- factor(c(rep("analog", n / 2), rep("digital", n / 2)))
+X <- data.frame(Jahr = 1:n, Sensor = Sensor, xStat, xTrend, xSprung)
 
 Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xStat"], Sensor = X[, "Sensor"])
 Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xTrend"], Sensor = X[, "Sensor"])

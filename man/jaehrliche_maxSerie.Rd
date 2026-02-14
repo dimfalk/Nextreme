@@ -39,9 +39,8 @@ Fuer weitere Hinweise siehe Kapitel 5.2 des Merkblattes DWA-A 531.
 }
 \examples{
 \dontrun{
-# Anwendung Beispiel
-head(Regendaten_01684)
-jaehrlicheSerie_VOL = jaehrliche_maxSerie(Regendaten_01684, SerieTyp = "VOL")
-jaehrlicheSerie_INT = jaehrliche_maxSerie(Regendaten_01684, SerieTyp = "INT")
+jaehrlicheSerie_VOL <- jaehrliche_maxSerie(Regendaten_01684, SerieTyp = "VOL")
+
+jaehrlicheSerie_INT <- jaehrliche_maxSerie(Regendaten_01684, SerieTyp = "INT")
 }
 }

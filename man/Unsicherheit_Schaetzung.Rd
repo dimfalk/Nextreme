@@ -58,52 +58,67 @@ Die folgende Formel kann verwendet werden:
 # Beispiel 1
 # Berechnung der Stichprobenunsicherheit durch 50 Realisierungen
 # fuer die jaehrlichen Serien in Goerlitz von 1991 bis 2020:
-Unsicherheit  = Unsicherheit_Schaetzung(Goerlitz_maxIntSerie,Tn=100, nBoots =50, rSeed=15, SerieTyp="VOL" )
+Unsicherheit <- Unsicherheit_Schaetzung(Goerlitz_maxIntSerie, Tn = 100, nBoots = 50, rSeed = 15, SerieTyp = "VOL")
 # aus der Unsicherheit nur die Quantile Information extrahieren
-HN_KI  = Unsicherheit$QUA_INFO
-dauern = c(5, 10, 15,30,60,120,360,720,1440, 2880, 4320, 10080)
+HN_KI <- Unsicherheit$QUA_INFO
+dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
 # das geschaetzte Konfidenzintervall fuer Tn=100 und die gegebenen Dauern darstellen:
 library(scales)
-plot(dauern, HN_KI$Mittelwert["100",], type="l", lwd=2, lty=1, log="xy",
- ylim=range(HN_KI$`95\%`["100",], HN_KI$`5\%`["100",]), col="royalblue",
- ylab="Hn [mm]", xlab="Dauer [min]", main = "Station Goerlitz")
+plot(dauern, HN_KI$Mittelwert["100", ],
+  type = "l", lwd = 2, lty = 1, log = "xy",
+  ylim = range(HN_KI$`95\%`["100", ], HN_KI$`5\%`["100", ]), col = "royalblue",
+  ylab = "Hn [mm]", xlab = "Dauer [min]", main = "Station Goerlitz"
+)
 polygon(c(dauern, rev(dauern)),
- c(HN_KI$`5\%`["100",], rev(HN_KI$`95\%`["100",])),
- col=alpha("royalblue",0.5), border=NA)
+  c(HN_KI$`5\%`["100", ], rev(HN_KI$`95\%`["100", ])),
+  col = alpha("royalblue", 0.5), border = NA
+)
 legend("topleft", c("95\%KI", "Mittelwert"),
- col=c(alpha("royalblue",0.5), "royalblue"), lty=c(1, 1),
- lwd=c(10,2), title = "Legende", bty="n")
+  col = c(alpha("royalblue", 0.5), "royalblue"), lty = c(1, 1),
+  lwd = c(10, 2), title = "Legende", bty = "n"
+)
 # Relative Unsicherheit fuer T =100 und die gegebenen Dauern darstellen:
-barplot(unlist(HN_KI$rel.Unsicherheit["100",]),
- ylab=expression('100 x(K'[o]~-~K[u]~')/K'),xlab="Dauern [min]",
- main="Tn=100Jahre", col = hcl.colors(12, palette = "viridis"))
+barplot(unlist(HN_KI$rel.Unsicherheit["100", ]),
+  ylab = expression("100 x(K"[o] ~ -~ K[u] ~ ")/K"), xlab = "Dauern [min]",
+  main = "Tn=100Jahre", col = hcl.colors(12, palette = "viridis")
+)
 
 #  Beispiel 2
 # Berechnung der Stichprobenunsicherheit durch 100 Realisierungen
 # fuer die jaehrlichen Serien in Goerlitz von 1991 bis 2020.
 # Wiederkehrintervalle von 20, 50 und 100 Jahren betrachten.
-Unsicherheit  = Unsicherheit_Schaetzung(Goerlitz_maxIntSerie,Tn=c(20,50,100),
- nBoots =100, rSeed=15, SerieTyp="VOL")
+Unsicherheit <- Unsicherheit_Schaetzung(Goerlitz_maxIntSerie,
+  Tn = c(20, 50, 100),
+  nBoots = 100, rSeed = 15, SerieTyp = "VOL"
+)
 # aus der Unsicherheit nur die Parameterformation extrahieren
-PAR_KI  = Unsicherheit$PAR_INFO
+PAR_KI <- Unsicherheit$PAR_INFO
 print(PAR_KI)
 # aus der Unsicherheit nur die Quantils Information extrahieren
-hN_KI   = Unsicherheit$QUA_INFO
+hN_KI <- Unsicherheit$QUA_INFO
 # Relative Unsicherheit fuer die gegebene Wiederkehrintervalle und Dauern:
-barplot(as.matrix(hN_KI$rel.Unsicherheit), beside=TRUE,
- ylab=expression('100 x(K'[o]~-~K[u]~')/K'),ylim=c(0,50), xaxt='n',
- xlab="Dauern [min]",main="Station Goerlitz",
- col=c("royalblue1","royalblue3", "royalblue4"))
-legend("top",legend=rownames(hN_KI$rel.Unsicherheit),
- fill = c("royalblue1","royalblue3", "royalblue4"), bty="n", title="Ta")
+barplot(as.matrix(hN_KI$rel.Unsicherheit),
+  beside = TRUE,
+  ylab = expression("100 x(K"[o] ~ -~ K[u] ~ ")/K"), ylim = c(0, 50), xaxt = "n",
+  xlab = "Dauern [min]", main = "Station Goerlitz",
+  col = c("royalblue1", "royalblue3", "royalblue4")
+)
+legend("top",
+  legend = rownames(hN_KI$rel.Unsicherheit),
+  fill = c("royalblue1", "royalblue3", "royalblue4"), bty = "n", title = "Ta"
+)
 # Alternativ Darstellung
-barplot(as.matrix(t(hN_KI$rel.Unsicherheit)), beside=TRUE,
-  ylab=expression('100 x(K'[o]~-~K[u]~')/K'),ylim=c(0,50),
-  xaxt='n',main="Station Goerlitz", col=hcl.colors(12, palette = "viridis"))
+barplot(as.matrix(t(hN_KI$rel.Unsicherheit)),
+  beside = TRUE,
+  ylab = expression("100 x(K"[o] ~ -~ K[u] ~ ")/K"), ylim = c(0, 50),
+  xaxt = "n", main = "Station Goerlitz", col = hcl.colors(12, palette = "viridis")
+)
 axis(1, at = c(7, 20, 34), rownames(hN_KI$rel.Unsicherheit))
-legend_order <- matrix(1:12,ncol=6,byrow = TRUE)
-legend("top",legend=dauern[legend_order],
- fill=hcl.colors(12, palette = "viridis")[legend_order],
- bty="n",title="Daurn [min]", cex=0.6, ncol=6)
+legend_order <- matrix(1:12, ncol = 6, byrow = TRUE)
+legend("top",
+  legend = dauern[legend_order],
+  fill = hcl.colors(12, palette = "viridis")[legend_order],
+  bty = "n", title = "Daurn [min]", cex = 0.6, ncol = 6
+)
 }
 }
