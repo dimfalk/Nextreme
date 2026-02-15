@@ -13,18 +13,18 @@ Deutschland.
 
 ## Installation
 
-Sie können die Entwicklungsversion von Nextreme direkt von
-[GitHub](https://github.com/) installieren:
+Sie können die Entwicklungsversion von Nextreme direkt von GitHub
+installieren:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("dimfalk/Nextreme")
+# install.packages("pak")
+pak::pak("dimfalk/Nextreme")
 ```
 
 ## Beispiele
 
 Eine Einführung in das Paket mit entsprechenden Beispielen findet sich
-unter “inst/doc/Nextreme.pdf”.
+in der Vignette unter “inst/doc/Nextreme.pdf”.
 
-Eine Liste aller verfügbaren Funktionen und kurze Beispiele finden Sie
-unter “inst/doc/Nextreme_1.2.6.pdf”.
+Eine detaillierte Auflistung aller verfügbaren Funktionen finden Sie im
+Manual unter “inst/doc/Nextreme_version.pdf”.
