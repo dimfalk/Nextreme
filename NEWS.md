@@ -1,3 +1,29 @@
+# Nextreme 1.2.10
+
+## 2026-02-15 | @dimfalk
+
+1. Nextreme vignette is now made available in /vignettes/Nextreme.Rmd
+
+2. Nextreme vignette and package manual are now available as pdf files in /inst/doc/
+
+3. minor code and text restyling of Nextreme vignette to enhance readability
+
+4. README.Rmd is now available
+
+5. all functions are now consistently exported using the `@export` roxygen2 tag
+
+6. major code re-styling making use of `{styler}` to enhance readability
+
+7. `{scales}` dependency removed
+
+8. `Kostra2020_Parameter()` and `Kostra2020_hN_Schaetzung()`: downloaded files are now cleaned after execution
+
+9. `Trend_vs_Sprung()`: `sil = T` was changed to `silent = TRUE` as suggested by R CMD Check
+
+10. `Parameter_Schaetzung()`: Non-ASCII characters were removed from documentation as suggested by R CMD Check
+
+
+
 # Nextreme 1.2.1
 
 ## 2025-05-28 | @shehuBora
