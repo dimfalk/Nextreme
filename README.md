@@ -7,13 +7,14 @@
 
 <!-- badges: end -->
 
-Dieses Paket wird zusammen mit dem Arbeitsblatt DWA-A 531 zur Verfügung
-gestellt und dient als Grundlage für stationsbasierte Auswertungen in
+Dieses Package wird zusammen mit dem Arbeitsblatt DWA-A 531 zur
+Verfügung gestellt und dient als Grundlage für stationsbasierte
+Starkregenauswertungen nach Wiederkehrzeit und Dauerstufe in
 Deutschland.
 
 ## Installation
 
-Sie können die Entwicklungsversion von Nextreme direkt von GitHub
+Sie können die Entwicklungsversion von “Nextreme” direkt von GitHub
 installieren:
 
 ``` r
@@ -23,7 +24,7 @@ pak::pak("dimfalk/Nextreme")
 
 ## Beispiele
 
-Eine Einführung in das Paket mit entsprechenden Beispielen findet sich
+Eine Einführung in das Package mit entsprechenden Beispielen findet sich
 in der Vignette unter “inst/doc/Nextreme.pdf”.
 
 Eine detaillierte Auflistung aller verfügbaren Funktionen finden Sie im
