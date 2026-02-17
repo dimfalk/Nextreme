@@ -383,20 +383,13 @@ dringend empfohlen, auch <a href="https://www.rstudio.com">R Studio</a>
 zu installieren. Hierbei handelt es sich um eine Entwicklungsumgebung
 (IDE), die das Arbeiten mit R wesentlich erleichtert. Eine Anleitung zur
 Installation beider Programme steht <a href="https://cran.r-project.org/doc/manuals/r-devel/R-admin.html">hier</a>
-(fuer alle gängigen Betriebssysteme) zur Verfügung.</p>
+(für alle gängigen Betriebssysteme) zur Verfügung.</p>
 <p>Nach der Installation der beiden Programme ist ein neues R-Skript zu
-erstellen (File &gt; New File &gt; R Script). In diesem Dokument wird
-kann nun Zeile für Zeile der hier vorgestellte Code hinzugefügt und
+erstellen (File &gt; New File &gt; R Script). In diesem Dokument kann
+nun Zeile für Zeile der hier vorgestellte Code hinzugefügt und
 ausgeführt werden, um die Ergebnisse der lokalen Extremwertanalyse, die
-für die Station Görlitz durchgeführt wurde, zu analysieren und grafisch
-darzustellen.</p>
-<p>Als erstes sollte sichergestellt werden, dass alle von Nextreme
-verwendeten Packages lokal verfügbar sind:</p>
-<pre class="r"><code>install.packages(&quot;evd&quot;)
-install.packages(&quot;lmomco&quot;)
-install.packages(&quot;lubridate&quot;)
-install.packages(&quot;terra&quot;)</code></pre>
-<p>Als nächstes ist es erforderlich, das für das Arbeitsblatt DWA-A 531
+für die Station Görlitz durchgeführt wurde, zu reproduzieren.</p>
+<p>Zunächst ist es erforderlich, das für das Arbeitsblatt DWA-A 531
 entwickelte R-Package “Nextreme” zu installieren und einzubinden.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Das Paket kann aus der bereitgestellten Archiv-Datei
@@ -408,8 +401,15 @@ Install Packages &gt; Install from: Package Archive File (.zip; .tar.gz)
 </ol>
 <pre class="r"><code># install.packages(&quot;pak&quot;)
 pak::pak(&quot;dimfalk/Nextreme&quot;)</code></pre>
-<p>Um das notwendige Paket zu laden, verwenden Sie den folgenden
-Befehl:</p>
+<p>Die von “Nextreme” verwendeten Dritt-Packages sollten aufgrund von
+definierten Abhängigkeiten mit der Installation des Packages automatisch
+verfügbar sein. Sollte dem nicht so sein, können diese wie folgt manuell
+nachinstalliert werden:</p>
+<pre class="r"><code>install.packages(&quot;evd&quot;)
+install.packages(&quot;lmomco&quot;)
+install.packages(&quot;lubridate&quot;)
+install.packages(&quot;terra&quot;)</code></pre>
+<p>Um “Nextreme” zu laden, verwenden Sie den folgenden Befehl:</p>
 <pre class="r"><code>library(&quot;Nextreme&quot;)</code></pre>
 </div>
 <div id="anwendungsbeispiele" class="section level1">

@@ -33,20 +33,11 @@ Ein Überblick über die Ziele und einzelnen Schritte ist nachfolgend aufgeführ
 
 # Benötigte Software
 
-Zunächst ist es erforderlich, [R](https://www.r-project.org) zu installieren. Es wird zudem dringend empfohlen, auch [R Studio](https://www.rstudio.com) zu installieren. Hierbei handelt es sich um eine Entwicklungsumgebung (IDE), die das Arbeiten mit R wesentlich erleichtert. Eine Anleitung zur Installation beider Programme steht [hier](https://cran.r-project.org/doc/manuals/r-devel/R-admin.html) (fuer alle gängigen Betriebssysteme) zur Verfügung.
+Zunächst ist es erforderlich, [R](https://www.r-project.org) zu installieren. Es wird zudem dringend empfohlen, auch [R Studio](https://www.rstudio.com) zu installieren. Hierbei handelt es sich um eine Entwicklungsumgebung (IDE), die das Arbeiten mit R wesentlich erleichtert. Eine Anleitung zur Installation beider Programme steht [hier](https://cran.r-project.org/doc/manuals/r-devel/R-admin.html) (für alle gängigen Betriebssysteme) zur Verfügung.
 
-Nach der Installation der beiden Programme ist ein neues R-Skript zu erstellen (File \> New File \> R Script). In diesem Dokument wird kann nun Zeile für Zeile der hier vorgestellte Code hinzugefügt und ausgeführt werden, um die Ergebnisse der lokalen Extremwertanalyse, die für die Station Görlitz durchgeführt wurde, zu analysieren und grafisch darzustellen. 
+Nach der Installation der beiden Programme ist ein neues R-Skript zu erstellen (File \> New File \> R Script). In diesem Dokument kann nun Zeile für Zeile der hier vorgestellte Code hinzugefügt und ausgeführt werden, um die Ergebnisse der lokalen Extremwertanalyse, die für die Station Görlitz durchgeführt wurde, zu reproduzieren. 
 
-Als erstes sollte sichergestellt werden, dass alle von Nextreme verwendeten Packages lokal verfügbar sind:
-
-```{r, eval = FALSE}
-install.packages("evd")
-install.packages("lmomco")
-install.packages("lubridate")
-install.packages("terra")
-```
-
-Als nächstes ist es erforderlich, das für das Arbeitsblatt DWA-A 531 entwickelte R-Package "Nextreme" zu installieren und einzubinden.
+Zunächst ist es erforderlich, das für das Arbeitsblatt DWA-A 531 entwickelte R-Package "Nextreme" zu installieren und einzubinden.
 
 a)  Das Paket kann aus der bereitgestellten Archiv-Datei (Nextreme.zip) mit folgenden Schritten installiert werden: Tools \> Install Packages \> Install from: Package Archive File (.zip; .tar.gz) \> Browse to the package location \> Install.
 
@@ -57,7 +48,16 @@ b)  Das Package kann aber auch in seiner aktuellsten (Entwicklungs-)Version dire
 pak::pak("dimfalk/Nextreme")
 ```
 
-Um das notwendige Paket zu laden, verwenden Sie den folgenden Befehl:
+Die von "Nextreme" verwendeten Dritt-Packages sollten aufgrund von definierten Abhängigkeiten mit der Installation des Packages automatisch verfügbar sein. Sollte dem nicht so sein, können diese wie folgt manuell nachinstalliert werden:
+
+```{r, eval = FALSE}
+install.packages("evd")
+install.packages("lmomco")
+install.packages("lubridate")
+install.packages("terra")
+```
+
+Um "Nextreme" zu laden, verwenden Sie den folgenden Befehl:
 
 ```{r}
 library("Nextreme")
