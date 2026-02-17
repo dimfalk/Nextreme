@@ -1,9 +1,9 @@
 ---
-title: "Einfuehrung_Nextreme"
+title: "Nextreme"
 author: "Dr.-Ing. Bora Shehu"
 output: rmarkdown::html_vignette
 vignette:  >
-  %\VignetteIndexEntry{Einfuehrung_Nextreme}
+  %\VignetteIndexEntry{Nextreme}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,27 +17,27 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Einfuehrung
+# Einführung
 
-In diesem Beispiel werden praktische Uebungen in R gezeigt, wie das Nextreme-Paket, welches die Inhalte des Arbeitsblattes DWA-A 531 umsetzt, verwendet werden kann. Es werden im Beispiel die 5-minuetigen Niederschlagsdaten der Wetterstation Goerlitz verwendet, die frei im Climate Data Center (CDC) des Deutschen Wetterdienstes (DWD) verfuegbar sind.
+In diesem Beispiel werden praktische Anwendungsfälle in R gezeigt, wie das Nextreme-Package, welches die Inhalte des Arbeitsblattes DWA-A 531 umsetzt, verwendet werden kann. Beispielhaft werden die 5-Minuten-Niederschlagssummen der Wetterstation Görlitz verwendet, die frei über das Climate Data Center (CDC) des Deutschen Wetterdienstes (DWD) verfügbar sind.
 
-Ein Ueberblick ueber die enthaltenen Ziele und Schritte ist im Folgenden aufgefuehrt:
+Ein Überblick über die Ziele und einzelnen Schritte ist nachfolgend aufgeführt:
 
-1.  **Datenerfassung**: Format der 5-min-Niederschlagsreihen
+1.  **Datenerfassung**: Format der 5-Minuten-Niederschlagszeitreihe
 
-2.  **Datenaufbereitung**: Bildung von jaerlichen Serien fuer bestimmte Dauer
+2.  **Datenaufbereitung**: Bildung von jährlichen Serien für definierte Dauerstufen
 
-3.  **Extremwertstatistiche Auswertung**: Schaetzung von Parametern, Wiederkehrperioden und Designregenfaellen
+3.  **Extremwertstatistiche Auswertung**: Schätzung von Parametern und Wiederkehrzeiten
 
-4.  **Vergleiche zwischen lokaler Extremwertstatistik und KOSTRA-DWD-Werten**
+4.  **Vergleiche zwischen lokaler Extremwertstatistik und KOSTRA-DWD-2020**
 
-# Benoetigte Software
+# Benötigte Software
 
-Zunaechst ist es erforderlich, [R](https://www.r-project.org) auf dem Rechner zu installieren. Es ist empfohlen, auch [R Studio](https://www.rstudio.com) zu installieren. Das ist eine Programmierumgebung (IDE), die das Arbeiten mit R erleichtert. Ein Tutorial zur Installation beider Programme (fuer alle gaengigen Betriebssysteme) stehen [hier](https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu) zu Verfuegung.
+Zunächst ist es erforderlich, [R](https://www.r-project.org) zu installieren. Es wird zudem dringend empfohlen, auch [R Studio](https://www.rstudio.com) zu installieren. Hierbei handelt es sich um eine Entwicklungsumgebung (IDE), die das Arbeiten mit R wesentlich erleichtert. Eine Anleitung zur Installation beider Programme steht [hier](https://cran.r-project.org/doc/manuals/r-devel/R-admin.html) (fuer alle gängigen Betriebssysteme) zur Verfügung.
 
-Nach der Installation der beiden Programme ein neues R-Skript oeffnen (File \> New File \> R Script). In diesem Dokument (praktisch eine Textdatei) wird nun nach und nach Programmiercode hinzugefuegt, um die Ergebnisse der lokalen Extremwertanalyse, die fuer die Station Goerlitz durchgefuehrt wurde, zu analysieren und grafisch darzustellen. Die angegebenen Codebeispiele koennen in das geoeffnete R-Skript eingefuegt und gespeichert werden.
+Nach der Installation der beiden Programme ist ein neues R-Skript zu erstellen (File \> New File \> R Script). In diesem Dokument wird kann nun Zeile für Zeile der hier vorgestellte Code hinzugefügt und ausgeführt werden, um die Ergebnisse der lokalen Extremwertanalyse, die für die Station Görlitz durchgeführt wurde, zu analysieren und grafisch darzustellen. 
 
-Als erstes sollten Sie sicherstellen, dass alle von Nextreme verwendeten Pakete in Ihrem Rstudio / R installiert sind:
+Als erstes sollte sichergestellt werden, dass alle von Nextreme verwendeten Packages lokal verfügbar sind:
 
 ```{r, eval = FALSE}
 install.packages("evd")
@@ -46,18 +46,18 @@ install.packages("lubridate")
 install.packages("terra")
 ```
 
-Als naechstes ist es erforderlich, dass fuer das Arbeitsblatt DWA-A 531 entwickelte R-Paket „Nextreme“ zu installieren und einzubinden.
+Als nächstes ist es erforderlich, das für das Arbeitsblatt DWA-A 531 entwickelte R-Package "Nextreme" zu installieren und einzubinden.
 
 a)  Das Paket kann aus der bereitgestellten Archiv-Datei (Nextreme.zip) mit folgenden Schritten installiert werden: Tools \> Install Packages \> Install from: Package Archive File (.zip; .tar.gz) \> Browse to the package location \> Install.
 
-b)  Das Paket kann auch direkt von [GitHub](https://github.com/) installiert werden:
+b)  Das Package kann aber auch in seiner aktuellsten (Entwicklungs-)Version direkt von GitHub installiert werden:
 
 ```{r, eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("dimfalk/Nextreme")
 ```
 
-Um die notwendige Pakete in R-Studio und zu laden, verwenden Sie den folgenden Befehl:
+Um die notwendigen Pakete zu laden, verwenden Sie den folgenden Befehl:
 
 ```{r, eval = FALSE}
 library("Nextreme")
@@ -70,9 +70,9 @@ library("terra")
 
 # Anwendungsbeispiele
 
-## 1. Datenerfassung: Format der 5-min-Niederschlagsreihen
+## 1. Datenerfassung: Format der 5-Minuten-Niederschlagszeitreihe
 
-Die hier beschriebenen Beispiele basieren auf der 5min-Zeitreihe der Station Goerlitz, die vom Deutschen Wetterdienst zur Verfuegung steht. Diese Zeitreihe ist bereits im Paket *Nextreme* enthalten und kann mit dem folgenden Befehl aufgerufen werden:
+Die hier beschriebenen Beispiele basieren auf der 5-Minuten-Niederschlagszeitreihe der Station Görlitz, welche vom Deutschen Wetterdienst betrieben wird. Diese Zeitreihe ist bereits im Package *Nextreme* enthalten und kann wie folgt geladen bzw. inspiziert werden:
 
 ```{r}
 data("Regendaten_01684")
@@ -83,26 +83,33 @@ head(Regendaten_01684)
 tail(Regendaten_01684)
 ```
 
-Zu beachten ist, dass die 5-Minuten-Zeitreihe ein *data.frame()*-Format mit zwei Spalten sein sollte: *Datum* und *RH*. *Datum* - ist das angegebene Datum als *as.POSIXct()* date-type, *RH* - ist die gemessene Regenhoehe bei jedem 5min-Zeitschritt in mm/5min. Es ist darauf zu achten, dass die Datumsdaten kontinuierlich sein sollten und kein Datum fehlen sollte. Falls ein Datum fehlt, muss es in die Zeitreihe aufgenommen und der entsprechende *RH* als fehlender Wert gesetzt werden. Alle fehlenden Werte fuer *RH* sollten als *NA* angegeben werden. Vor der Verwendung ist sicherzustellen, dass die *RH*-Spalten keine negativen Werte enthalten und die Werte plausibel sind (keine sehr hohen Werte).
+Im Falle der Einbindung von eigenen Niederschlagsdaten ist zu beachten, dass die 5-Minuten-Zeitreihe als *data.frame*-Objekt mit den beiden nachfolgenden Spalten vorliegen muss: 
+
+- *Datum*: Zeitstempel als *POSIXct* oder *POSIXlt*, 
+- *RH*: gemessene Niederschlagshöhe [mm].
+
+Es ist darauf zu achten, dass die Zeitreihe kontinuierlich und lückenfrei ist. Etwaige Fehlwerte sind mit Zeitstempel explizit als *NA* zu kennzeichnen. Vor der Verwendung der Zeitreihe ist zudem sicherzustellen, dass die Niederschlagshöhen keine negativen Werte enthalten und sich in einem plausiblen Wertebereich befinden.
 
 ```{r}
-# Überpruefung der Struktur der 5-Minuten-Zeitreihe
+# Überprüfung der Struktur der 5-Minuten-Niederschlagszeitreihe
 str(Regendaten_01684)
 
-# Überpruefung, ob das Datum kontinuierlich ist
+# Überprüfung, ob die Zeitstempel in der Spalte `Datum` kontinuierlich sind
 unique(diff(Regendaten_01684$Datum))
 
-# Überpruefung des Wertebereichs von RH
+# Überprüfung des Wertebereichs in Spalte `RH`
 range(Regendaten_01684$RH, na.rm = TRUE)
 ```
 
-## 2. Datenaufbereitung: Bildung von jaerlichen Serien fuer bestimmte Dauer (von 5 Minuten bis 7 Tagen)
 
-Fuer die 5-Minuten-Niederschlagsreihen in Goerlitz werden fuer jede Dauer jaehrliche Maxima-Serien abgeleitet. Dies erfolgt hier nach den im Arbeitsblatt DWA-A 531 beschriebenen Schritten, die aus den folgenden beschrieben sind.
 
-### 2.1 Ermittlung von Regenhoehen bestimmter Dauer aus den Grunddaten
+## 2. Datenaufbereitung: Bildung von jährlichen Serien für definierte Dauerstufen
 
-Ziel ist die Berechnung der maximalen jaehrlichen Maxima-Serien, die bei bestimmten Dauern (hier 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080 Minuten) beobachtet wurden. Zu diesem Zweck kann die Funktion *jaehrliche_maxSerie()* verwendet werden. Hier wird eine Dauer (*DSDmin*) von 4 Stunden verwendet, um unabhaengige Regenereignisse zu trennen, und da die Regendaten in 5-Minuten-Zeitschritten gegeben sind, wird das Intervallargument (*Intervall*) auf 5 gesetzt. Um die Parameter der Extremwertverteilung zu ermitteln, sind die maximalen jaehrlichen Regensintensitaeten fuer jede Dauer erforderlich. Aus diesem Grund geben wir *SerieTyp = "INT"* an, um die maximalen Intensitaeten als Ausgabe zu erhalten.
+Für die 5-Minuten-Niederschlagsreihen der Station Görlitz werden für jede Dauerstufe jährliche Maxima bestimmt und somit eine jährliche Serie gebildet. Dies erfolgt hier nach den im Arbeitsblatt DWA-A 531 beschriebenen Schritten, die sich nachfolgend beschrieben finden:
+
+### 2.1 Ermittlung von Regenhöhen bestimmter Dauerstufen aus den Grunddaten
+
+Ziel ist die Berechnung der jährlichen Maxima für jede der betrachteten Dauerstufen. Zu diesem Zweck kann die Funktion *jaehrliche_maxSerie()* verwendet werden. Hier wird ein Zeitraum von 4 Stunden (*DSDmin*) verwendet, um unabhängige Niederschlagsereignisse voneinander zu trennen. Da die Niederschlagsdaten in Form von 5-Minuten-Summen vorliegen, wird das Intervallargument (*Intervall*) auf 5 gesetzt. Um die Parameter der Extremwertverteilung zu ermitteln, sind die maximalen jährlichen Niederschlagsintensitäten pro Dauerstufe erforderlich. Aus diesem Grund geben wir *SerieTyp = "INT"* an, um die maximalen Intensitäten als Ausgabe zu erhalten.
 
 ```{r}
 Goerlitz_maxIntSerie <- jaehrliche_maxSerie(Regendaten_01684, 
@@ -113,28 +120,28 @@ Goerlitz_maxIntSerie <- jaehrliche_maxSerie(Regendaten_01684,
 head(Goerlitz_maxIntSerie)
 ```
 
-Die Variable *Goerlitz_maxIntSerie* ist eine Tabelle mit der maximalen Intensitaet (mm/h), die bei verschiedenen Dauern (in Spalten) und Jahren (in Zeilen) ermittelt wurde.
+Beim erzeugten Objekt *Goerlitz_maxIntSerie* handelt es sich um einen Data Frame mit der maximalen Intensität (mm/h), die in verschiedenen Dauerstufen und Jahren ermittelt wurde.
 
-### 2.2 Beruecksichtigung der Intervalllaenge
+### 2.2 Berücksichtigung der Intervalllänge
 
-Da die Niederschlagsreihe in 5-Minuten-Bloecken verfuegbar ist, werden die jaehrliche Maxima-Serien fuer die Dauern von 5, 10, 15 und 20 Minuten korrigiert (Intervallkorrektur, siehe Tabelle 1 in DWA-A 531). Zu diesem Zweck kann die Funktion *Intervallkorrektur()* verwendet werden. Da die Regendaten in 5-Minuten-Zeitschritten gegeben sind, wird das Intervallargument (*Intervall*) auf 5 gesetzt und damit Dauerstufen bis 20 min bei der Korrektur beruecksichtigt.
+Da die Niederschlagsreihe in 5-Minuten-Intervallen verfügbar ist, wird die jährliche Serie der Dauerstufen von 5, 10, und 15 Minuten korrigiert (vgl. Tab. 1 in DWA-A 531). Zu diesem Zweck kann die Funktion *Intervallkorrektur()* verwendet werden. Entsprechend der zeitlichen Auflösung der Zeitreihe wird das Intervallargument (*Intervall*) auf 5 gesetzt, sodass Dauerstufen bis 20 Minuten bei der Korrektur berücksichtigt werden.
 
 ```{r}
 Goerlitz_maxIntSerie_korr1 <- Intervallkorrektur(Goerlitz_maxIntSerie, Intervall = 5)
 
 head(Goerlitz_maxIntSerie_korr1)
 
-# mittlere relative Abweichung entspricht dem angewandten Korrekturfaktor
+# mittlere relative Abweichung entspricht dem verwendeten Korrekturfaktor
 all.equal(Goerlitz_maxIntSerie, Goerlitz_maxIntSerie_korr1)
 ```
 
-### 2.3 Stationaritaet und Sprungkorrektur bei kleinen Dauerstufen
+### 2.3 Stationarität und Sprungkorrektur bei kurzen Dauerstufen
 
-Da der Sensortyp an der Station Goerlitz sich ueber die Zeit aendert, wird ueberprueft, ob die jaehrlichen Maximalreihen der kurzen Dauern (5, 10, 15 und 30 Minuten) eine sprunghafte Instationaritaet aufweisen, die dem Datum des Sensorwechsels entspricht. Wenn es eine solche sprunghafte Instationaritaet gibt, wird der Sprung eliminiert.
+Da sich der Sensortyp an der Station Görlitz über die Zeit ändert, wird überprueft, ob die jährliche Serie der kurzen Dauerstufen (5, 10, 15 und 30 Minuten) eine sprunghafte Instationarität aufweisen, die dem Datum des Sensorwechsels entspricht. Wenn es eine solche sprunghafte Instationarität gibt, wird der Sprung eliminiert.
 
-**HINWEIS:** Dieser Schritt wird hier nur durchgefuehrt, um ein Beispiel fuer eine solche Anwendung zu zeigen. Laut Arbeitsblatt DWA-A 531 sollte eine Sprungkorrektur getestet werden, wenn ein Sensor vom analogen (Regenschreiber) zum digitalen Typ gewechselt wurde. An der Station Goerlitz sind in diesem Beispiel alle Sensoren digital, so dass eine Sprungpruefung und -korrektur eigentlich nicht erforderlich waere. Hier wird dieser Schritt nur gezeigt, um einen vollstaendigen Arbeitsablauf darzulegen!
+**HINWEIS:** Dieser Schritt wird an der Stelle lediglich durchgeführt, um ein Anwendungsbeispiel zu zeigen. Laut Arbeitsblatt DWA-A 531 sollte eine Sprungkorrektur getestet werden, wenn es einen Sensorwechsel von analog zu digital gab. An der Station Görlitz sind in diesem Beispiel alle Sensoren digital, sodass eine Sprungprüfung und -korrektur eigentlich nicht erforderlich wäre. Hier wird dieser Schritt bloß gezeigt, um einen vollständigen Arbeitsablauf darzulegen.
 
-Zu diesem Zweck kann die Funktion *Sprung_Korrektur()* verwendet werden. Zusaetzlich zur Eingabe der jaehrlichen Serie (*Goerlitz_maxIntSerie*) benoetigt die Funktion das Datum des Sensorwechsels in einer Variablen vom Typ *Date()*.
+Zu diesem Zweck kann die Funktion *Sprung_Korrektur()* verwendet werden. Zusätzlich zur Eingabe der jährlichen Serie (*Goerlitz_maxIntSerie*) benötigt die Funktion das Datum des Sensorwechsels in Form eines *Date()*-Objektes als weiteres Argument.
 
 ```{r}
 Goerlitz_maxIntSerie_korr2 <- Sprung_Korrektur(Goerlitz_maxIntSerie_korr1, wechselDatum = as.Date("1991-01-01"))
@@ -143,19 +150,21 @@ Goerlitz_maxIntSerie_korr2 <- Sprung_Korrektur(Goerlitz_maxIntSerie_korr1, wechs
 all.equal(Goerlitz_maxIntSerie_korr1, Goerlitz_maxIntSerie_korr2)
 ```
 
-Wie bereits erwaehnt, gibt es in diesem Beispiel keine Spruenge in den Daten, und daher ist die von der Funktion *Sprung_Korrektur()* zurueckgegebene Tabelle dieselbe wie die Eingabe.
+Da in dem gewählten Beispiel kein Sprung in der Zeitreihe vorliegt, entspricht die Eingabe auch dem von der Funktion *Sprung_Korrektur()* zurückgegebenem Ergebnis.
 
-## 3. Extremwertstatistische Auswertung: Extremwertanalyse fuer Dauern von 5 Minuten bis 7 Tagen durchfuehren
 
-Im Folgenden werden Beispiele für die Extremwertanalyse an der Station Goerlitz gezeigt.
 
-### 3.1 Schaetzung der Parameter, die die Verteilung der Extremwerte ueber alle Dauern beschreiben
+## 3. Extremwertstatistische Auswertung
 
-Ziel ist die Anpassung der Generalisierten Extremwert Verteilung (GEV) an die erhaltenen jaehrlichen Serien der maximalen Regensintensitaet fuer die Station Goerlitz. Die Koutsoyiannis-Methode, wie auf den DWA-A 531 Arbeitsblatt beschrieben, wird zur Normalisierung der Intensitaeten ueber die gegebenen Dauern verwendet.
+Nachfolgend werden Beispiele für die Extremwertanalyse an der Station Görlitz gezeigt.
 
-Zu diesem Zweck kann die Funktion *Parameter_Schaetzung()* verwendet werden, um die Extremwertparameter aus den erhaltenen jaehrlichen Maxima-Serien zu schaetzen. In der Funktion sollte die Dauer fuer die Extremwertparameter angegeben werden, und die Art der Verteilung, die angepasst werden soll. Wie in DWA-A 531 Blatt wird hier die GEV-Verteilung mit einem festen Formparameter von -0,1 (Fréchet-Typ) verwendet. Deshalb lauten die Argumente *methGEV  ="GEV"* , *formTyp = "FIX"* und *Gamma = -0.1*. Da die jaehrlichen Maximalintensitaetsreihen (mm/h) als Eingabe verwendet werden, wird der *SerieTyp* entsprechend auf "*INT*" gesetzt. Werden die jaehrlichen Maxima-Serien (mm/Dauer) als Eingabe verwendet, so ist *SerieTyp = "VOL"*.
+### 3.1 Schätzung der Parameter zur Beschreibung der Extremwertverteilung über alle Dauerstufen
 
-**HINWEIS:** Die Funktion *Parameter_Schaetzung()* kann entweder eine GEV oder eine Gumbel-Verteilung (Formparameter = 0.0) anpassen. Fuer die Gumbel-Verteilung (*methGEV = "GUM"*) bleiben *formTyp* und *Gamma* unberuecksichtigt; fuer die GEV kann der Formparameter hingegen auch frei aus L-Momenten geschaetzt werden (mit *formTyp = "CON"*, in diesem Fall wird *Gamma* nicht beruecksichtigt). In allen Faellen werden die maximalen Intensitaeten ueber die gegebene Dauer normalisiert. Die Funktion *Parameter_Schaetzung()* kann nicht GEV-Verteilungen individuell an jede Dauer anpassen!
+Ziel ist die Anpassung der generalisierten Extremwertverteilung (GEV) an die jährlichen Serien der Niederschlagsintensität. Die Koutsoyiannis-Methode, wie im Arbeitsblatt DWA-A 531 beschrieben, wird zur Normalisierung der Intensitäten über alle Dauerstufen verwendet.
+
+Zu diesem Zweck kann die Funktion *Parameter_Schaetzung()* verwendet werden, um die Parameter der Extremwertverteilung auf Basis der jährlichen Serien zu schätzen. Als Funktionsargumente sind die Dauerstufen und die Art der Verteilung, die angepasst werden soll, anzugeben. Wie im Arbeitsblatt DWA-A 531 wird hier die GEV-Verteilung mit einem festen Formparameter von -0.1 (Fréchet-Typ) verwendet. Deshalb lauten die Argumente *methGEV  ="GEV"* , *formTyp = "FIX"* und *Gamma = -0.1*. Da die jährliche Serie der Intensitäten (mm/h) als Eingabe verwendet wird, ist *SerieTyp = "INT"* zu definieren. Im Falle von jährlichen Serien der Niederschlagshöhe (mm) als Eingabe, ist *SerieTyp = "VOL"* zu verwenden.
+
+**HINWEIS:** Die Funktion *Parameter_Schaetzung()* kann entweder eine GEV oder eine Gumbel-Verteilung (Formparameter von 0.0) anpassen. Für die Gumbel-Verteilung (*methGEV = "GUM"*) bleiben die Argumente *formTyp* und *Gamma* unberücksichtigt. Für die GEV kann der Formparameter hingegen auch frei aus L-Momenten geschätzt werden (mit *formTyp = "CON"*). In diesem Fall wird *Gamma* nicht beruecksichtigt. In allen Fällen werden die maximalen Intensitäten über die angegebene Dauerstufen normalisiert.
 
 ```{r}
 N_pars <- Parameter_Schaetzung(Goerlitz_maxIntSerie_korr2, 
@@ -167,76 +176,78 @@ N_pars <- Parameter_Schaetzung(Goerlitz_maxIntSerie_korr2,
 N_pars
 ```
 
-Die zurueckgegebene Variable *N_pars* ist ein einzeiliger Dataframe, der die berechneten Parameter der Extremwertverteilung des Niederschlags an der Station Goerlitz enthaelt: 
+Beim Ergebnis der Funktion *Parameter_Schaetzung()* handelt es sich um einen einzeiligen Dataframe, der die berechneten Parameter der Extremwertverteilung des Niederschlags enthält: 
 
 *Mu* - der GEV-Lokationsparameter, 
 *Sigma* - der GEV-Skalenparameter, 
 *Gamma* - der GEV-Formparameter, 
-*Theta* und *Eta* jeweils der erste und zweite Koutsoyiannis-Parameter, 
-waehrend *KW* die Kruskal-Wallis-Teststatistik ist, die bei der Optimierung der Parameter erreicht wurde.
+*Theta* - 1. Koutsoyiannis-Parameter,
+*Eta* - 2. Koutsoyiannis-Parameter,
 
-### 3.2 Schaetzung der Regenhoehe fuer angegeben Dauer und Wiederkehrintervalle
+während *KW* die Kruskal-Wallis-Teststatistik ist, die bei der Optimierung der Parameter erreicht wurde.
 
-Ziel ist die Berechnung der Jaehrlichkeit (Wiederkehrintervalle) der beobachteten Regenhoehe und bestimmten Dauerstufen auf der Grundlage der berechneten Extremwertparameter.
+### 3.2 Schätzung der Niederschlagshöhe für angegebene Dauerstufen und Wiederkehrzeiten
 
-Zu diesem Zweck kann die Funktion *Quantil_Schaetzung()* verwendet werden. Neben den Parametern (*N_pars*), den Dauern (*Dauern*) und Wiederkehrintervalle (*Tn*), sollte auch die GEV-Methode (*methGEV*) angegeben werden. In diesem Fall wird der *SerieTyp* auf *VOL* gesetzt, um Regenhoehe (mm/Dauer) als Output zu erhalten. Ausserdem kann die Art der Ausgabe mit dem Argument *SerieTyp* gesteuert werden (*VOL* fuer Regenhoehe in mm/Dauer oder *INT* fuer Regenintensitaet in mm/h).
+Ziel ist die Berechnung der Wiederkehrzeiten von beobachteten Niederschlagshöhen in bestimmten Dauerstufen auf der Grundlage der zuvor berechneten Parameter der Extremwertverteilung.
+
+Zu diesem Zweck kann die Funktion *Quantil_Schaetzung()* verwendet werden. Neben den Parametern (*N_pars*), den Dauerstufen (*Dauern*) und den Wiederkehrintervallen (*Tn*), sollte auch die GEV-Methode (*methGEV*) angegeben werden. In diesem Fall wird  *SerieTyp = "VOL"* definiert, um Niederschlagshöhen (mm) als Output zu erhalten. Ist man an Niederschlagsintensitäten (mm/h) interessiert, lautet *SerieTyp = "INT"*.
 
 ```{r}
 H_quas <- Quantil_Schaetzung(N_pars, 
                              Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                             Tn = c(2, 5, 10, 20, 50, 100), 
+                             Tn = c(1, 2, 3, 5, 10, 20, 30, 50, 100), 
                              methGEV = "GEV",
                              SerieTyp = "VOL")
 H_quas
 ```
 
-Die zurueckgegebene Variable *H_quas* ist eine Tabelle (Dataframe-Format) mit den Wiederkehrintervallen in verschiedenen Zeilen und der Dauer in verschiedenen Spalten. Da in diesem Fall der *SerieTyp = "VOL"* ist, sind die Einheiten in mm/Dauer.
+Beim Ergebnis der Funktion *Quantil_Schaetzung()* handelt es sich um einen Dataframe, wobei die Zeilen die jeweiligen Wiederkehrintervalle beinhalten und die Spalten die definierten Dauerstufen.
 
-### 3.3 Schaetzung der Unsicherheitsbereiche
+### 3.3 Schätzung der Unsicherheitsbereiche
 
-Ziel ist die Durchfuehrung eines Bootstraps, um die Unsicherheit der Stichprobe bei der Anpassung der Extremwertparameter an die Serie der Station Goerlitz zu beruecksichtigen.
+Ziel ist die Durchführung eines Bootstraps, um die Unsicherheit der Stichprobe bei der Anpassung der Parameter zu berücksichtigen.
 
-Zu diesem Zweck kann die Funktion *Unsicherheit_Schaetzung()* verwendet werden. Neben den bisher angegebenen typischen Informationen zur Berechnung von Parametern und Extremwerten koennen drei weitere Argumente festgelegt werden: 
+Zu diesem Zweck kann die Funktion *Unsicherheit_Schaetzung()* verwendet werden. Neben den bereits im Rahmen von *Parameter_Schaetzung()* und *Quantil_Schaetzung()* bekannten Argumenten zur Bestimmung von Parametern und Extremwerten sind drei weitere notwendig: 
 
-*nBoots* - zur Angabe der gewuenschten Anzahl von Realisierungen, 
-*rSeed* - eine Zufallszahl, um sicherzustellen, dass die Ausgabe wiederholbar ist,
+*nBoots* - zur Angabe der gewünschten Anzahl von Realisierungen, 
+*rSeed* - eine beliebige Zufallszahl, um sicherzustellen, dass das Ergebnis reproduzierbar bleibt,
 *Konfidenzgrenzen* - zur Angabe der Quantils der oberen (*Ko*) und unteren Konfidenzintervallgrenzen (*Ku*). 
 
-Die geschaetzten jaehrlichen Maximalintensitaetsserien koennen *nBoots*-mal mit Ersatz neu gesampelt werden, um die Stichprobenunsicherheit zu beruecksichtigen. Anschliessend koennen fuer jede *nBoots*-Realisierung die Parameter geschaetzt werden. Auf diese Weise erhaelt man *nBoots* Realisierungen der Parameter, die als Grundlage fuer die Berechnung von Konfidenzintervallen nicht nur der Parameter, sondern auch der Quantile verwendet werden koennen.
+Die geschätzten jährlichen Serien der maximalen Intensitäten werden *nBoots*-mal mit Zurücklegen neu gesampelt, um die Stichprobenunsicherheit zu berücksichtigen. Anschließend werden für jede Iteration die Parameter neu geschätzt. Auf diese Weise erhält man *nBoots* Realisierungen der Parameter, die als Grundlage für die Berechnung von Konfidenzintervallen der Parameter und Quantile verwendet werden.
 
 ```{r}
 KI <- Unsicherheit_Schaetzung(Goerlitz_maxIntSerie_korr2,
                               Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                              Tn = c(2, 5, 10, 20, 50, 100),
                               methGEV = "GEV",
                               formTyp = "FIX",
                               Gamma = -0.1,
+                              SerieTyp = "VOL",
+                              Tn = c(1, 2, 3, 5, 10, 20, 30, 50, 100),
                               nBoots = 100,
                               rSeed = 42,
-                              SerieTyp = "VOL",
-                              Konfidenzgrenzen  = c(0.025, 0.975))
+                              Konfidenzgrenzen = c(0.025, 0.975))
 
-# Zugriff auf die Parameter-Informationen
+# Parameter-Informationen
 PAR_KI <- KI$PAR_INFO
 PAR_KI
 
-# Zugriff auf die Quantils-Informationen 
+# Quantils-Informationen 
 HN_KI <- KI$QUA_INFO
 HN_KI
 ```
 
-Die Funktion *Unsicherheit_Schaetzung()* gibt eine Liste mit den Parameterinformationen *PAR_INFO* und Quantils-Informationen *QUA_INFO* zurueck. Die beiden Eintraege in der Liste enthalten Informationen ueber die angegebenen Quantile fuer die Berechnung der Grenzen des Konfidenzintervalls, des Mittelwerts der Realisierungen und der relativen Unsicherheit *(Ko-Ku)/K*.
+Beim Ergebnis der Funktion *Unsicherheit_Schaetzung()* handelt es sich um eine Liste mit enthaltenen Parameterinformationen *PAR_INFO* und Quantils-Informationen *QUA_INFO*. Die beiden Einträge in der Liste enthalten Informationen über die angegebenen Quantile für die Berechnung der Grenzen des Konfidenzintervalls, den Mittelwert der Realisierungen sowie die relative Unsicherheit *(Ko-Ku)/K*.
 
-### 3.4 Darstellung der lokal geschaetzten Regenhoehen unter Beruecksichtigung des Unsicherheitsbereichs
+### 3.4 Darstellung der lokal geschätzten Niederschlagshöhen unter Berücksichtigung des Unsicherheitsbereichs
 
-Der folgende Code zeigt ein Beispiel fuer die Visualisierung verschiedener Regenhoehen an der Station Goerlitz, die mit verschiedenen Dauern (auf der x-Achse) und Wiederkehrintervallen (in verschiedenen Farben) einhergehen. Fuer beide Achsen wird eine logarithmische Darstellung verwendet.
+Der folgende Beispiel beinhaltet die Visualisierung der Niederschlagshöhen nach Dauerstufe und Wiederkehrzeit an der Station Görlitz. 
 
 ```{r, echo = TRUE, eval = TRUE}
 Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
 Tn_Farbe <- hcl.colors(6, palette = "viridis") |> rev()
 
 plot(Dauern, H_quas["2", ], type = "l", lwd = 2, lty = 1, log = "xy", col = Tn_Farbe[1],
-     ylab = "hN [mm]", ylim = range(H_quas), xlab = "Dauer [min]", 
+     ylab = "hN [mm]", ylim = range(H_quas), xlab = "Dauerstufe [min]", 
      main = "Station 01684")
 
 lines(Dauern, H_quas["5",],  lwd = 2, col = Tn_Farbe[2])
@@ -249,40 +260,44 @@ legend("bottomright", legend = c(2, 5, 10, 20, 50, 100), lty = 1, lwd = 3, col =
        cex = 0.8, title = "Tn", horiz = TRUE, bty = "n")
 ```
 
-Im folgenden Beispiel wird ein Code-Teil zur Darstellung des 100-jaehrlichen Regenvolumens fuer die Station Goerlitz gegeben, wie es fuer die Dauer von 5 Minuten bis 7 Tagen aus der bisher durchgefuehrten Extremwertanalyse der 5-Minuten-Niederschlagsdaten des DWD berechnet wurde (in rot dargestellt). Die Konfidenzgrenze, die den 2.5 %- und 97.5 %-Quantils der 100 Realisierungen fuer die 100-jaehrliche Regenmenge entsprechen, sind ebenfalls in blau dargestellt.
+Im folgenden Beispiel wird die 100-jährliche Niederschlagshöhe auf Basis der lokalen Extremwertstatistik über alle Dauerstufen hinweg visualisiert (rot). Der Mittelwert sowie das Konfidenzintervall der *nBoots* Realisierungen werden ebenfalls im Vergleich dargestellt (blau).
 
 ```{r, echo = TRUE, eval = TRUE}
 Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
 
 plot(Dauern, H_quas["100", ], type = "l", lwd = 2, lty = 2, log = "xy",
      ylim = range(HN_KI$`97.5%`["100", ], HN_KI$`2.5%`["100", ]), col = "red",
-     ylab = "hN [mm]", xlab = "Dauer [min]", main = "Station 01684")
+     ylab = "hN [mm]", xlab = "Dauerstufe [min]", main = "Station 01684, Tn = 100")
 
 polygon(c(Dauern, rev(Dauern)), c(HN_KI$`2.5%`["100", ],
         rev(HN_KI$`97.5%`["100", ])), col = "royalblue", border = NA)
 
 lines(Dauern, HN_KI$Mittelwert["100",], type = "l", col = "royalblue4", lwd = 2)
+
 lines(Dauern, H_quas["100",], type = "l", col = "red", lwd = 2, lty = 2)
 
-legend("topleft", c("95% KI", "Mittelwert", "lokale Schaetzung"),
-       col = c("royalblue", "royalblue4", "red"), lty = c(1, 1, 2), lwd = c(10, 2, 2),
+legend("topleft", 
+       c("95 % Konfidenzintervall", "Mittelwert", "hN"),
+       col = c("royalblue", "royalblue4", "red"), 
+       lty = c(1, 1, 2), 
+       lwd = c(10, 2, 2),
        bty = "n")
 ```
 
-Der folgende Code zeigt drei verschiedene Beispiele fuer die Visualisierung der berechneten relativen Unsicherheiten (Ko-Ku/K) aus dem *nBoots* Bootstrapping als eine Moeglichkeit, die Unsicherheit zu messen. Die Einheiten sind in Prozent ausgegeben.
+Das nachfolgende Beispiel zeigt drei Möglichkeiten der Visualisierung von berechneten relativen Unsicherheiten *(Ko-Ku)/K* aus dem *nBoots* Bootstrapping als eine Möglichkeit, die Unsicherheit [%] zu quantifizieren. 
 
 ```{r, echo = TRUE, eval = TRUE}
 KI_relUC <- round(HN_KI$rel.Unsicherheit, 2)
 
 # Option 1 
-barplot(as.matrix(KI_relUC), col = Tn_Farbe, ylab = "KI [%]",  xlab = "Dauer [min]",
+barplot(as.matrix(KI_relUC), col = Tn_Farbe, ylab = "relative Unsicherheit [%]",  xlab = "Dauerstufe [min]",
         main = "Station 01684")
 legend("top", legend = c(2, 5, 10, 20, 50, 100), fill = Tn_Farbe, cex = 0.8, 
        title = "Tn", horiz = TRUE, bty = "n")
 
 # Option 2 
-barplot(as.matrix(KI_relUC),col = Tn_Farbe, beside = TRUE, ylim = c(0,50), ylab = "KI [%]",
-        xlab = "Dauer [min]", main = "Station 01684")
+barplot(as.matrix(KI_relUC),col = Tn_Farbe, beside = TRUE, ylim = c(0,50), ylab = "relative Unsicherheit [%]",
+        xlab = "Dauerstufe [min]", main = "Station 01684")
 legend("top", legend = c(2, 5, 10, 20, 50, 100), fill = Tn_Farbe, cex = 0.8, 
        title = "Tn", horiz = TRUE, bty = "n")
 
@@ -290,37 +305,38 @@ legend("top", legend = c(2, 5, 10, 20, 50, 100), fill = Tn_Farbe, cex = 0.8,
 Dauer_Farbe = hcl.colors(dim(KI_relUC)[2], "blues", rev = TRUE)
 
 barplot(as.matrix(t(KI_relUC)), col = Dauer_Farbe, beside = TRUE, ylim = c(0, 60), 
-        ylab = "KI [%]", xlab = "Tn", main = "Station 01684")
-legend("top", legend = Dauern, fill = Dauer_Farbe, cex = 0.8, title = "Dauer (min)",
+        ylab = "relative Unsicherheit [%]", xlab = "Tn", main = "Station 01684")
+legend("top", legend = Dauern, fill = Dauer_Farbe, cex = 0.8, title = "Dauerstufe [min]",
        bty = "n", ncol = 6)
 ```
 
-### 3.5 Schaetzung der Wiederkehrintervalle fuer angegeben Dauer und Regenhoehe
+### 3.5 Schätzung der Wiederkehrzeiten nach Dauerstufe und Niederschlagshöhe
 
-Moeglicherweise ist es auch erwuenscht, dass nach der Beobachtung eines Regenereignisses die Jaehrlichkeit bei verschiedenen Dauern erfasst werden kann.
+Mit der geschaffenen Grundlage ist es nun möglich, die Jährlichkeit eines beobachteten Niederschlagsereignisses pro gewählter Dauerstufe zu bestimmen.
 
-Zu diesem Zweck kann die Funktion *Tn_Schaetzung()* verwendet werden. Die Parameter *N_pars*, die die Extremwertstatistik beschreiben, sollten als einzeiliger Dataframe angegeben (Benennung der Spalten ist wichtig!), die beobachtete Regenmenge *hN* in mm sollten bei verschiedenen Dauern *Dauern* als Vektor angegeben. Es ist wichtig, dass die Laenge der Vektoren *hN* und *Dauern* uebereinstimmen! Ausserdem sollte es in der Funktion angegeben ob die Gumbel- oder GEV-Parameter in N_pars verwendet sind.
+Zu diesem Zweck kann die Funktion *Tn_Schaetzung()* verwendet werden. Als Argumente gehen die geschätzten Parameter der Extremwertverteilung *N_pars*, die beobachtete Niederschlagsmenge *hN* in mm sowie die betrachtete Dauerstufe *Dauern* ein. Zudem ist anzugeben, ob Parameter für die Gumbel- oder GEV-Verteilung verwendet wurden.
 
-Waehrend eines Starkregenereignisses am 18. Juli 2010 wurden an der Station Goerlitz 58,6 mm Niederschlagsvolumen in 6 Stunden gemessen. Basierend auf den geschaetzten Parametern betraegt die berechnete Wiederkehrperiode:
+Während eines Starkregenereignisses am 18.07.2010 wurden an der Station Görlitz eine Niederschlagshöhe von 58.6 mm innerhalb von 6 Stunden gemessen. Basierend auf den geschätzten Parametern beträgt die bestimmte Wiederkehrzeit somit:
 
 ```{r, echo = TRUE, eval = TRUE}
-Tn_Ereignis <- Tn_Schaetzung(N_pars, Dauern = 360, hN = 58.6, methGEV = "GEV")
+Tn_Ereignis <- Tn_Schaetzung(N_pars, hN = 58.6, Dauern = 360, methGEV = "GEV")
 Tn_Ereignis
 ```
 
-Die Funktion *Tn_Schaetzung()* liefert eine Tabelle mit der beobachteten Regenhöhe hN (mm), der Dauerstufe D (min) und der geschätzten Wiederkehrzeit Tn (a).
+Die Funktion *Tn_Schaetzung()* gibt einen Dataframe mit der beobachteten Regenhöhe hN (mm), der Dauerstufe D (min) und der geschätzten Wiederkehrzeit Tn (a) zurück.
 
-## 4. Vergleiche zwischen lokaler Extremwertstatistik und KOSTRA-DWD-Werten
 
-Fuer einen bestimmten Ort ist es auch moeglich, die oertlich geschaetzte Statistik mit den Bemessungsniederschlaegen nach KOSTRA-DWD-2020 zu vergleichen. In den folgenden Beispielen wird gezeigt, wie die Informationen ueber Extremniederschlaege aus den KOSTRA-DWD-2020-Datensatz extrahiert und mit den bisher berechneten Informationen verglichen werden koennen.
 
-**Hinweis:** Das Beispiel wird hier nur fuer eine Station - Goerlitz - gezeigt. Es ist jedoch moeglich, mehrere Stationen auf einmal zu berechnen. Weitere Informationen finden Sie in der Funktion *help(Kostra2020_hN_Schaetzung)* oder *help(Kostra2020_Parameter)*.
+## 4. Vergleiche zwischen lokaler Extremwertstatistik und KOSTRA-DWD-2020
 
-Die Funktion *Kostra2020_hN_Schaetzung()* liest fuer bestimmte Standortkoordinaten, Dauer und Wiederkehrintervalle die entsprechende extreme Regenhoehe (*hN*) und den Unsicherheitsbereich (wenn Argument *Unsicherheit = TRUE*). Das folgende Beispiel liest die KOSTRA-DWD-2020 Regenhoehe fuer Goerlitz und die angegebenen Dauern und Wiederkehrintervalle.
+Für einen bestimmten Ort ist es auch möglich, die örtlich geschätzte Statistik mit den Bemessungsniederschlägshöhen nach KOSTRA-DWD-2020 zu vergleichen. In den folgenden Beispielen wird gezeigt, wie die erforderlichen Informationen aus dem Datensatz KOSTRA-DWD-2020 extrahiert und mit den lokal berechneten Informationen verglichen werden können.
+
+Die Funktion *Kostra2020_hN_Schaetzung()* benötigt hierfür definierte Standortkoordinaten, Dauerstufen und Wiederkehrzeiten, um die entsprechende Bemessungsniederschlagshöhe (*hN*) sowie den Unsicherheitsbereich (wenn Argument *Unsicherheit = TRUE*) aus dem Datensatz zu extrahieren. 
 
 ```{r}
-Tn <- c(2, 5, 10, 20, 50, 100)
 Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
+
+Tn <- c(1, 2, 3, 5, 10, 20, 30, 50, 100)
 
 station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
 
@@ -330,31 +346,29 @@ H_quas_Kostra <- Kostra2020_hN_Schaetzung(Standorte = station,
                                           Temp_Pfad = "./",
                                           Unsicherheit = TRUE)
 
-# Zugang zu den Regenhoehen und formatiert sie so, dass sie der zuvor geschätzten
-# Tabelle H_quas entsprechen. 
+# Umformatierung der Regenhöhen, damit diese strukturell dem Objekt H_quas entsprechen
 Hn_Kostra <- H_quas_Kostra$Kostra_HN
-Hn_Kostra[1, 1:5]
-Hn_Kostra <- matrix(unlist(Hn_Kostra[1, -(1:3)]), nrow = 6, ncol = 12, byrow = FALSE) 
+Hn_Kostra <- matrix(unlist(Hn_Kostra[1, -(1:3)]), nrow = length(Tn), byrow = FALSE) 
 Hn_Kostra <- as.data.frame(Hn_Kostra)
 rownames(Hn_Kostra) <- Tn
-names(Hn_Kostra) <- Dauern
+colnames(Hn_Kostra) <- Dauern
+Hn_Kostra
 
-# Zugang zu den Unsicherheiten und formatiert sie so, dass sie der zuvor  
-# geschätzten Tabelle H_quas entsprechen. 
+# Umformatierung der Unsicherheiten, damit diese strukturell dem Objekt H_quas entsprechen
 UC_Kostra <- H_quas_Kostra$Kostra_UC
-UC_Kostra[1, 1:5]
-UC_Kostra <- matrix(unlist(UC_Kostra[1, -(1:3)]), nrow = 6, ncol = 12, byrow = FALSE) 
+UC_Kostra <- matrix(unlist(UC_Kostra[1, -(1:3)]), nrow = length(Tn), byrow = FALSE) 
 UC_Kostra <- as.data.frame(UC_Kostra)
 rownames(UC_Kostra) <- Tn
-names(UC_Kostra) <- Dauern
+colnames(UC_Kostra) <- Dauern
+UC_Kostra
 
 # Da die KOSTRA-DWD-2020 Unsicherheiten in Prozent angegeben sind, kann die
 # obere und untere Konfidenzgrenze wie folgt berechnet werden:
-Hn_Kostra_Ku <- Hn_Kostra - round(UC_Kostra * Hn_Kostra / 100, 2)
-Hn_Kostra_Ko <- Hn_Kostra + round(UC_Kostra * Hn_Kostra / 100, 2)
+Hn_Kostra_Ku <- Hn_Kostra - round(Hn_Kostra * UC_Kostra / 100, 2)
+Hn_Kostra_Ko <- Hn_Kostra + round(Hn_Kostra * UC_Kostra / 100, 2)
 ```
 
-Das folgende Beispiel zeigt einen Codeausschnitt zur Darstellung der 100-jaehrlichen Regenhoehen fuer die Station Goerlitz, wie es fuer die Dauern von 5 Minuten bis 7 Tagen aus der bisher durchgefuehrten Extremwertanalyse der 5-Minuten-Niederschlagsdaten des DWD (rot dargestellt) und KOSTRA-DWD-2020 (schwarz dargestellt) berechnet wurde. Die 95% Konfidenzgrenzen von KOSTRA-DWD-2020 und der lokalen Analyse sind ebenfalls grau bzw. blau dargestellt.
+Das nachfolgende Beispiel zeigt eine Erweiterung der unter 3.4 erzeugten Abbildung zum Vergleich der 100-jährlichen Niederschlagshöhe auf Basis der lokalen Extremwertstatistik (rot) mit dem Mittelwert sowie dem Konfidenzintervall der *nBoots* Realisierungen (blau) im Vergleich zur Bemessungsniederschlagshöhe (schwarz) und dem Unsicherheitsbereich (grau) gem. KOSTRA-DWD-2020.
 
 ```{r, echo = TRUE, eval = TRUE}
 Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
@@ -382,21 +396,21 @@ lines(Dauern, HN_KI$Mittelwert["100", ], type = "l", col = "royalblue4", lwd = 2
 lines(Dauern, H_quas["100", ], type = "l", col = "red", lwd = 2, lty = 2)
 lines(Dauern, Hn_Kostra["100", ], type = "l", col = "black", lwd = 2, lty = 2)
 
-legend("bottomright", c("lokale - 95% KI", 
-                        "lokale Mittelwert", 
-                        "lokale Hn",
-                        "Unsicherheitbereich KOSTRA-DWD-2020",
-                        "KOSTRA-DWD-2020"), 
+legend("bottomright", 
+       c("DWA-A 531: 95 % Konfidenzintervall",
+         "DWA-A 531: Mittelwert",
+         "DWA-A 531: hN",
+         "KOSTRA-DWD-2020: Unsicherheitbereich",
+         "KOSTRA-DWD-2020: hN"), 
        col = c("royalblue", "royalblue4", "red", "lightgrey", "black"), 
        lty = c(1, 1, 2, 1, 2), 
        lwd = c(10, 2, 2, 10, 2), 
-       title = "Legende", 
        bty = "n")
 ```
 
-Das folgende Beispiel zeigt einen Codeausschnitt zur Darstellung der Regenhoehen mit D=60min fuer die Station Goerlitz, wie es fuer die Wiederkehrintervalle von 2 bis 100 Jahren aus der bisher durchgefuehrten Extremwertanalyse der 5-Minuten-Niederschlagsdaten des DWD (rot dargestellt) und KOSTRA-DWD-2020 (schwarz dargestellt) berechnet wurde. Die 95% Konfidenzgrenzen von KOSTRA-DWD-2020 und der lokalen Analyse sind ebenfalls grau bzw. blau dargestellt.
+Das folgende Beispiel zeigt eine Möglichkeit zur Darstellung der Niederschlagshöhen in der Dauerstufe von 60 Minuten für die Wiederkehrzeiten von 2 bis 100 Jahren, entsprechend der durchgeführten extremwertstatistischen Analyse der Stationsdaten (rot) und KOSTRA-DWD-2020 (schwarz). Die 95 %-Konfidenzintervalle aus der lokalen Analyse (blau) und aus KOSTRA-DWD-2020 (grau) werden ebenfalls dargestellt.
 
-```{r, echo=TRUE, eval=TRUE}
+```{r, echo = TRUE, eval = TRUE}
 plot(Tn, H_quas[, "60"], 
      type = "l", 
      lwd = 2, 
@@ -406,7 +420,7 @@ plot(Tn, H_quas[, "60"],
      col = "red",
      ylab = "hN [mm]", 
      xlab = "Tn", 
-     main = "Station 01684, D=60min")
+     main = "Station 01684, D = 60min")
 
 polygon(c(Tn, rev(Tn)), c(Hn_Kostra_Ku[,"60"], rev(Hn_Kostra_Ko[,"60"])),
         col = "lightgrey", 
@@ -419,31 +433,31 @@ lines(Tn, HN_KI$Mittelwert[, "60"], type = "l", col = "royalblue4", lwd = 2)
 lines(Tn, H_quas[, "60"], type = "l", col = "red", lwd = 2, lty = 2)
 lines(Tn, Hn_Kostra[, "60"], type = "l", col = "black", lwd = 2, lty = 2)
 
-legend("topleft", c("lokale - 95% KI", 
-                    "lokale Mittelwert", 
-                    "lokale Hn",
-                    "Unsicherheitbereich KOSTRA-DWD-2020",  
-                    "KOSTRA-DWD-2020"), 
+legend("topleft", 
+       c("DWA-A 531: 95 % Konfidenzintervall", 
+         "DWA-A 531: Mittelwert", 
+         "DWA-A 531: hN",
+         "KOSTRA-DWD-2020: Unsicherheitbereich",  
+         "KOSTRA-DWD-2020: hN"), 
        col = c("royalblue", "royalblue4", "red", "lightgrey", "black"), 
        lty = c(1, 1, 2, 1, 2), 
-       lwd = c(10,2,2, 10, 2), 
-       title = "Legende", 
+       lwd = c(10, 2, 2, 10, 2), 
        bty = "n")
 ```
 
-Die Funktion *Kostra2020_Parameter()* liest fuer bestimmte Standortkoordinaten die entsprechenden Parameter von KOSTRA-DWD-2020. Das folgende Beispiel liest die KOSTRA-DWD-2020 Parameter fuer Goerlitz. Dann wird die *Tn_Schaetzung()* Funktion verwendet um die Jaehrlichkeit der beobachtete Regenmenge *hN* bei verschiedenen Dauern Dauern zu schaetzen.
+Die Funktion *Kostra2020_Parameter()* liest für definierte Standortkoordinaten die entsprechenden Parameter der Extremwertverteilung aus KOSTRA-DWD-2020. Im folgenden Beispiel werden die Parameter für den Standort der Station Görlitz bezogen. Im Anschluss wird die bereits bekannte Funktion *Tn_Schaetzung()* verwendet, um die Wiederkehrzeit der beobachteten Niederschlagsmenge *hN* in der angegebenen Dauerstufe zu schätzen.
 
 ```{r, echo = TRUE, eval = TRUE}
 kostraParameter <- Kostra2020_Parameter(Standorte = station)
 
-Hn_Tn_Kostra <- Tn_Schaetzung(kostraParameter, Dauern = 360, hN = 58.6, methGEV = "GEV")
+Hn_Tn_Kostra <- Tn_Schaetzung(kostraParameter, hN = 58.6, Dauern = 360, methGEV = "GEV")
 Hn_Tn_Kostra
 ```
 
 # Fazit
 
-Dieses Vignette-Dokument zeigt, wie mit dem Paket `Nextreme` eine lokale Extremwertanalyse gemaess DWA-A 531 durchgefuehrt werden kann. Am Beispiel der Station Goerlitz wurde der gesamte Analyseprozess – von der Datenstruktur bis zum Vergleich mit KOSTRA-DWD-2020 – detailliert dargestellt. Das Paket bietet damit ein leistungsfaehiges Werkzeug fuer die praxisnahe Starkregenanalyse.
+Diese Vignette zeigt, wie mit dem Paket `Nextreme` eine lokale Extremwertanalyse gemäß Arbeitsblatt DWA-A 531 durchgeführt werden kann. Am Beispiel der Station Görlitz wurde der gesamte Analyseprozess detailliert dargestellt. Das Paket bietet damit ein leistungsfähiges Werkzeug für die praxisnahe Starkregenanalyse.
 
-## Weiterfuehrende Informationen
+## Weiterführende Informationen
 
-Weitere Informationen und Hilfestellungen zu den Funktionen finden Sie in der Paketdokumentation oder mit dem Befehl `?function` in R. Bei Fragen oder Feedback wenden Sie sich gerne an den Paketautor.
+Weitere Informationen und Hilfestellungen zu den Funktionen finden Sie in der Paketdokumentation oder mit dem Befehl `?function` in R. Bei Fragen oder Feedback wenden Sie sich gerne an den Maintainer des Packetes.
