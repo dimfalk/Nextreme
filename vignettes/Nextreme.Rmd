@@ -460,4 +460,4 @@ Diese Vignette zeigt, wie mit dem Paket `Nextreme` eine lokale Extremwertanalyse
 
 ## Weiterführende Informationen
 
-Weitere Informationen und Hilfestellungen zu den Funktionen finden Sie in der Paketdokumentation oder mit dem Befehl `?function` in R. Bei Fragen oder Feedback wenden Sie sich gerne an den Maintainer des Packetes.
+Weitere Informationen und Hilfestellungen zu den Funktionen finden Sie in der Paketdokumentation oder mit dem Befehl `?function` in R. Bei Fragen oder Feedback wenden Sie sich gerne an den Maintainer des Paketes.
