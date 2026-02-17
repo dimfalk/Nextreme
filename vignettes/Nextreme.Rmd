@@ -53,19 +53,14 @@ a)  Das Paket kann aus der bereitgestellten Archiv-Datei (Nextreme.zip) mit folg
 b)  Das Package kann aber auch in seiner aktuellsten (Entwicklungs-)Version direkt von GitHub installiert werden:
 
 ```{r, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("dimfalk/Nextreme")
+# install.packages("pak")
+pak::pak("dimfalk/Nextreme")
 ```
 
-Um die notwendigen Pakete zu laden, verwenden Sie den folgenden Befehl:
+Um das notwendige Paket zu laden, verwenden Sie den folgenden Befehl:
 
-```{r, eval = FALSE}
+```{r}
 library("Nextreme")
-
-library("evd")
-library("lmomco")
-library("lubridate")
-library("terra")
 ```
 
 # Anwendungsbeispiele

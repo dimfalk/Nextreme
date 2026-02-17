@@ -406,16 +406,11 @@ Install Packages &gt; Install from: Package Archive File (.zip; .tar.gz)
 <li><p>Das Package kann aber auch in seiner aktuellsten
 (Entwicklungs-)Version direkt von GitHub installiert werden:</p></li>
 </ol>
-<pre class="r"><code># install.packages(&quot;devtools&quot;)
-devtools::install_github(&quot;dimfalk/Nextreme&quot;)</code></pre>
-<p>Um die notwendigen Pakete zu laden, verwenden Sie den folgenden
+<pre class="r"><code># install.packages(&quot;pak&quot;)
+pak::pak(&quot;dimfalk/Nextreme&quot;)</code></pre>
+<p>Um das notwendige Paket zu laden, verwenden Sie den folgenden
 Befehl:</p>
-<pre class="r"><code>library(&quot;Nextreme&quot;)
-
-library(&quot;evd&quot;)
-library(&quot;lmomco&quot;)
-library(&quot;lubridate&quot;)
-library(&quot;terra&quot;)</code></pre>
+<pre class="r"><code>library(&quot;Nextreme&quot;)</code></pre>
 </div>
 <div id="anwendungsbeispiele" class="section level1">
 <h1>Anwendungsbeispiele</h1>
