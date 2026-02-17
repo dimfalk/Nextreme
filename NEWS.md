@@ -1,4 +1,4 @@
-# Nextreme 1.2.10
+# Nextreme 1.2.12
 
 ## 2026-02-15 | @dimfalk
 
@@ -21,6 +21,8 @@
 9. `Trend_vs_Sprung()`: `sil = T` was changed to `silent = TRUE` as suggested by R CMD Check
 
 10. `Parameter_Schaetzung()`: Non-ASCII characters were removed from documentation as suggested by R CMD Check
+
+11. `Unsicherheit_Schaetzung()` and `Tn_Schaetzung()`: modified argument order to support recognition
 
 
 

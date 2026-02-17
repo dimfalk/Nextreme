@@ -4,8 +4,8 @@
 #' Berechnung der Wiederkehrintervalle (in Jahren) fuer bestimmte Regenhoehe (in mm) und -dauern (z.B. 5, 10, 60 und 120min), wenn die Parameter, die die Extremwerte beschreiben, bereits bekannt sind.
 #'
 #' @param extrem.Parameter GEV- und Koutsoyiannis-Parameter fuer die angegebene Serie als einzeiliger data.frame. Die Namen der Variablen im data.frame sind Mu / Sigma / Gamma - jeweils fuer die GEV- Lokations- / Skalen- / Formparameter, und Theta / Eta fuer die 1./ 2.Koustoyiannis-Parameter.
-#' @param Dauern die Dauer, fuer die die Regenhoehe berechnet werden soll. Die Dauer sollte in Minuten angegeben werden!
 #' @param hN Regenhoehen (in mm) fuer jede der Dauern, fuer die die Wiederkehrintervalle geschaetzt werden sollte.
+#' @param Dauern die Dauer, fuer die die Regenhoehe berechnet werden soll. Die Dauer sollte in Minuten angegeben werden!
 #' @param methGEV den Typ der Generalized Extreme Value-Verteilung, die an die jaehrlichen Serien angepasst wurde. Die Optionen sind: "GEV" fuer Typ 2 oder Typ 3 (Form-Parameter ist nicht gleich Null) und "GUM" fuer Typ 1 (Form-Parameter ist gleich Null – Gumbel Verteilung).
 #'
 #' @details
@@ -37,8 +37,8 @@
 #'   methGEV = "GEV"
 #' )
 Tn_Schaetzung <- function(extrem.Parameter,
-                          Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
                           hN = c(5, 10, 12, 20, 30, 40, 60, 70, 100, 100, 120, 150),
+                          Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
                           methGEV = "GEV") {
 
   # Bedingung 1: Das Input extrem.Parameter sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.
