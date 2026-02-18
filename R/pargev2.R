@@ -8,7 +8,7 @@
 #' R-Funktion zur Berechnung der GEV-Parameter, wenn der Formparameter auf einen bestimmten Wert eingestellt ist.
 #'
 #' @return  Die GEV-Parameter
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' ShapeFix <- 0.1 # (nach Koutsoyiannis 2008)

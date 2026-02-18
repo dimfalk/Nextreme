@@ -1,4 +1,4 @@
-#' Spruengkorrektur bei kleinen Dauerstufen (D <= 30min)
+#' Sprungkorrektur bei kleinen Dauerstufen (D <= 30min)
 #'
 #' @description
 #' Die jaehrlichen Serien von kurzen Dauern werden vom Sprung-Instationaritaet korrigiert, der durch den Wechsel der Messsensoren von analoger zu digitaler Technologie verursacht werden koennte.
@@ -17,13 +17,12 @@
 #' @export
 #'
 #' @examples
-#' wechselDatum <- as.Date("1992-12-31", format = c("%Y-%m-%d"))
-#' korrigierte_maxSerie <- Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum)
-#' print(korrigierte_maxSerie)
+#' korrigierte_maxSerie <- Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum = as.Date("1992-12-31"))
+#' korrigierte_maxSerie
 Sprung_Korrektur <- function(Serie,
                              wechselDatum) {
 
-    # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.
+  # Bedingung 1: Das Input Serie sollte existieren, vom Typ data.frame sein und Jahre als Zeilennamen und Dauer als Spaltennamen haben. Es sollte mehr als 5 Jahre und mehr als 1 Dauer enthalten.
   if (missing(Serie)) {
     stop("Das Serie Input ist nicht vorhanden! Bitte geben Sie einen data.frame() der jaehrlichen Intensitaetsserie an (in mm/h), wobei die Zeile die Jahre und Spalte die Dauer entsprechen.")
   } else if (class(Serie) != "data.frame") {
@@ -48,27 +47,32 @@ Sprung_Korrektur <- function(Serie,
   Wechseljahr <- lubridate::year(wechselDatum)
   alleJahren <- as.numeric(rownames(Serie))
   Dauern <- as.numeric(colnames(Serie))
-  suppressWarnings({
-    if (Wechseljahr > alleJahren[1] & Wechseljahr < alleJahren[length(alleJahren)]) {
-      if (Wechseljahr %in% alleJahren == FALSE) Wechseljahr <- alleJahren[which(alleJahren >= Wechseljahr)[1]]
-      sensor_vec <- rep("analog", length(Serie[, 1]))
-      sensor_vec[which(rownames(Serie) == Wechseljahr):length(sensor_vec)] <- "digital"
 
-      # Pruefung auf "Sprung" in Spalten mit Dauern <= 30 min und wenn mindestens ein "Sprung" entdeckt wird, korrigiere alle AMS für Dauern <= 30 min
-      Sprung_detected <- any(apply(Serie[, which(Dauern <= 30)], 2, function(x) {
-        SIG.TEST <- Trend_vs_Sprung(Zeit = 1:length(x[which(is.na(x) == FALSE)]), Serienwerte = x[which(is.na(x) == FALSE)], Sensor = sensor_vec[which(is.na(x) == FALSE)])
-        return(SIG.TEST$AicRes == "Sprung")
-      }))
+  if (Wechseljahr > alleJahren[1] & Wechseljahr < alleJahren[length(alleJahren)]) {
 
-      if (Sprung_detected == TRUE) {
-        Serie[, which(Dauern <= 30)] <- apply(Serie[, which(Dauern <= 30)], 2, function(x) {
-          x_out <- x
-          x_out[which(is.na(x) == FALSE)] <- Sprung_Elimination(x[which(is.na(x) == FALSE)], sensor_vec[which(is.na(x) == FALSE)], ZielSensor = sensor_vec[length(sensor_vec)])$SerieNeu
-          return(round(x_out, 3))
-        })
-      }
+    if (Wechseljahr %in% alleJahren == FALSE) {
+
+      Wechseljahr <- alleJahren[which(alleJahren >= Wechseljahr)[1]]
     }
-  })
+
+    sensor_vec <- rep("analog", length(Serie[, 1]))
+    sensor_vec[which(rownames(Serie) == Wechseljahr):length(sensor_vec)] <- "digital"
+
+    # Pruefung auf "Sprung" in Spalten mit Dauern <= 30 min und wenn mindestens ein "Sprung" entdeckt wird, korrigiere alle AMS für Dauern <= 30 min
+    Sprung_detected <- any(apply(Serie[, which(Dauern <= 30)], 2, function(x) {
+      SIG.TEST <- Trend_vs_Sprung(Zeit = 1:length(x[which(is.na(x) == FALSE)]), Serienwerte = x[which(is.na(x) == FALSE)], Sensor = sensor_vec[which(is.na(x) == FALSE)])
+      return(SIG.TEST$AicRes == "Sprung")
+    }))
+
+    if (Sprung_detected == TRUE) {
+
+      Serie[, which(Dauern <= 30)] <- apply(Serie[, which(Dauern <= 30)], 2, function(x) {
+        x_out <- x
+        x_out[which(is.na(x) == FALSE)] <- Sprung_Elimination(x[which(is.na(x) == FALSE)], sensor_vec[which(is.na(x) == FALSE)], ZielSensor = sensor_vec[length(sensor_vec)])$SerieNeu
+        return(round(x_out, 3))
+      })
+    }
+  }
 
   return(Serie)
 }

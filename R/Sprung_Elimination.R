@@ -1,4 +1,4 @@
-#' Sprungelimination
+#' Sprung-Elimination
 #'
 #' @param Serie numeric vector, Vektor der Serienwerte einer gegebenen Dauerstufe
 #' @param Sensor character vector, Vektor der Sensorangaben mit identischer Laenge wie Serie
@@ -9,28 +9,31 @@
 #' Ist der Zielsensor nicht in Sensor enthalten, dann wird der Eingabevektor wieder zurueckgeliefert.
 #'
 #' @return data.frame mit den Spalten SenorZ und SerieNeu, Anzahl der Reihen entspricht Laenge von Serie. SensorZ ist der ZielSensor, SerieNeu die auf den ZielSensor angehobenen Serienwerte.
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' # synthetische Daten, ein Sensorwechsel ab dem 51. Wert
+#' # synthetische Daten, Sensorwechsel ab dem 51. Wert
 #' n1 <- 50
 #' n2 <- 50
 #' m1 <- 10
 #' m2 <- 20
 #'
-#' Sensor <- c(rep("analog", n1), rep("digital", n2))
-#' Wert <- c(rnorm(n1, m1), rnorm(n2, m2))
+#' x <- data.frame("Sensor" = c(rep("analog", n1), rep("digital", n2)),
+#'                 "Wert" = c(rnorm(n1, m1), rnorm(n2, m2)))
 #'
-#' plot(Wert, Sprung_Elimination(Wert, Sensor)$SerieNeu, xlab = "Original", ylab = "Korrektur")
+#' Sprung_Elimination(x$Wert, x$Sensor)$SerieNeu
 Sprung_Elimination <- function(Serie,
                                Sensor,
                                ZielSensor = Sensor[length(Sensor)]) {
 
   Sensor <- factor(Sensor)
   LEV <- levels(Sensor)
+
   if (length(LEV) == 1 | !(ZielSensor %in% LEV)) {
+
     return(data.frame(SensorZ = Sensor, SerieNeu = Serie))
   }
+
   mo <- stats::lm(Serie ~ factor(Sensor))
   SensorZ <- rep(ZielSensor, length(Sensor))
   PR0 <- stats::predict(mo)

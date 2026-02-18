@@ -27,3 +27,4 @@ ShapeFix <- 0.1 # (nach Koutsoyiannis 2008)
 Formparameter <- ShapeFix * -1 # vorzeichenwechsel aufgrund unterschiedl. Formeln beachten!
 pargev2(lmomco::lmoms(1:10), kappa = Formparameter)$para
 }
+\keyword{internal}

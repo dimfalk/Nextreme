@@ -26,7 +26,7 @@
 #'   \item \eqn{\eta} Der 2. Koutsoyiannis-Parameter
 #'   }
 #' @return KW Kruskal-Wallis Teststatistik
-#' @export
+#' @keywords internal
 kw_koupar1 <- function(Theta,
                        Inten.Daten = Inten.Daten,
                        Dauern = Dauern,

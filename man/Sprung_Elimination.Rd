@@ -2,7 +2,7 @@
 % Please edit documentation in R/Sprung_Elimination.R
 \name{Sprung_Elimination}
 \alias{Sprung_Elimination}
-\title{Sprungelimination}
+\title{Sprung-Elimination}
 \usage{
 Sprung_Elimination(Serie, Sensor, ZielSensor = Sensor[length(Sensor)])
 }
@@ -17,21 +17,22 @@ Sprung_Elimination(Serie, Sensor, ZielSensor = Sensor[length(Sensor)])
 data.frame mit den Spalten SenorZ und SerieNeu, Anzahl der Reihen entspricht Laenge von Serie. SensorZ ist der ZielSensor, SerieNeu die auf den ZielSensor angehobenen Serienwerte.
 }
 \description{
-Sprungelimination
+Sprung-Elimination
 }
 \details{
 Das Verfahren ermittelt die sensorspezifischen Mittelwerte der Serienwerte, subtrahiert diese von den Serienwerten und addiert dann den Serienwertmittelwert des ZielSensors.
 Ist der Zielsensor nicht in Sensor enthalten, dann wird der Eingabevektor wieder zurueckgeliefert.
 }
 \examples{
-# synthetische Daten, ein Sensorwechsel ab dem 51. Wert
+# synthetische Daten, Sensorwechsel ab dem 51. Wert
 n1 <- 50
 n2 <- 50
 m1 <- 10
 m2 <- 20
 
-Sensor <- c(rep("analog", n1), rep("digital", n2))
-Wert <- c(rnorm(n1, m1), rnorm(n2, m2))
+x <- data.frame("Sensor" = c(rep("analog", n1), rep("digital", n2)),
+                "Wert" = c(rnorm(n1, m1), rnorm(n2, m2)))
 
-plot(Wert, Sprung_Elimination(Wert, Sensor)$SerieNeu, xlab = "Original", ylab = "Korrektur")
+Sprung_Elimination(x$Wert, x$Sensor)$SerieNeu
 }
+\keyword{internal}

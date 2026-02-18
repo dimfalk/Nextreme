@@ -1,4 +1,4 @@
-# Nextreme 1.2.13
+# Nextreme 1.3.0
 
 ## 2026-02-18 | @dimfalk
 
@@ -23,6 +23,8 @@
 10. `Parameter_Schaetzung()`: Non-ASCII characters were removed from documentation as suggested by R CMD Check
 
 11. `Unsicherheit_Schaetzung()` and `Tn_Schaetzung()`: modified argument order to support recognition
+
+12. implementation of basic unit tests making use of `{testthat}`
 
 
 

@@ -49,3 +49,4 @@ wo:
 \item \eqn{\eta} Der 2. Koutsoyiannis-Parameter
 }
 }
+\keyword{internal}

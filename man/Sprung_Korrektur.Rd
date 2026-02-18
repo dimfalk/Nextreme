@@ -2,7 +2,7 @@
 % Please edit documentation in R/Sprung_Korrektur.R
 \name{Sprung_Korrektur}
 \alias{Sprung_Korrektur}
-\title{Spruengkorrektur bei kleinen Dauerstufen (D <= 30min)}
+\title{Sprungkorrektur bei kleinen Dauerstufen (D <= 30min)}
 \usage{
 Sprung_Korrektur(Serie, wechselDatum)
 }
@@ -27,7 +27,6 @@ Digitalsensoren: H3, Tropfengeber, Wippengeber, Pluvio oder PLUVIO
 Wenn es einen Sprung gibt - Typ Instationaritaet auf der jaehrlichen Serie von kurzen Dauern, wird der Sprung eliminiert und eine korrigierte jaehrliche Serientabelle zurueckgegeben.
 }
 \examples{
-wechselDatum <- as.Date("1992-12-31", format = c("\%Y-\%m-\%d"))
-korrigierte_maxSerie <- Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum)
-print(korrigierte_maxSerie)
+korrigierte_maxSerie <- Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum = as.Date("1992-12-31"))
+korrigierte_maxSerie
 }

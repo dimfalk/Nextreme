@@ -49,22 +49,23 @@ Informationskriterien AIC und BIC ermittelt und anhand des minimalen IC-Wertes w
 Optional kann zusaetzlich auch ein partieller Devianztest (ifAnova=TRUE) durchgefuehrt werden, wobei dieser das Nullmodell moeglicherweise zu haeufig zugunsten des kompexeren verwirft.
 }
 \examples{
-library(evd)
-
 n <- 100
 set.seed(1234)
 
-# synthetische GEV-verteilte Daten, stationaer:
-xStat <- rgev(n, 10, 2, 0.1)
-# synthetische GEV-verteilte Daten, mit Trend:
-xTrend <- rgev(n, 10, 2, 0.1) + 1:n * 0.05
-# synthetische GEV-verteilte Daten, mit Sprung:
-xSprung <- c(rgev(n / 2, 10, 1, 0.1), rgev(n / 2, 20, 2, 0.1))
+# synthetische GEV-verteilte Daten, stationaer
+xStat <- evd::rgev(n, 10, 2, 0.1)
+
+# synthetische GEV-verteilte Daten, mit Trend
+xTrend <- evd::rgev(n, 10, 2, 0.1) + 1:n * 0.05
+
+# synthetische GEV-verteilte Daten, mit Sprung
+xSprung <- c(evd::rgev(n / 2, 10, 1, 0.1), evd::rgev(n / 2, 20, 2, 0.1))
 
 Sensor <- factor(c(rep("analog", n / 2), rep("digital", n / 2)))
-X <- data.frame(Jahr = 1:n, Sensor = Sensor, xStat, xTrend, xSprung)
+x <- data.frame(Jahr = 1:n, Sensor = Sensor, xStat, xTrend, xSprung)
 
-Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xStat"], Sensor = X[, "Sensor"])
-Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xTrend"], Sensor = X[, "Sensor"])
-Trend_vs_Sprung(Zeit = X[, "Jahr"], Serienwerte = X[, "xSprung"], Sensor = X[, "Sensor"])
+Trend_vs_Sprung(Zeit = x[, "Jahr"], Serienwerte = x[, "xStat"], Sensor = x[, "Sensor"])
+Trend_vs_Sprung(Zeit = x[, "Jahr"], Serienwerte = x[, "xTrend"], Sensor = x[, "Sensor"])
+Trend_vs_Sprung(Zeit = x[, "Jahr"], Serienwerte = x[, "xSprung"], Sensor = x[, "Sensor"])
 }
+\keyword{internal}
