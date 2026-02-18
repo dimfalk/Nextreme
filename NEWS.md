@@ -1,6 +1,6 @@
-# Nextreme 1.2.12
+# Nextreme 1.2.13
 
-## 2026-02-15 | @dimfalk
+## 2026-02-18 | @dimfalk
 
 1. Nextreme vignette is now made available in /vignettes/Nextreme.Rmd
 

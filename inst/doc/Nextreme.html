@@ -511,11 +511,11 @@ verschiedenen Dauerstufen und Jahren ermittelt wurde.</p>
 <p>Da die Niederschlagsreihe in 5-Minuten-Intervallen verfügbar ist,
 wird die jährliche Serie der Dauerstufen von 5, 10, und 15 Minuten
 korrigiert (vgl. Tab. 1 in DWA-A 531). Zu diesem Zweck kann die Funktion
-<em>Intervallkorrektur()</em> verwendet werden. Entsprechend der
+<em>Intervall_Korrektur()</em> verwendet werden. Entsprechend der
 zeitlichen Auflösung der Zeitreihe wird das Intervallargument
 (<em>Intervall</em>) auf 5 gesetzt, sodass Dauerstufen bis 20 Minuten
 bei der Korrektur berücksichtigt werden.</p>
-<pre class="r"><code>Goerlitz_maxIntSerie_korr1 &lt;- Intervallkorrektur(Goerlitz_maxIntSerie, Intervall = 5)
+<pre class="r"><code>Goerlitz_maxIntSerie_korr1 &lt;- Intervall_Korrektur(Goerlitz_maxIntSerie, Intervall = 5)
 
 head(Goerlitz_maxIntSerie_korr1)
 #&gt;             5       10       15     30     60    120   360   720  1440  2880  4320 10080

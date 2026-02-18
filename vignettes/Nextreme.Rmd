@@ -119,10 +119,10 @@ Beim erzeugten Objekt *Goerlitz_maxIntSerie* handelt es sich um einen Data Frame
 
 ### 2.2 Berücksichtigung der Intervalllänge
 
-Da die Niederschlagsreihe in 5-Minuten-Intervallen verfügbar ist, wird die jährliche Serie der Dauerstufen von 5, 10, und 15 Minuten korrigiert (vgl. Tab. 1 in DWA-A 531). Zu diesem Zweck kann die Funktion *Intervallkorrektur()* verwendet werden. Entsprechend der zeitlichen Auflösung der Zeitreihe wird das Intervallargument (*Intervall*) auf 5 gesetzt, sodass Dauerstufen bis 20 Minuten bei der Korrektur berücksichtigt werden.
+Da die Niederschlagsreihe in 5-Minuten-Intervallen verfügbar ist, wird die jährliche Serie der Dauerstufen von 5, 10, und 15 Minuten korrigiert (vgl. Tab. 1 in DWA-A 531). Zu diesem Zweck kann die Funktion *Intervall_Korrektur()* verwendet werden. Entsprechend der zeitlichen Auflösung der Zeitreihe wird das Intervallargument (*Intervall*) auf 5 gesetzt, sodass Dauerstufen bis 20 Minuten bei der Korrektur berücksichtigt werden.
 
 ```{r}
-Goerlitz_maxIntSerie_korr1 <- Intervallkorrektur(Goerlitz_maxIntSerie, Intervall = 5)
+Goerlitz_maxIntSerie_korr1 <- Intervall_Korrektur(Goerlitz_maxIntSerie, Intervall = 5)
 
 head(Goerlitz_maxIntSerie_korr1)
 
