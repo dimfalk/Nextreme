@@ -107,8 +107,10 @@ Für die 5-Minuten-Niederschlagsreihen der Station Görlitz werden für jede Dau
 Ziel ist die Berechnung der jährlichen Maxima für jede der betrachteten Dauerstufen. Zu diesem Zweck kann die Funktion *jaehrliche_maxSerie()* verwendet werden. Hier wird ein Zeitraum von 4 Stunden (*DSDmin*) verwendet, um unabhängige Niederschlagsereignisse voneinander zu trennen. Da die Niederschlagsdaten in Form von 5-Minuten-Summen vorliegen, wird das Intervallargument (*Intervall*) auf 5 gesetzt. Um die Parameter der Extremwertverteilung zu ermitteln, sind die maximalen jährlichen Niederschlagsintensitäten pro Dauerstufe erforderlich. Aus diesem Grund geben wir *SerieTyp = "INT"* an, um die maximalen Intensitäten als Ausgabe zu erhalten.
 
 ```{r}
+dur <- c(5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 540, 720, 1080, 1440, 2880, 4320, 5760, 7200, 8640, 10080)
+
 Goerlitz_maxIntSerie <- jaehrliche_maxSerie(Regendaten_01684, 
-                                            Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080), 
+                                            Dauern = dur, 
                                             DSDmin = 240, 
                                             Intervall = 5,
                                             SerieTyp = "INT")
@@ -163,7 +165,7 @@ Zu diesem Zweck kann die Funktion *Parameter_Schaetzung()* verwendet werden, um 
 
 ```{r}
 N_pars <- Parameter_Schaetzung(Goerlitz_maxIntSerie_korr2, 
-                               Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080), 
+                               Dauern = dur, 
                                methGEV = "GEV", 
                                formTyp = "FIX", 
                                Gamma = -0.1,
@@ -188,9 +190,11 @@ Ziel ist die Berechnung der Wiederkehrzeiten von beobachteten Niederschlagshöhe
 Zu diesem Zweck kann die Funktion *Quantil_Schaetzung()* verwendet werden. Neben den Parametern (*N_pars*), den Dauerstufen (*Dauern*) und den Wiederkehrintervallen (*Tn*), sollte auch die GEV-Methode (*methGEV*) angegeben werden. In diesem Fall wird  *SerieTyp = "VOL"* definiert, um Niederschlagshöhen (mm) als Output zu erhalten. Ist man an Niederschlagsintensitäten (mm/h) interessiert, lautet *SerieTyp = "INT"*.
 
 ```{r}
+tn <- c(1, 2, 3, 5, 10, 20, 30, 50, 100)
+
 H_quas <- Quantil_Schaetzung(N_pars, 
-                             Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
-                             Tn = c(1, 2, 3, 5, 10, 20, 30, 50, 100), 
+                             Dauern = dur,
+                             Tn = tn, 
                              methGEV = "GEV",
                              SerieTyp = "VOL")
 H_quas
@@ -212,12 +216,12 @@ Die geschätzten jährlichen Serien der maximalen Intensitäten werden *nBoots*-
 
 ```{r}
 KI <- Unsicherheit_Schaetzung(Goerlitz_maxIntSerie_korr2,
-                              Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
+                              Dauern = dur,
                               methGEV = "GEV",
                               formTyp = "FIX",
                               Gamma = -0.1,
                               SerieTyp = "VOL",
-                              Tn = c(1, 2, 3, 5, 10, 20, 30, 50, 100),
+                              Tn = tn,
                               nBoots = 100,
                               rSeed = 42,
                               Konfidenzgrenzen = c(0.025, 0.975))
@@ -238,18 +242,17 @@ Beim Ergebnis der Funktion *Unsicherheit_Schaetzung()* handelt es sich um eine L
 Der folgende Beispiel beinhaltet die Visualisierung der Niederschlagshöhen nach Dauerstufe und Wiederkehrzeit an der Station Görlitz. 
 
 ```{r, echo = TRUE, eval = TRUE}
-Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
 Tn_Farbe <- hcl.colors(6, palette = "viridis") |> rev()
 
-plot(Dauern, H_quas["2", ], type = "l", lwd = 2, lty = 1, log = "xy", col = Tn_Farbe[1],
+plot(dur, H_quas["2", ], type = "l", lwd = 2, lty = 1, log = "xy", col = Tn_Farbe[1],
      ylab = "hN [mm]", ylim = range(H_quas), xlab = "Dauerstufe [min]", 
      main = "Station 01684")
 
-lines(Dauern, H_quas["5",],  lwd = 2, col = Tn_Farbe[2])
-lines(Dauern, H_quas["10",], lwd = 2, col = Tn_Farbe[3])
-lines(Dauern, H_quas["20",], lwd = 2, col = Tn_Farbe[4])
-lines(Dauern, H_quas["50",], lwd = 2, col = Tn_Farbe[5])
-lines(Dauern, H_quas["100",],lwd = 2, col = Tn_Farbe[6])
+lines(dur, H_quas["5",],  lwd = 2, col = Tn_Farbe[2])
+lines(dur, H_quas["10",], lwd = 2, col = Tn_Farbe[3])
+lines(dur, H_quas["20",], lwd = 2, col = Tn_Farbe[4])
+lines(dur, H_quas["50",], lwd = 2, col = Tn_Farbe[5])
+lines(dur, H_quas["100",],lwd = 2, col = Tn_Farbe[6])
 
 legend("bottomright", legend = c(2, 5, 10, 20, 50, 100), lty = 1, lwd = 3, col = Tn_Farbe,
        cex = 0.8, title = "Tn", horiz = TRUE, bty = "n")
@@ -258,18 +261,17 @@ legend("bottomright", legend = c(2, 5, 10, 20, 50, 100), lty = 1, lwd = 3, col =
 Im folgenden Beispiel wird die 100-jährliche Niederschlagshöhe auf Basis der lokalen Extremwertstatistik über alle Dauerstufen hinweg visualisiert (rot). Der Mittelwert sowie das Konfidenzintervall der *nBoots* Realisierungen werden ebenfalls im Vergleich dargestellt (blau).
 
 ```{r, echo = TRUE, eval = TRUE}
-Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
-
-plot(Dauern, H_quas["100", ], type = "l", lwd = 2, lty = 2, log = "xy",
+plot(dur, H_quas["100", ], type = "l", lwd = 2, lty = 2, log = "xy",
      ylim = range(HN_KI$`97.5%`["100", ], HN_KI$`2.5%`["100", ]), col = "red",
      ylab = "hN [mm]", xlab = "Dauerstufe [min]", main = "Station 01684, Tn = 100")
 
-polygon(c(Dauern, rev(Dauern)), c(HN_KI$`2.5%`["100", ],
-        rev(HN_KI$`97.5%`["100", ])), col = "royalblue", border = NA)
+polygon(c(dur, rev(dur)), 
+        c(HN_KI$`2.5%`["100", ], rev(HN_KI$`97.5%`["100", ])), 
+        col = "royalblue", border = NA)
 
-lines(Dauern, HN_KI$Mittelwert["100",], type = "l", col = "royalblue4", lwd = 2)
+lines(dur, HN_KI$Mittelwert["100",], type = "l", col = "royalblue4", lwd = 2)
 
-lines(Dauern, H_quas["100",], type = "l", col = "red", lwd = 2, lty = 2)
+lines(dur, H_quas["100",], type = "l", col = "red", lwd = 2, lty = 2)
 
 legend("topleft", 
        c("95 % Konfidenzintervall", "Mittelwert", "hN"),
@@ -291,7 +293,7 @@ legend("top", legend = c(2, 5, 10, 20, 50, 100), fill = Tn_Farbe, cex = 0.8,
        title = "Tn", horiz = TRUE, bty = "n")
 
 # Option 2 
-barplot(as.matrix(KI_relUC),col = Tn_Farbe, beside = TRUE, ylim = c(0,50), ylab = "relative Unsicherheit [%]",
+barplot(as.matrix(KI_relUC),col = Tn_Farbe, beside = TRUE, ylim = c(0, 50), ylab = "relative Unsicherheit [%]",
         xlab = "Dauerstufe [min]", main = "Station 01684")
 legend("top", legend = c(2, 5, 10, 20, 50, 100), fill = Tn_Farbe, cex = 0.8, 
        title = "Tn", horiz = TRUE, bty = "n")
@@ -301,7 +303,7 @@ Dauer_Farbe = hcl.colors(dim(KI_relUC)[2], "blues", rev = TRUE)
 
 barplot(as.matrix(t(KI_relUC)), col = Dauer_Farbe, beside = TRUE, ylim = c(0, 60), 
         ylab = "relative Unsicherheit [%]", xlab = "Tn", main = "Station 01684")
-legend("top", legend = Dauern, fill = Dauer_Farbe, cex = 0.8, title = "Dauerstufe [min]",
+legend("top", legend = dur, fill = Dauer_Farbe, cex = 0.8, title = "Dauerstufe [min]",
        bty = "n", ncol = 6)
 ```
 
@@ -329,32 +331,28 @@ Für einen bestimmten Ort ist es auch möglich, die örtlich geschätzte Statist
 Die Funktion *Kostra2020_hN_Schaetzung()* benötigt hierfür definierte Standortkoordinaten, Dauerstufen und Wiederkehrzeiten, um die entsprechende Bemessungsniederschlagshöhe (*hN*) sowie den Unsicherheitsbereich (wenn Argument *Unsicherheit = TRUE*) aus dem Datensatz zu extrahieren. 
 
 ```{r}
-Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
-
-Tn <- c(1, 2, 3, 5, 10, 20, 30, 50, 100)
-
 station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
 
 H_quas_Kostra <- Kostra2020_hN_Schaetzung(Standorte = station, 
-                                          Dauern = Dauern,
-                                          Tn = Tn, 
+                                          Dauern = dur,
+                                          Tn = tn, 
                                           Temp_Pfad = "./",
                                           Unsicherheit = TRUE)
 
 # Umformatierung der Regenhöhen, damit diese strukturell dem Objekt H_quas entsprechen
 Hn_Kostra <- H_quas_Kostra$Kostra_HN
-Hn_Kostra <- matrix(unlist(Hn_Kostra[1, -(1:3)]), nrow = length(Tn), byrow = FALSE) 
+Hn_Kostra <- matrix(unlist(Hn_Kostra[1, -(1:3)]), nrow = length(tn), byrow = FALSE) 
 Hn_Kostra <- as.data.frame(Hn_Kostra)
-rownames(Hn_Kostra) <- Tn
-colnames(Hn_Kostra) <- Dauern
+rownames(Hn_Kostra) <- tn
+colnames(Hn_Kostra) <- dur
 Hn_Kostra
 
 # Umformatierung der Unsicherheiten, damit diese strukturell dem Objekt H_quas entsprechen
 UC_Kostra <- H_quas_Kostra$Kostra_UC
-UC_Kostra <- matrix(unlist(UC_Kostra[1, -(1:3)]), nrow = length(Tn), byrow = FALSE) 
+UC_Kostra <- matrix(unlist(UC_Kostra[1, -(1:3)]), nrow = length(tn), byrow = FALSE) 
 UC_Kostra <- as.data.frame(UC_Kostra)
-rownames(UC_Kostra) <- Tn
-colnames(UC_Kostra) <- Dauern
+rownames(UC_Kostra) <- tn
+colnames(UC_Kostra) <- dur
 UC_Kostra
 
 # Da die KOSTRA-DWD-2020 Unsicherheiten in Prozent angegeben sind, kann die
@@ -366,30 +364,28 @@ Hn_Kostra_Ko <- Hn_Kostra + round(Hn_Kostra * UC_Kostra / 100, 2)
 Das nachfolgende Beispiel zeigt eine Erweiterung der unter 3.4 erzeugten Abbildung zum Vergleich der 100-jährlichen Niederschlagshöhe auf Basis der lokalen Extremwertstatistik (rot) mit dem Mittelwert sowie dem Konfidenzintervall der *nBoots* Realisierungen (blau) im Vergleich zur Bemessungsniederschlagshöhe (schwarz) und dem Unsicherheitsbereich (grau) gem. KOSTRA-DWD-2020.
 
 ```{r, echo = TRUE, eval = TRUE}
-Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
-
-plot(Dauern, H_quas["100", ], 
+plot(dur, H_quas["100", ], 
      type = "l", 
      lwd = 2, 
      lty = 2, 
      log = "xy",
-     ylim = range(HN_KI$`97.5%`["100", ], HN_KI$`2.5%`["100", ], 
-                Hn_Kostra_Ku["100", ], Hn_Kostra_Ko["100", ]), 
+     ylim = range(HN_KI$`97.5%`["100", ], HN_KI$`2.5%`["100", ],
+                  Hn_Kostra_Ku["100", ], Hn_Kostra_Ko["100", ]), 
      col = "red",
      ylab = "hN [mm]", 
      xlab = "Dauer [min]",
      main = "Station 01684, Tn = 100")
 
-polygon(c(Dauern, rev(Dauern)), c(Hn_Kostra_Ku["100", ], rev(Hn_Kostra_Ko["100", ])), 
+polygon(c(dur, rev(dur)), c(Hn_Kostra_Ku["100", ], rev(Hn_Kostra_Ko["100", ])), 
         col = "lightgrey", 
         border = NA)
-polygon(c(Dauern, rev(Dauern)), c(HN_KI$`2.5%`["100", ], rev(HN_KI$`97.5%`["100", ])), 
+polygon(c(dur, rev(dur)), c(HN_KI$`2.5%`["100", ], rev(HN_KI$`97.5%`["100", ])), 
         col = "royalblue", 
         border = NA)
 
-lines(Dauern, HN_KI$Mittelwert["100", ], type = "l", col = "royalblue4", lwd = 2)
-lines(Dauern, H_quas["100", ], type = "l", col = "red", lwd = 2, lty = 2)
-lines(Dauern, Hn_Kostra["100", ], type = "l", col = "black", lwd = 2, lty = 2)
+lines(dur, HN_KI$Mittelwert["100", ], type = "l", col = "royalblue4", lwd = 2)
+lines(dur, H_quas["100", ], type = "l", col = "red", lwd = 2, lty = 2)
+lines(dur, Hn_Kostra["100", ], type = "l", col = "black", lwd = 2, lty = 2)
 
 legend("bottomright", 
        c("DWA-A 531: 95 % Konfidenzintervall",
@@ -406,7 +402,7 @@ legend("bottomright",
 Das folgende Beispiel zeigt eine Möglichkeit zur Darstellung der Niederschlagshöhen in der Dauerstufe von 60 Minuten für die Wiederkehrzeiten von 2 bis 100 Jahren, entsprechend der durchgeführten extremwertstatistischen Analyse der Stationsdaten (rot) und KOSTRA-DWD-2020 (schwarz). Die 95 %-Konfidenzintervalle aus der lokalen Analyse (blau) und aus KOSTRA-DWD-2020 (grau) werden ebenfalls dargestellt.
 
 ```{r, echo = TRUE, eval = TRUE}
-plot(Tn, H_quas[, "60"], 
+plot(tn, H_quas[, "60"], 
      type = "l", 
      lwd = 2, 
      lty = 2, 
@@ -417,16 +413,16 @@ plot(Tn, H_quas[, "60"],
      xlab = "Tn", 
      main = "Station 01684, D = 60min")
 
-polygon(c(Tn, rev(Tn)), c(Hn_Kostra_Ku[,"60"], rev(Hn_Kostra_Ko[,"60"])),
+polygon(c(tn, rev(tn)), c(Hn_Kostra_Ku[,"60"], rev(Hn_Kostra_Ko[,"60"])),
         col = "lightgrey", 
         border = NA)
-polygon(c(Tn, rev(Tn)), c(HN_KI$`2.5%`[,"60"], rev(HN_KI$`97.5%`[,"60"])),
+polygon(c(tn, rev(tn)), c(HN_KI$`2.5%`[,"60"], rev(HN_KI$`97.5%`[,"60"])),
         col = "royalblue", 
         border = NA)
 
-lines(Tn, HN_KI$Mittelwert[, "60"], type = "l", col = "royalblue4", lwd = 2)
-lines(Tn, H_quas[, "60"], type = "l", col = "red", lwd = 2, lty = 2)
-lines(Tn, Hn_Kostra[, "60"], type = "l", col = "black", lwd = 2, lty = 2)
+lines(tn, HN_KI$Mittelwert[, "60"], type = "l", col = "royalblue4", lwd = 2)
+lines(tn, H_quas[, "60"], type = "l", col = "red", lwd = 2, lty = 2)
+lines(tn, Hn_Kostra[, "60"], type = "l", col = "black", lwd = 2, lty = 2)
 
 legend("topleft", 
        c("DWA-A 531: 95 % Konfidenzintervall", 
