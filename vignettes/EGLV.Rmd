@@ -224,5 +224,22 @@ p
 idx <- kostra2020::get_idx(p)
 idx
 
-kostra2020::get_stats(idx)
+stats <- kostra2020::get_stats(idx)
+stats
+
+kostra2020::get_returnp(stats, hn = 58.6, d = 360)
+
+# --- using parameters directly ---
+
+params <- kostra2020::get_params(idx)
+params
+
+# TODO: Nextreme#8
+Quantil_Schaetzung(as.data.frame(params), 
+                   Dauern = dur,
+                   Tn = tn, 
+                   methGEV = "GEV",
+                   SerieTyp = "VOL")
+
+Tn_Schaetzung(as.data.frame(params), hN = 58.6, Dauern = 360, methGEV = "GEV")
 ```
