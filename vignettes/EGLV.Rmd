@@ -93,7 +93,8 @@ head(maxVolSerie_korr)
 all.equal(maxVolSerie, maxVolSerie_korr)
 
 # dump to disk
-write.csv2(maxVolSerie_korr, file = "jSe_2582.csv", row.names = FALSE)
+write.csv2(maxVolSerie, file = "jSe_2582_unkorr.csv")
+write.csv2(maxVolSerie_korr, file = "jSe_2582_korr.csv")
 
 toc()
 # 0.13 s
