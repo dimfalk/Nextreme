@@ -11,10 +11,13 @@ Sprung_Elimination(Serie, Sensor, ZielSensor = Sensor[length(Sensor)])
 
 \item{Sensor}{character. Vektor der Sensorangaben mit identischer Länge wie Serie.}
 
-\item{ZielSensor}{character. Sensor, auf dessen Serien-Mittelwert die Serienwerte angehoben oder abgesenkt werden sollen.}
+\item{ZielSensor}{character. Sensor, auf dessen Serien-Mittelwert die Serienwerte
+angehoben oder abgesenkt werden sollen.}
 }
 \value{
-data.frame mit den Spalten SenorZ und SerieNeu, Anzahl der Reihen entspricht Laenge von Serie. SensorZ ist der ZielSensor, SerieNeu die auf den ZielSensor angehobenen Serienwerte.
+data.frame mit den Spalten \code{"SenorZ"} und \code{"SerieNeu"}. Die Anzahl der
+Reihen entspricht der Länge der Serie. \code{"SenorZ"} ist der Ziel-Sensor,
+\code{"SerieNeu"} die auf den ZielSensor angehobenen Serienwerte.
 }
 \description{
 Sprung-Elimination

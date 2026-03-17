@@ -2,14 +2,17 @@
 #'
 #' @param Serie numeric. Vektor der Serienwerte einer gegebenen Dauerstufe.
 #' @param Sensor character. Vektor der Sensorangaben mit identischer Länge wie Serie.
-#' @param ZielSensor character. Sensor, auf dessen Serien-Mittelwert die Serienwerte angehoben oder abgesenkt werden sollen.
+#' @param ZielSensor character. Sensor, auf dessen Serien-Mittelwert die Serienwerte
+#'     angehoben oder abgesenkt werden sollen.
 #'
 #' @details
 #' Das Verfahren ermittelt die sensorspezifischen Mittelwerte der Serienwerte,
 #' subtrahiert diese von den Serienwerten und addiert dann den Serien-Mittelwert des Ziel-Sensors.
 #' Ist `Zielsensor` nicht in `Sensor` enthalten, wird `Serie` unverändert zurückgegeben.
 #'
-#' @return data.frame mit den Spalten SenorZ und SerieNeu, Anzahl der Reihen entspricht Laenge von Serie. SensorZ ist der ZielSensor, SerieNeu die auf den ZielSensor angehobenen Serienwerte.
+#' @return data.frame mit den Spalten `"SenorZ"` und `"SerieNeu"`. Die Anzahl der
+#'     Reihen entspricht der Länge der Serie. `"SenorZ"` ist der Ziel-Sensor,
+#'     `"SerieNeu"` die auf den ZielSensor angehobenen Serienwerte.
 #' @keywords internal
 #'
 #' @examples
