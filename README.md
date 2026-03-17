@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/dimfalk/Nextreme/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dimfalk/Nextreme/actions/workflows/R-CMD-check.yaml)
+[![Codecov](https://codecov.io/gh/dimfalk/Nextreme/graph/badge.svg)](https://app.codecov.io/gh/dimfalk/Nextreme)
 <!-- badges: end -->
 
 Dieses Package wird zusammen mit dem Arbeitsblatt DWA-A 531 zur
