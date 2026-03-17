@@ -1,7 +1,7 @@
 Package: Nextreme
 Title: Statistische Analyse der Niederschlagsextremwerte nach Arbeitsblatt DWA-A 531
-Version: 1.3.0
-Date: 2026-02-18
+Version: 1.3.1
+Date: 2026-03-17
 Authors@R: 
     c(person("Dr.-Ing. Bora", "Shehu", role = c("aut", "cre"), email = "bora.shehu@uni-potsdam.de"),
       person("Dr.-Ing. Winfrid", "Willems", role = "aut"),
@@ -9,7 +9,14 @@ Authors@R:
       person("Jennifer", "Ostermoeller", role = "aut"),
       person("Angelika", "Palarz", role = "aut"),
       person("Dimitri", "Falk", role = "ctb", email = "falk.dimitri@eglv.de"))
-Description: Dieses Paket wird zusammen mit dem Arbeitsblatt DWA-A 531 zur Verfügung gestellt und dient als Grundlage für stationsbasierte Auswertungen in Deutschland. Das bedeutet, dass Niederschlagsbeobachtungen in 5min-Zeitschritten zur Anpassung der Extremwertverteilung verwendet werden. Die Theorie und die Begründung der Methoden sind im DWA-A 531 Arbeitsblatt beschrieben. Alternativ ermoeglicht es das Paket, Extremwerte und die berechneten Niederschlagsstatistiken aus den KOSTRA-DWD-2020 Daten (bereitgestellt vom Deutschen Wetterdienst CDC - Climate Data Center) zu lesen. Bitte beachten Sie, dass das R-Paket nicht von einem IT-Ingenieur entwickelt wurde und daher möglicherweise nicht den besten Programmierstandards folgt oder nicht viel Flexibilität bietet. Um sicher zu gehen, dass die Funktionen so laufen, wie sie sollen, halten Sie sich bitte an das angegebene Datenformat! 
+Description: Dieses Paket wird zusammen mit dem Arbeitsblatt DWA-A 531 zur 
+    Verfügung gestellt und dient als Grundlage für stationsbasierte 
+    extremwertstatistische Auswertung des Niederschlages in Deutschland. 
+    Hierzu werden Niederschlagsbeobachtungen in 5-minütlichen Zeitschritten zur 
+    Anpassung der Extremwertverteilung verwendet. Die Theorie und die Begründung 
+    der Methoden finden sich im Arbeitsblatt DWA-A 531 beschrieben. 
+    Zudem ermöglicht es das Paket, Bemessungsniederschlagshöhen sowie 
+    zugrundeliegende Parameter aus dem Datensatz KOSTRA-DWD-2020 zu beziehen.
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

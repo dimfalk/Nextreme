@@ -2,29 +2,33 @@
 % Please edit documentation in R/pargev2.R
 \name{pargev2}
 \alias{pargev2}
-\title{Berechnung der GEV-Parameter mit einer festen Formparameter}
+\title{Berechnung der GEV-Parameter mit festem Formparameter}
 \usage{
 pargev2(lmom, checklmom = TRUE, kappa = NULL)
 }
 \arguments{
-\item{lmom}{die L-Momente, die zuvor mit dem Paket lmomco berechnet wurden}
+\item{lmom}{list. L-Momente, wie diese zuvor durch \code{lmomco::lmoms()} berechnet wurden.}
 
-\item{checklmom}{logische Variable, die entweder TRUE oder FALSE sein kann. Gibt an, ob die L-Momente geprueft werden sollen oder nicht.}
+\item{checklmom}{logical. Wenn TRUE, werden die L-Momente geprüft.}
 
-\item{kappa}{der feste Wert des Formparameters. Wenn kappa=NULL ist, wird der Formparameter aus den L-Momenten berechnet.}
+\item{kappa}{numeric. Fixierter Formparameter. Wenn \code{kappa = NULL}, wird der Formparameter aus den L-Momenten berechnet.}
 }
 \value{
-Die GEV-Parameter
+list. Mittels L-Momenten geschätzte GEV-Parameter.
 }
 \description{
-Berechnung der GEV-Parameter mit einer festen Formparameter
+Berechnung der GEV-Parameter mit festem Formparameter
 }
 \details{
-R-Funktion zur Berechnung der GEV-Parameter, wenn der Formparameter auf einen bestimmten Wert eingestellt ist.
+Berechnung der GEV-Parameter, wenn der Formparameter auf einen Wert fixiert ist.
 }
 \examples{
-ShapeFix <- 0.1 # (nach Koutsoyiannis 2008)
-Formparameter <- ShapeFix * -1 # vorzeichenwechsel aufgrund unterschiedl. Formeln beachten!
-pargev2(lmomco::lmoms(1:10), kappa = Formparameter)$para
+# (nach Koutsoyiannis 2008)
+ShapeFix <- 0.1
+
+# vorzeichenwechsel aufgrund unterschiedlicher Konventionen beachten!
+Formparameter <- ShapeFix * -1
+
+pargev2(lmomco::lmoms(1:10), kappa = Formparameter)
 }
 \keyword{internal}

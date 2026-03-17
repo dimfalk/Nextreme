@@ -2,31 +2,36 @@
 % Please edit documentation in R/Sprung_Korrektur.R
 \name{Sprung_Korrektur}
 \alias{Sprung_Korrektur}
-\title{Sprungkorrektur bei kleinen Dauerstufen (D <= 30min)}
+\title{Sprungkorrektur bei kleinen Dauerstufen (D <= 30 Minuten)}
 \usage{
 Sprung_Korrektur(Serie, wechselDatum)
 }
 \arguments{
-\item{Serie}{Jaehrliche Reihen als Tabelle, wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen (in Minuten!).}
+\item{Serie}{data.frame. Jährliche maximale Serie mit den betrachteten Jahren als Zeilen,
+und den betrachteten Dauerstufen als Spalten.}
 
-\item{wechselDatum}{Der Zeitpunkt, zu dem der Sensor von einem analogen auf einen digitalen Sensor umgestellt wurde. Angegeben als as.POSIXct-Format.}
+\item{wechselDatum}{POSIXct or Date. Zeitpunkt, zu dem der Sensor von einem analogen
+auf einen digitalen Sensor umgestellt wurde.}
 }
 \value{
-Die korrigierte jaehrlichen Serien als data.frame wird zurueckgegeben (das gleiche Format wie die Eingabe).
+data.frame. Korrigierte jährliche Serien (im gleichen Format wie \code{Serie}).
 }
 \description{
-Die jaehrlichen Serien von kurzen Dauern werden vom Sprung-Instationaritaet korrigiert, der durch den Wechsel der Messsensoren von analoger zu digitaler Technologie verursacht werden koennte.
+Wenn es einen Sprung in den kurzen Dauerstufen der jährlichen Serie gibt,
+wird der Sprung eliminiert und eine korrigierte jährlichen Serie zurückgegeben.
+}
+\details{
+Die Instationarität der kurzen Dauerstufen der jährlichen Serie, bedingt durch den Wechsel
+der Sensoren von analoger zu digitaler Technologie, wird korrigiert.
+
 Analogsensoren: Regenschreiber, Unbekannt oder unbekannt
 Digitalsensoren: H3, Tropfengeber, Wippengeber, Pluvio oder PLUVIO
 \enumerate{
-\item Zuerst wird ein Instationaritaet Test fuer die Jahresreihen mit einer Dauer von 30 Minuten oder weniger durchgefuehrt.
-\item Wenn die Instationaritaet vom Typ "Sprung" ist, dann wird eine Sprungkorrektur angewendet.
+\item Zuerst wird ein Test auf Instationarität für die kurzen Dauerstufen
+(D <= 30 Minuten) der jährliche Serie durchgeführt.
+\item Wenn die Instationarität vom Typ "Sprung" ist, wird eine Sprungkorrektur angewendet.
 }
-}
-\details{
-Wenn es einen Sprung gibt - Typ Instationaritaet auf der jaehrlichen Serie von kurzen Dauern, wird der Sprung eliminiert und eine korrigierte jaehrliche Serientabelle zurueckgegeben.
 }
 \examples{
-korrigierte_maxSerie <- Sprung_Korrektur(Goerlitz_maxSerie, wechselDatum = as.Date("1992-12-31"))
-korrigierte_maxSerie
+Sprung_Korrektur(Serie = Goerlitz_maxSerie, wechselDatum = as.Date("1992-12-31"))
 }

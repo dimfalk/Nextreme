@@ -1,39 +1,50 @@
-#' Berechnung Starkregenhoehen fuer bestimmte Dauern und Wiederkehrintervalle
+#' Schätzung der Starkregenhöhen für bestimmte Dauerstufen und Wiederkehrintervalle
 #'
 #' @description
-#' Berechnung der Starkniederschlaege (entweder in Volumen mm oder Intensitaet mm/h) fuer bestimmte Dauern (z.B. 5, 10, 60 und 120min) und Wiederkehrintervalle (z.B. 5, 10 und 100 Jahren), wenn die Parameter, die die Extremwerte beschreiben, bereits bekannt sind.
+#' Berechnung der Starkniederschlagsintensitäten (in mm/h) bzw. -höhen (in mm) für
+#' bestimmte Dauerstufen (z.B. 5, 10, 60 und 120 min) und Wiederkehrintervalle
+#' (z.B. 5, 10 und 100 Jahre), wenn die Parameter, die die Extremwerte
+#' beschreiben, bereits bekannt sind.
 #'
-#' @param extrem.Parameter GEV- und Koutsoyiannis-Parameter fuer die angegebene Serie als einzeiliger data.frame. Die Namen der Variablen im data.frame sind Mu / Sigma / Gamma - jeweils fuer die GEV- Lokations- / Skalen- / Formparameter, und Theta / Eta fuer die 1./ 2.Koustoyiannis-Parameter.
-#' @param Dauern die Dauer, fuer die die Regenhoehe berechnet werden soll. Die Dauer sollte in Minuten angegeben werden!
-#' @param Tn die Wiederkehrintervalle, fuer die die Regenhoehe berechnet werden soll. Die Wiederkehrintervalle sollte in Jahren angegeben werden!
-#' @param methGEV den Typ der Generalized Extreme Value-Verteilung, die an die jaehrlichen Serien angepasst wurde. Die Optionen sind: "GEV" fuer Typ 2 oder Typ 3 (Formparameter ist nicht gleich Null) und "GUM" fuer Typ 1 (Formparameter ist gleich Null - also Gumber Verteilung.)
-#' @param SerieTyp Kontrolle ueber die Einheiten der Ausgabetabelle. Die Optionen sind: "VOL" fuer Regenhoehe in mm/Dauer, und "INT" fuer Regenintensitaet in mm/h.
+#' @param extrem.Parameter data.frame. Koutsoyiannis- (Theta, Eta) und GEV-Parameter (
+#'     Mu, Sigma, Gamma) auf Basis der verwendeten Serie (einzeilig).
+#' @param Dauern numeric. Dauerstufe, auf die sich die Niederschlagshöhe `hN` bezieht.
+#'     Die Dauerstufe ist in Minuten anzugeben.
+#' @param Tn numeric. Wiederkehrintervalle, für die die Niederschlagshöhe berechnet werden soll.
+#'     Die Wiederkehrintervalle ist in Jahren anzugeben.
+#' @param methGEV character. Typ der Generalisierten Extremwertverteilung (GEV),
+#'     die an die jährliche Serie angepasst werden soll:
+#'     `"GEV"` für Typ 2 oder Typ 3 (Formparameter \code{!= 0}; Fréchet & Weibull) und
+#'     `"GUM"` für Typ 1 (Formparameter \code{== 0}; Gumbel)
+#' @param SerieTyp character. Kontrolle über die für die Augabe verwendeten Einheiten.
+#'     `"VOL"` für Niederschlagshöhe (mm) und `"INT"` für Niederschlagsintensität (mm/h).
 #'
-#' @details
-#' R-Funktion zur Ableitung der Regenhoehe (hN) oder Regenintesitaet (iN) fuer die gegebenen Extremwertparameter (sowohl GEV- als auch Koutsoyiannis-Parameter), Dauern und Wiederkehrintervalle, nur fuer eine einzelne Station.
-#'
-#' @return Eine Tabelle im Dataframe-Format, die entweder die Regenhoehe-Dauer-Wiederkehrintervall hN(D,Tn) oder Regenintensitaet-Dauer-Wiederkehrintervall iN(D,Tn) enthaelt. Die Spalten geben die Dauer (D) an und die Zeilen die Wiederkehrintervalle (Tn).
+#' @return data.frame. Geschätzte Niederschlagsintensitäten (IDF) bzw. -höhen (DDF)
+#'     auf Grundlage der verwendeten Extremwertparameter. Dauerstufen in Spalten und
+#'     Wiederkehrintervalle in Zeilen.
 #' @export
 #'
 #' @examples
-#' # Berechnung der Starkregenparameter fuer die Station Goerlitz im Zeitraum 1991-2020
-#' # ohne Intervall-oder Sprungkorrektur
-#' # ueber alle Dauern mit der GEV-Verteilung und dem Formparameter von -0,1
-#' Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
-#' extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GEV", formTyp = "FIX", Gamma = -0.1)
-#' print(extremParameter)
-#'
-#' # Berechnung der Regenintensitaet-Dauer-Wiederkehrintervall Tabelle
-#' # fuer 6 Wiederkehrintervalle und 12 Dauern von der berechneten Parameter
+#' # Berechnung der dauerstufenÜbergreifenden Verteilungsparameter fÜr die
+#' # Station Görlitz im Zeitraum 1991-2020, ohne Intervall- oder Sprungkorrektur,
+#' # Über alle Dauerstufen mit auf -0.1 fixiertem Formparameter
 #' Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
 #' Tn <- c(1, 5, 10, 20, 50, 100)
-#' IDF_Tabelle <- Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV = "GEV", SerieTyp = "INT")
 #'
-#' # Berechnung der Regenhoehe-Dauer-Wiederkehrintervall Tabelle
-#' # fuer 6 Wiederkehrintervalle und 8 Dauern von der berechneten Parameter.
-#' Dauern <- c(60, 120, 360, 720, 1440, 2880, 4320, 10080)
-#' Tn <- c(1, 5, 10, 20, 50, 100)
-#' DDF_Tabelle <- Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV = "GEV", SerieTyp = "VOL")
+#' extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie,
+#'                                         Dauern,
+#'                                         methGEV = "GEV",
+#'                                         formTyp = "FIX",
+#'                                         Gamma = -0.1)
+#' extremParameter
+#'
+#' # Berechnung der Niederschlagsintensität-Dauer-Wiederkehrintervall (IDF) Tabelle
+#' # für definierte Wiederkehrintervalle und Dauerstufen auf Basis der berechneten Parameter
+#' IDF <- Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV = "GEV", SerieTyp = "INT")
+#'
+#' # Berechnung der Niederschlagshöhe-Dauer-Wiederkehrintervall (DDF) Tabelle
+#' # für definierte Wiederkehrintervalle und Dauerstufen auf Basis der berechneten Parameter
+#' DDF <- Quantil_Schaetzung(extremParameter, Dauern, Tn, methGEV = "GEV", SerieTyp = "VOL")
 Quantil_Schaetzung <- function(extrem.Parameter,
                                Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
                                Tn = c(1, 5, 10, 20, 50, 100),

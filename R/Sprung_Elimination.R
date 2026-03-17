@@ -1,12 +1,13 @@
 #' Sprung-Elimination
 #'
-#' @param Serie numeric vector, Vektor der Serienwerte einer gegebenen Dauerstufe
-#' @param Sensor character vector, Vektor der Sensorangaben mit identischer Laenge wie Serie
-#' @param ZielSensor character, Sensor, auf dessen Serienmittelwert die Serienwerte angehoben oder abgesenkt werden sollen
+#' @param Serie numeric. Vektor der Serienwerte einer gegebenen Dauerstufe.
+#' @param Sensor character. Vektor der Sensorangaben mit identischer Länge wie Serie.
+#' @param ZielSensor character. Sensor, auf dessen Serien-Mittelwert die Serienwerte angehoben oder abgesenkt werden sollen.
 #'
 #' @details
-#' Das Verfahren ermittelt die sensorspezifischen Mittelwerte der Serienwerte, subtrahiert diese von den Serienwerten und addiert dann den Serienwertmittelwert des ZielSensors.
-#' Ist der Zielsensor nicht in Sensor enthalten, dann wird der Eingabevektor wieder zurueckgeliefert.
+#' Das Verfahren ermittelt die sensorspezifischen Mittelwerte der Serienwerte,
+#' subtrahiert diese von den Serienwerten und addiert dann den Serien-Mittelwert des Ziel-Sensors.
+#' Ist `Zielsensor` nicht in `Sensor` enthalten, wird `Serie` unverändert zurückgegeben.
 #'
 #' @return data.frame mit den Spalten SenorZ und SerieNeu, Anzahl der Reihen entspricht Laenge von Serie. SensorZ ist der ZielSensor, SerieNeu die auf den ZielSensor angehobenen Serienwerte.
 #' @keywords internal
@@ -21,7 +22,7 @@
 #' x <- data.frame("Sensor" = c(rep("analog", n1), rep("digital", n2)),
 #'                 "Wert" = c(rnorm(n1, m1), rnorm(n2, m2)))
 #'
-#' Sprung_Elimination(x$Wert, x$Sensor)$SerieNeu
+#' Sprung_Elimination(Serie = x$Wert, Sensor = x$Sensor)$SerieNeu
 Sprung_Elimination <- function(Serie,
                                Sensor,
                                ZielSensor = Sensor[length(Sensor)]) {
@@ -44,7 +45,8 @@ Sprung_Elimination <- function(Serie,
     SerieNeu <- Serie
     # print("Sprungkorrektur: Analog > Digital, keine Korrektur!")
   } else {
-    SerieNeu <- Serie - PR0 + PR1 # sensorspez. mittelwert abziehen, zielsensor-mittelwert aufaddieren
+    # sensorspez. Mittelwert abziehen, zielsensor-Mittelwert aufaddieren
+    SerieNeu <- Serie - PR0 + PR1
     # print("Sprungkorrektur durchgefuehrt!")
   }
 

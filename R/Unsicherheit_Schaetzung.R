@@ -1,44 +1,76 @@
-#' Schaetzung der Stichprobenunsicherheit durch Bootstrapping.
+#' Schätzung der Stichprobenunsicherheit durch Bootstrapping
 #'
 #' @description
-#' Die Stichprobenunsicherheit der extremen Niederschlagsparameter und der erforderlichen Quantile wird auf der Grundlage des Bootstrapping-Algorithmus berechnet, wie in Kapitel 6.3 des DWA-A 531 Merkblattes beschrieben.
-#' 1. die Jahre der jaehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden nBoots mal mit Ersetzung neu gesampelt. Die neu gesampelten Jahre werden fuer jede Dauer selektiert und bilden so nBoots neue jaehrliche Serien.
-#' 2. fuer jede aehrlichen Maximum Serien (als Regenintensitaet in mm/h) werden die Parameter berechnet. Die Konfidenzgrenzen fuer jeden Parameter werden aus nBoots berechnet.
-#' 3. fuer jeden Parametersatz wird die Regenhoehe/-intensitaet fuer die gewuenschten Dauern und Wiederkehrintervalle berechnet, wobei die Konfidenzgrenzen fuer jeden Wert aus nBoots errechnet werden.
+#' Die Stichprobenunsicherheit der Extremwertparameter und der resultierenden Quantile
+#' wird auf Grundlage des Bootstrapping-Algorithmus berechnet.
+#' Für weitere Informationen siehe Kap. 6.3 des Arbeitsblattes DWA-A 531 (2025).
 #'
-#' @param Serie Jaehrliche Maximum Serien (als Regenintensitaet in mm/h) werden als Tabelle (data.frame Format), wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen.
-#' @param Dauern Dauern, die fuer die Berechnung der Jaehrliche Maximum Serien verwendet sind. Die gleiche Einheit (entweder Minuten oder Stunden) wie das Intervall. Standartwerte sind: 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320 und 10080min.
-#' @param methGEV  den Typ der Generalized Extreme Value-Verteilung, die an die jaehrlichen Serien angepasst werden soll. Optionen sind: "GEV" fuer Typ 2 oder Typ 3 (Formparameter ist nicht gleich Null) und "GUM" fuer Typ 1 (Formparameter ist gleich Null – Gumbel Verteilung)
-#' @param formTyp kontrolliert, wie der Formparameter der Generalized Extreme Value Distribution (nur bei methGEV=„GEV“) geschaetzt werden soll. Die Option „CON“ berechnet die Formparameter auf der Basis der L-Momente, und die Option „FIX“ erzwingt einen bestimmten Wert fuer den Formparameter (zum Beispiel -0,1).
-#' @param Gamma den vorbestimmten Wert des GEV-Formparameters angeben. Nur wichtig fuer die Variante von `methGEV = "GEV"` und `formTyp = "FIX"`.
-#' @param SerieTyp Kontrolle ueber die Einheiten der Ausgabetabelle. Die Optionen sind: "VOL" fuer Regenhoehe in mm/Dauer, und "INT" fuer Regenintensitaet in mm/h.
-#' @param Tn die Wiederkehrintervalle, fuer die die Regenhoehe/Intensitaet berechnet werden sollen. Die Wiederkehrintervalle sollten in Jahren angegeben werden!
-#' @param nBoots die Anzahl der zufaelligen Realisierungen, die aus den jaehrlichen Serien zu ziehen sind.
-#' @param rSeed Random Seed fuer das Bootstrapping und die Realisationen, um die gleiche Ausgabe fuer jede gleiche Eingabe zu garantieren.
-#' @param Konfidenzgrenzen  Perzentile der nBoots-Realisierungen, die die Funktion zurueckbringen soll. Das Format sollte Vektor sein, wobei der erste Wert fuer die untere Konfidenzgrenze und der zweite Wert fuer die obere Konfidenzgrenze steht.
+#' 1. Die jährlichen Serie wird `nBoots`-mal mit Zurücklegen neu gesampelt.
+#' Die neu gesampelte Serie wird für jede Dauerstufe selektiert, sodass `nBoots`
+#' neue jährliche Serien entstehen.
 #'
-#' @details
-#' Die Unsicherheit wird auf der Basis der Breite der Konfidenzgrenzen geschaetzt, die aus nBoots-Realisierungen fuer einen bestimmten Wert (entweder Parameter oder Quantil) erhalten sind.
-#' Die folgende Formel kann verwendet werden:
+#' 2. Für jede jährlichen Serie werden die Parameter berechnet. Die Konfidenzgrenzen
+#' für jeden Parameter werden aus `nBoots` Realisierungen berechnet.
 #'
-#' @return Eine Liste, die die erhaltenen nBoots-Realisierungen fuer die Quantile (erster Eintrag ~  QUA_INFO) und fuer die Parameter (zweiter Eintrag ~ PAR_INFO) enthaelt.
+#' 3. Für jeden Parametersatz wird die Niederschlagshöhe bzw. -intensität für die
+#' gewünschten Dauerstufen und Wiederkehrintervalle berechnet, wobei die
+#' Konfidenzgrenzen für jeden Wert aus `nBoots` Realisierungen errechnet werden.
+#'
+#' @param Serie data.frame. Jährliche maximale Serie mit den betrachteten Jahren
+#'     als Zeilen, und den betrachteten Dauerstufen als Spalten. Die Werte sind
+#'     entweder als Niederschlagsintensität (in mm/h) oder als Niederschlagshöhe
+#'     (in mm) anzugegeben. Die Einheit ist über das `SerieTyp` Argument zu definieren.
+#' @param Dauern numeric. Dauerstufen, die für die Berechnung der jährlichen Serien
+#'     verwendet wurden, in der gleichen Einheit (entweder Minuten oder Stunden)
+#'     wie das Intervall.
+#' @param methGEV character. Typ der Generalisierten Extremwertverteilung (GEV),
+#'     die an die jährliche Serie angepasst werden soll:
+#'     `"GEV"` für Typ 2 oder Typ 3 (Formparameter \code{!= 0}; Fréchet & Weibull) und
+#'     `"GUM"` für Typ 1 (Formparameter \code{== 0}; Gumbel)
+#' @param formTyp character. Kontrolliert, wie der Formparameter der GEV
+#'     (nur bei `methGEV = "GEV"`) geschätzt werden soll:
+#'     `"CON"` berechnet die Formparameter auf der Basis der L-Momente,
+#'     `"FIX"`  erzwingt einen bestimmten Wert für den Formparameter.
+#' @param Gamma numeric. Fixierter Wert des GEV-Formparameters.
+#'     Nur relevant, wenn `methGEV = "GEV"` und `formTyp = "FIX"`.
+#' @param SerieTyp character. Kontrolle über die für die Augabe verwendeten Einheiten.
+#'     `"VOL"` für Niederschlagshöhe (mm) und `"INT"` für Niederschlagsintensität (mm/h).
+#' @param Tn numeric. Wiederkehrintervalle, für die die Niederschlagshöhe berechnet
+#'     werden soll. Die Wiederkehrintervalle ist in Jahren anzugeben.
+#' @param nBoots numeric. Anzahl der zufälligen Realisierungen unter Verwendung
+#'     von resampelten Variationen von `Serie`.
+#' @param rSeed numeric. Zufallszahl zur Steuerung des Random Number Generators,
+#'     um Ergebnisse reproduzierbar zu halten.
+#' @param Konfidenzgrenzen numeric. Vektor mit zwei Elementen, Festlegung der
+#'     unteren und oberen Konfidenzintervallgrenze in Form von Perzentilen.
+#'
+#' @return list. Geschätzte Niederschlagsintensitäten (IDF) bzw. -höhen (DDF)
+#'     auf Grundlage der verwendeten Extremwertparameter im ersten Eintrag `"QUA_INFO"`.
+#'     Koutsoyiannis- (Theta, Eta) und GEV-Parameter (Mu, Sigma, Gamma) auf Basis
+#'     der verwendeten Serie im zweiten Eintrag `"PAR_INFO"`.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' # Beispiel 1
-#' # Berechnung der Stichprobenunsicherheit durch 50 Realisierungen
-#' # fuer die jaehrlichen Serien in Goerlitz von 1991 bis 2020:
-#' Unsicherheit <- Unsicherheit_Schaetzung(Goerlitz_maxIntSerie, Tn = 100, nBoots = 50, rSeed = 15, SerieTyp = "VOL")
-#' # aus der Unsicherheit nur die Quantile Information extrahieren
+#' # Berechnung der Stichprobenunsicherheit durch 50 Realisierungen für die
+#' # jährlichen Serien in Görlitz von 1991 bis 2020:
+#' Unsicherheit <- Unsicherheit_Schaetzung(Goerlitz_maxIntSerie,
+#'                                         Tn = 100,
+#'                                         nBoots = 50,
+#'                                         rSeed = 15,
+#'                                         SerieTyp = "VOL")
+#'
+#' # Extraktion der Quantilsinformation
 #' HN_KI <- Unsicherheit$QUA_INFO
 #' dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
-#' # das geschaetzte Konfidenzintervall fuer Tn=100 und die gegebenen Dauern darstellen:
+#'
+#' # geschätztes Konfidenzintervall für Tn = 100 und die gewählten Dauerstufen darstellen:
 #' library(scales)
 #' plot(dauern, HN_KI$Mittelwert["100", ],
 #'   type = "l", lwd = 2, lty = 1, log = "xy",
 #'   ylim = range(HN_KI$`95%`["100", ], HN_KI$`5%`["100", ]), col = "royalblue",
-#'   ylab = "Hn [mm]", xlab = "Dauer [min]", main = "Station Goerlitz"
+#'   ylab = "Hn [mm]", xlab = "Dauer [min]", main = "Station Görlitz"
 #' )
 #' polygon(c(dauern, rev(dauern)),
 #'   c(HN_KI$`5%`["100", ], rev(HN_KI$`95%`["100", ])),
@@ -48,26 +80,31 @@
 #'   col = c(alpha("royalblue", 0.5), "royalblue"), lty = c(1, 1),
 #'   lwd = c(10, 2), title = "Legende", bty = "n"
 #' )
-#' # Relative Unsicherheit fuer T =100 und die gegebenen Dauern darstellen:
+#'
+#' # Relative Unsicherheit für Tn = 100 und die gewählten Dauerstufen darstellen:
 #' barplot(unlist(HN_KI$rel.Unsicherheit["100", ]),
 #'   ylab = expression("100 x(K"[o] ~ -~ K[u] ~ ")/K"), xlab = "Dauern [min]",
-#'   main = "Tn=100Jahre", col = hcl.colors(12, palette = "viridis")
+#'   main = "Tn = 100 Jahre", col = hcl.colors(12, palette = "viridis")
 #' )
 #'
-#' #  Beispiel 2
-#' # Berechnung der Stichprobenunsicherheit durch 100 Realisierungen
-#' # fuer die jaehrlichen Serien in Goerlitz von 1991 bis 2020.
-#' # Wiederkehrintervalle von 20, 50 und 100 Jahren betrachten.
+#' # Beispiel 2
+#' # Berechnung der Stichprobenunsicherheit durch 100 Realisierungen für die
+#' # jährlichen Serien in Görlitz von 1991 bis 2020:
+#' # Betrachtung der Wiederkehrintervalle von 20, 50 und 100 Jahren.
 #' Unsicherheit <- Unsicherheit_Schaetzung(Goerlitz_maxIntSerie,
-#'   Tn = c(20, 50, 100),
-#'   nBoots = 100, rSeed = 15, SerieTyp = "VOL"
-#' )
-#' # aus der Unsicherheit nur die Parameterformation extrahieren
+#'                                         Tn = c(20, 50, 100),
+#'                                         nBoots = 100,
+#'                                         rSeed = 15,
+#'                                         SerieTyp = "VOL")
+#'
+#' # Extraktion der Parameterinformationen
 #' PAR_KI <- Unsicherheit$PAR_INFO
-#' print(PAR_KI)
-#' # aus der Unsicherheit nur die Quantils Information extrahieren
+#' PAR_KI
+#'
+#' # Extraktion der Quantilsinformation
 #' hN_KI <- Unsicherheit$QUA_INFO
-#' # Relative Unsicherheit fuer die gegebene Wiederkehrintervalle und Dauern:
+#'
+#' # Relative Unsicherheit für die gewählten Wiederkehrintervalle und Dauerstufen:
 #' barplot(as.matrix(hN_KI$rel.Unsicherheit),
 #'   beside = TRUE,
 #'   ylab = expression("100 x(K"[o] ~ -~ K[u] ~ ")/K"), ylim = c(0, 50), xaxt = "n",
@@ -78,7 +115,7 @@
 #'   legend = rownames(hN_KI$rel.Unsicherheit),
 #'   fill = c("royalblue1", "royalblue3", "royalblue4"), bty = "n", title = "Ta"
 #' )
-#' # Alternativ Darstellung
+#' # alternative Darstellung
 #' barplot(as.matrix(t(hN_KI$rel.Unsicherheit)),
 #'   beside = TRUE,
 #'   ylab = expression("100 x(K"[o] ~ -~ K[u] ~ ")/K"), ylim = c(0, 50),

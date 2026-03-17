@@ -2,7 +2,7 @@
 % Please edit documentation in R/Trend_vs_Sprung.R
 \name{Trend_vs_Sprung}
 \alias{Trend_vs_Sprung}
-\title{TrendVsSprung}
+\title{Trend vs. Sprung}
 \usage{
 Trend_vs_Sprung(
   Zeit,
@@ -14,51 +14,60 @@ Trend_vs_Sprung(
 )
 }
 \arguments{
-\item{Zeit}{numeric vector, Zeitvektor der Serienwerte einer gegebenen Dauerstufe.}
+\item{Zeit}{numeric. Zeitvektor der Serienwerte einer gegebenen Dauerstufe.}
 
-\item{Serienwerte}{numeric vector, Vektor der Serienwerte einer gegebenen Dauerstufe.}
+\item{Serienwerte}{numeric. Vektor der Serienwerte einer gegebenen Dauerstufe.}
 
-\item{Sensor}{character vector, Vektor der Sensorangaben mit identischer Laenge wie Serie. Wenn Sensor=NULL, dann wird nur Trend gegen Stationaer getestet.}
+\item{Sensor}{character. Vektor der Sensorangaben mit identischer Länge wie Serie.
+Wenn \code{Sensor = NULL}, wird nur getestet, ob der Trend stationär ist.}
 
-\item{ifTS}{logical, TRUE, wenn auf gleichzeitiges Auftreten von Trend und Sprung getestet werden soll.Default ist False.}
+\item{ifTS}{logical. TRUE, wenn auf gleichzeitiges Auftreten von Trend und Sprung getestet werden soll.}
 
-\item{ifAnova}{logical, TRUE, wenn die Trendstrukturpruefung zusaetzlich auch durch Devianzanalyse vorgenommen werden soll.}
+\item{ifAnova}{logical. TRUE, wenn die Trendstrukturprüfung zusätzlich auch
+durch Devianzanalyse vorgenommen werden soll.}
 
-\item{skaliereZeit}{logical, TRUE, wenn der Zeitvektor in der Form (Zeit - min(Zeit))/length(Zeit)-0.5 in den Wertebereich zwischen -0.5 und 0.5 transformiert werden soll. Der berechnete Trend-Parameter bezieht sich dann auf die transformierte Zeit. Fuer den Optimierungsalgorithmus ist es in der Regel einfacher, das globale Optimum zu finden, wenn die Eingangsdaten des Zeitvektors einen kleinen Werteraum umspannen.}
+\item{skaliereZeit}{logical. TRUE, wenn der Zeitvektor in der Form \code{(Zeit - min(Zeit)) / length(Zeit) - 0.5}
+in den Wertebereich zwischen -0.5 und 0.5 transformiert werden soll.
+Der berechnete Trend-Parameter bezieht sich dann auf die transformierte Zeit.
+Für den Optimierungsalgorithmus ist es in der Regel einfacher, das globale Optimum zu finden,
+wenn die Eingangsdaten des Zeitvektors einen kleinen Werteraum umspannen.}
 }
 \value{
-AicRes character, "Stat|Trend|Sprung", Ergebnis auf der Grundlage des AIC-Kriteriums
+AicRes character. "Stat|Trend|Sprung", Ergebnis auf Grundlage des AIC-Kriteriums.
 
-BicRes character, "Stat|Trend|Sprung", Ergebnis auf der Grundlage des BIC-Kriteriums
+BicRes character. "Stat|Trend|Sprung", Ergebnis auf Grundlage des BIC-Kriteriums.
 
-Aic.\if{html}{\out{<Modell>}} numeric vector, AIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
+Aic.\if{html}{\out{<Modell>}} numeric. AIC-Wert für die einzelnen Modelle Stat|Trend|Sprung.
 
-Bic.\if{html}{\out{<Modell>}} numeric vector, BIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
+Bic.\if{html}{\out{<Modell>}} numeric. BIC-Wert für die einzelnen Modelle Stat|Trend|Sprung.
 
-AnovaRes character, "Stat|Trend|Sprung", Ergebnis auf Grundlage des Devianztests
+AnovaRes character. "Stat|Trend|Sprung", Ergebnis auf Grundlage des Devianztests.
 
-Anova.\if{html}{\out{<Modell>}} numeric vector, pValues fuer Uebergang von Nullmodell Stat zu einem der drei anderen Modelle Trend|Sprung
+Anova.\if{html}{\out{<Modell>}} numeric. p-Values für Übergang von Nullmodell zu einem der drei anderen Modelle Stat|Trend|Sprung.
 }
 \description{
-TrendVsSprung
+Trend vs. Sprung
 }
 \details{
-Die Generalisierte Extremwertverteilung GEV wird mittels der Maximum Likelihood Methode an die Serienwerte angepasst, wobei bezogen auf den Lokationsparameter
-die vier Modellformen "Stat" (d.h. stationaer), "Trend" oder "Sprung" angepasst werden. Fuer alle vier Modelle werden die
-Informationskriterien AIC und BIC ermittelt und anhand des minimalen IC-Wertes wird ausgewertet, welches der vier Modelle die Daten am besten beschreibt.
-Optional kann zusaetzlich auch ein partieller Devianztest (ifAnova=TRUE) durchgefuehrt werden, wobei dieser das Nullmodell moeglicherweise zu haeufig zugunsten des kompexeren verwirft.
+Die Generalisierte Extremwertverteilung GEV wird mittels der Maximum-Likelihood-Methode
+an die Serienwerte angepasst, wobei bezogen auf den Lokationsparameter die vier Modellformen
+"Stat" (d.h. stationär), "Trend" oder "Sprung" angepasst werden. Für alle vier Modelle werden
+die Informationskriterien AIC und BIC ermittelt und anhand des minimalen IC-Wertes wird ausgewertet,
+welches der vier Modelle die Daten am besten beschreibt. Optional kann zusätzlich auch ein
+partieller Devianztest mittels \code{ifAnova = TRUE} durchgeführt werden, wobei dieser das
+Nullmodell möglicherweise zu häufig zugunsten des komplexeren verwirft.
 }
 \examples{
 n <- 100
 set.seed(1234)
 
-# synthetische GEV-verteilte Daten, stationaer
+# synthetische GEV-verteilte Daten, stationär
 xStat <- evd::rgev(n, 10, 2, 0.1)
 
-# synthetische GEV-verteilte Daten, mit Trend
+# synthetische GEV-verteilte Daten, trendbehaftet
 xTrend <- evd::rgev(n, 10, 2, 0.1) + 1:n * 0.05
 
-# synthetische GEV-verteilte Daten, mit Sprung
+# synthetische GEV-verteilte Daten, sprungbehaftet
 xSprung <- c(evd::rgev(n / 2, 10, 1, 0.1), evd::rgev(n / 2, 20, 2, 0.1))
 
 Sensor <- factor(c(rep("analog", n / 2), rep("digital", n / 2)))

@@ -1,37 +1,46 @@
-#' TrendVsSprung
+#' Trend vs. Sprung
 #'
-#' @param Zeit numeric vector, Zeitvektor der Serienwerte einer gegebenen Dauerstufe.
-#' @param Serienwerte numeric vector, Vektor der Serienwerte einer gegebenen Dauerstufe.
-#' @param Sensor character vector, Vektor der Sensorangaben mit identischer Laenge wie Serie. Wenn Sensor=NULL, dann wird nur Trend gegen Stationaer getestet.
-#' @param ifTS logical, TRUE, wenn auf gleichzeitiges Auftreten von Trend und Sprung getestet werden soll.Default ist False.
-#' @param ifAnova logical, TRUE, wenn die Trendstrukturpruefung zusaetzlich auch durch Devianzanalyse vorgenommen werden soll.
-#' @param skaliereZeit logical, TRUE, wenn der Zeitvektor in der Form (Zeit - min(Zeit))/length(Zeit)-0.5 in den Wertebereich zwischen -0.5 und 0.5 transformiert werden soll. Der berechnete Trend-Parameter bezieht sich dann auf die transformierte Zeit. Fuer den Optimierungsalgorithmus ist es in der Regel einfacher, das globale Optimum zu finden, wenn die Eingangsdaten des Zeitvektors einen kleinen Werteraum umspannen.
+#' @param Zeit numeric. Zeitvektor der Serienwerte einer gegebenen Dauerstufe.
+#' @param Serienwerte numeric. Vektor der Serienwerte einer gegebenen Dauerstufe.
+#' @param Sensor character. Vektor der Sensorangaben mit identischer Länge wie Serie.
+#'     Wenn `Sensor = NULL`, wird nur getestet, ob der Trend stationär ist.
+#' @param ifTS logical. TRUE, wenn auf gleichzeitiges Auftreten von Trend und Sprung getestet werden soll.
+#' @param ifAnova logical. TRUE, wenn die Trendstrukturprüfung zusätzlich auch
+#'     durch Devianzanalyse vorgenommen werden soll.
+#' @param skaliereZeit logical. TRUE, wenn der Zeitvektor in der Form `(Zeit - min(Zeit)) / length(Zeit) - 0.5`
+#'     in den Wertebereich zwischen -0.5 und 0.5 transformiert werden soll.
+#'     Der berechnete Trend-Parameter bezieht sich dann auf die transformierte Zeit.
+#'     Für den Optimierungsalgorithmus ist es in der Regel einfacher, das globale Optimum zu finden,
+#'     wenn die Eingangsdaten des Zeitvektors einen kleinen Werteraum umspannen.
 #'
 #' @details
-#' Die Generalisierte Extremwertverteilung GEV wird mittels der Maximum Likelihood Methode an die Serienwerte angepasst, wobei bezogen auf den Lokationsparameter
-#' die vier Modellformen "Stat" (d.h. stationaer), "Trend" oder "Sprung" angepasst werden. Fuer alle vier Modelle werden die
-#' Informationskriterien AIC und BIC ermittelt und anhand des minimalen IC-Wertes wird ausgewertet, welches der vier Modelle die Daten am besten beschreibt.
-#' Optional kann zusaetzlich auch ein partieller Devianztest (ifAnova=TRUE) durchgefuehrt werden, wobei dieser das Nullmodell moeglicherweise zu haeufig zugunsten des kompexeren verwirft.
+#' Die Generalisierte Extremwertverteilung GEV wird mittels der Maximum-Likelihood-Methode
+#' an die Serienwerte angepasst, wobei bezogen auf den Lokationsparameter die vier Modellformen
+#' "Stat" (d.h. stationär), "Trend" oder "Sprung" angepasst werden. Für alle vier Modelle werden
+#' die Informationskriterien AIC und BIC ermittelt und anhand des minimalen IC-Wertes wird ausgewertet,
+#' welches der vier Modelle die Daten am besten beschreibt. Optional kann zusätzlich auch ein
+#' partieller Devianztest mittels `ifAnova = TRUE` durchgeführt werden, wobei dieser das
+#' Nullmodell möglicherweise zu häufig zugunsten des komplexeren verwirft.
 #'
-#' @return AicRes character, "Stat|Trend|Sprung", Ergebnis auf der Grundlage des AIC-Kriteriums
-#' @return BicRes character, "Stat|Trend|Sprung", Ergebnis auf der Grundlage des BIC-Kriteriums
-#' @return Aic.<Modell> numeric vector, AIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
-#' @return Bic.<Modell> numeric vector, BIC-Wert fuer die einzelnen Modelle Stat|Trend|Sprung
-#' @return AnovaRes character, "Stat|Trend|Sprung", Ergebnis auf Grundlage des Devianztests
-#' @return Anova.<Modell> numeric vector, pValues fuer Uebergang von Nullmodell Stat zu einem der drei anderen Modelle Trend|Sprung
+#' @return AicRes character. "Stat|Trend|Sprung", Ergebnis auf Grundlage des AIC-Kriteriums.
+#' @return BicRes character. "Stat|Trend|Sprung", Ergebnis auf Grundlage des BIC-Kriteriums.
+#' @return Aic.<Modell> numeric. AIC-Wert für die einzelnen Modelle Stat|Trend|Sprung.
+#' @return Bic.<Modell> numeric. BIC-Wert für die einzelnen Modelle Stat|Trend|Sprung.
+#' @return AnovaRes character. "Stat|Trend|Sprung", Ergebnis auf Grundlage des Devianztests.
+#' @return Anova.<Modell> numeric. p-Values für Übergang von Nullmodell zu einem der drei anderen Modelle Stat|Trend|Sprung.
 #' @keywords internal
 #'
 #' @examples
 #' n <- 100
 #' set.seed(1234)
 #'
-#' # synthetische GEV-verteilte Daten, stationaer
+#' # synthetische GEV-verteilte Daten, stationär
 #' xStat <- evd::rgev(n, 10, 2, 0.1)
 #'
-#' # synthetische GEV-verteilte Daten, mit Trend
+#' # synthetische GEV-verteilte Daten, trendbehaftet
 #' xTrend <- evd::rgev(n, 10, 2, 0.1) + 1:n * 0.05
 #'
-#' # synthetische GEV-verteilte Daten, mit Sprung
+#' # synthetische GEV-verteilte Daten, sprungbehaftet
 #' xSprung <- c(evd::rgev(n / 2, 10, 1, 0.1), evd::rgev(n / 2, 20, 2, 0.1))
 #'
 #' Sensor <- factor(c(rep("analog", n / 2), rep("digital", n / 2)))

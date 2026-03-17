@@ -2,23 +2,24 @@
 % Please edit documentation in R/Intervall_Korrektur.R
 \name{Intervall_Korrektur}
 \alias{Intervall_Korrektur}
-\title{Beruecksichtigung der Intervalllaenge}
+\title{Berücksichtigung der Intervalllänge}
 \usage{
 Intervall_Korrektur(Serie, Intervall = 5)
 }
 \arguments{
-\item{Serie}{Jaehrliche Maximum Serie als Tabelle, wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen.}
+\item{Serie}{data.frame. Jährliche maximale Serie mit den betrachteten Jahren als Zeilen,
+und den betrachteten Dauerstufen als Spalten.}
 
-\item{Intervall}{das Zeitintervall der Niederschlagsmessungen (entweder in Minuten oder Stunden).  Standardwert ist 5min. Soll in den gleichen Einheiten wie die Regendauern in der angegebenen Serie.}
+\item{Intervall}{numeric. Zeitintervall der Niederschlagsmessungen (entweder in Minuten oder Stunden).
+Ist in den gleichen Einheiten anzugeben, wie die Dauerstufen der verwendeten Serie.}
 }
 \value{
-Die Regenhoehe von Regendauern, die kuerzer oder gleich dem 4-maliger Intervalllaenge der Regendaten sind, werden mit den Korrekturfaktoren nach Tabelle 1 in DWA-A-531 multipliziert.
+data.frame. Nach Intervalllänge korrigierte jährliche maximale Serie.
 }
 \description{
-Korrektur der Regenhoehen fuer Dauern bis zum 4-mal die Intervalllaenge. Fuer weitere Informationen siehe Kapitel 5.3 und Tabelle 1 des Merkblatts DWA-A 531.
+Korrektur der Regenhöhen für Dauerstufen bis zur vierfachen Intervalllänge.
+Für weitere Informationen siehe Kap. 5.3 und Tab. 1 des Arbeitsblattes DWA-A 531 (2025).
 }
 \examples{
-# Korrektur der Goerlitzer jaehrlichen Serie bezueglich der Intervalllaenge:
-korrigierteSerie <- Intervall_Korrektur(Serie = Goerlitz_maxIntSerie)
-print(korrigierteSerie)
+Intervall_Korrektur(Serie = Goerlitz_maxIntSerie)
 }

@@ -1,39 +1,51 @@
-#' Schaetzung der Parameter der extremen Niederschlagsreihen
+#' Schätzung der Extremwert-Parameter auf Basis der jährlichen Serie
 #'
-#' @description
-#' Berechnung der GEV-Parameter und der Koutsoyiannis-Parameter fuer die gegebenen jaehrlichen Serien mit unterschiedlichen Dauern.
-#'
-#' 1. Die Koutsoyiannis-Parameter, die die Intensitaeten ueber alle Dauern normalisieren, werden auf der Grundlage der Kruskal-Wallis-Statistik geschaetzt.
-#' 2. Die GEV-Parameter werden nach der Methode der L-Momente geschaetzt (mit Ausnahme des Formparameters, der im Voraus auf einen bestimmten Wert festgelegt werden kann
-#'
-#' @param Serie jaehrliche Maximum Serie als Tabelle, wo die Anzahl der Zeilen die Jahre mit verfuegbaren Daten und die Anzahl der Spalten die ausgewaehlten Dauern bezeichnen. Die Werte der Tabelle sollten entweder als Regenintensitaet mm/h oder in Regenhoehe mm/Dauer angegeben werden. Bitte geben Sie die Einheiten entsprechend ueber die Variable SerieTyp an.
-#' @param Dauern Dauern, die fuer die Berechnung der jaehrlichen Maximum Serien verwendet sind. Die gleiche Einheit (entweder Minuten oder Stunden) wie das Intervall. Standartwerte sind: 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320 und 10080min.
-#' @param methGEV  Typ der Generalisierten Extremwertverteilung (GEV), die an die jaehrlichen Maximum Serien angepasst werden soll. Optionen sind: "GEV" fuer Typ 2 oder Typ 3 (Formparameter ist nicht gleich Null) und "GUM" fuer Typ 1 (Formparameter ist gleich Null - Gumbel Verteilung.)
-#' @param formTyp kontrolliert, wie der Formparameter der Generalisierten Extremwertverteilung (nur bei methGEV = "GEV") geschaetzt werden soll. Die Option "CON" berechnet die Formparameter auf der Basis der L-Momente, und die Option "FIX" erzwingt einen bestimmten Wert fuer den Formparameter (zum Beispiel -0,1).
-#' @param Gamma den vorbestimmten Wert des GEV-Form-Parameters angeben. Nur wichtig fuer die Variante von methGEV = "GEV" und formTyp = "FIX".
-#' @param SerieTyp Information ueber die Einheiten der Eingabetabelle (Serie). Die Optionen sind: "VOL" fuer Regenhoehe in mm/Dauer, und "INT" fuer Regenintensitaet in mm/h.
+#' @param Serie data.frame. Jährliche maximale Serie mit den betrachteten Jahren als Zeilen,
+#'     und den betrachteten Dauerstufen als Spalten. Die Werte sind entweder als
+#'     Niederschlagsintensität (in mm/h) oder als Niederschlagshöhe (in mm) anzugegeben.
+#'     Die Einheit ist über das `SerieTyp` Argument zu definieren.
+#' @param Dauern numeric. Dauerstufen, die für die Berechnung der jährlichen Serien
+#'     verwendet wurden, in der gleichen Einheit (entweder Minuten oder Stunden) wie das Intervall.
+#' @param methGEV character. Typ der Generalisierten Extremwertverteilung (GEV),
+#'     die an die jährliche Serie angepasst werden soll:
+#'     `"GEV"` für Typ 2 oder Typ 3 (Formparameter \code{!= 0}; Fréchet & Weibull) und
+#'     `"GUM"` für Typ 1 (Formparameter \code{== 0}; Gumbel)
+#' @param formTyp character. Kontrolliert, wie der Formparameter der GEV
+#'     (nur bei `methGEV = "GEV"`) geschätzt werden soll:
+#'     `"CON"` berechnet die Formparameter auf der Basis der L-Momente,
+#'     `"FIX"`  erzwingt einen bestimmten Wert für den Formparameter.
+#' @param Gamma numeric. Fixierter Wert des GEV-Formparameters.
+#'     Nur relevant, wenn `methGEV = "GEV"` und `formTyp = "FIX"`.
+#' @param SerieTyp character. Information über die in `Serie` verwendeten Einheiten.
+#'     `"VOL"` für Niederschlagshöhe (mm) und `"INT"` für Niederschlagsintensität (mm/h).
 #'
 #' @details
-#' Funktion zur Berechnung der Parameter, die die Niederschlagsextremwerte an einer einzelnen Station auf der Grundlage der extrahierten jaehrlichen Maximum Serien (als Regenintensitaet in mm/h) verschiedener Dauern beschreiben.
+#' Berechnung der Koutsoyiannis- und GEV-Parameter auf Basis der jährlichen Serien
+#' für unterschiedliche Dauerstufen.
 #'
-#' 1. Die Koutsoyiannis-Parameter normalisieren die Intensitaeten ueber alle Dauern und werden auf der Grundlage der Kruskal-Wallis-Statistik geschaetzt.
+#' 1. Die Koutsoyiannis-Parameter normalisieren die Intensitäten über alle
+#' Dauerstufen und werden auf Grundlage der Kruskal-Wallis-Statistik geschätzt.
 #'
-#' 2. Die GEV-Parameter werden nach der Methode der L-Momente geschaetzt (mit Ausnahme des Formparameters, der im Voraus auf einen bestimmten Wert festgelegt werden kann).
+#' 2. Die GEV-Parameter werden nach Methode der L-Momente geschätzt
+#' (mit Ausnahme des Formparameters, der auf einen bestimmten Wert fixiert werden kann).
 #'
-#' @return GEV- und Koutsoyiannis-Parameter fuer die angegebene Serie als einzeiliger data.frame. Die Namen der Variablen im data.frame sind Mu / Sigma / Gamma - jeweils fuer die GEV- Lokations- / Skalen- / Formparameter, und Theta / Eta fuer die 1./ 2. Koustoyiannis-Parameter.
+#' @return data.frame. Koutsoyiannis- (Theta, Eta) und GEV-Parameter (Mu, Sigma, Gamma)
+#' auf Basis der verwendeten Serie (einzeilig).
 #' @export
 #'
 #' @examples
-#' # Berechnung der dauerstufenuebergreifenden Verteilungsparameter fuer die Station Goerlitz im Zeitraum 1991-2020
-#' # ohne Intervall-oder Sprungkorrektur
-#' # Fall 1: ueber alle Dauern mit der GEV-Verteilung und dem Formparameter von -0,1
+#' # Berechnung der dauerstufenÜbergreifenden Verteilungsparameter fÜr die
+#' # Station GÖrlitz im Zeitraum 1991-2020, ohne Intervall- oder Sprungkorrektur
 #' Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
-#' extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GEV", formTyp = "FIX", Gamma = -0.1)
-#' print(extremParameter)
 #'
-#' # Fall 2: ueber alle Dauern mit der Gumbel-Verteilung
-#' extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GUM")
-#' print(extremParameter)
+#' # Fall 1: GEV-Verteilung Über alle Dauerstufen mit auf -0.1 fixiertem Formparameter
+#' Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GEV", formTyp = "FIX", Gamma = -0.1)
+#'
+#' # Fall 2: GEV-Verteilung Über alle Dauerstufen mit mittels L-Momenten geschätztem Formparameter
+#' Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GEV", formTyp = "CON")
+#'
+#' # Fall 3: Gumbel-Verteilung Über alle Dauerstufen
+#' Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern, methGEV = "GUM")
 Parameter_Schaetzung <- function(Serie,
                                  Dauern = c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080),
                                  methGEV = "GEV",
@@ -119,7 +131,7 @@ Parameter_Schaetzung <- function(Serie,
   Inten.Daten <- do.call(cbind, lapply(1:length(Dauern_inStunden), function(i) sort(round(Serie[, i], 3), na.last = TRUE, decreasing = TRUE)))
   Partition <- round(as.numeric(min(nD[1], na.rm = TRUE)), 0)
 
-  # SCHRITT 1 Berechnung der Koutsoyiannis-Parameter
+  # SCHRITT 1: Berechnung der Koutsoyiannis-Parameter
   m <- Partition * length(Dauern_inStunden)
 
   Theta.Werte <- stats::optimize(kw_koupar1,
@@ -144,13 +156,13 @@ Parameter_Schaetzung <- function(Serie,
                                maximum = FALSE)
 
   output <- data.frame(Theta = Theta.Werte$minimum, Eta = Eta.Werte$minimum, KW = Eta.Werte$objective)
-  bD <- (Dauern_inStunden + output$Theta)^output$Eta
+  bD <- (Dauern_inStunden + output$Theta) ^ output$Eta
   alle.Inten <- do.call(c, lapply(1:length(Dauern_inStunden), function(i) Inten.Daten[, i] * bD[i]))
 
   # falls vorhanden, fehlende Werte entfernen
   if (length(which(is.na(alle.Inten) == TRUE)) > 0) alle.Inten <- alle.Inten[-which(is.na(alle.Inten) == TRUE)]
 
-  # SCHRITT 2 Berechnung der GEV-Parameter
+  # SCHRITT 2: Berechnung der GEV-Parameter
   lmoments <- lmomco::lmom.ub(unlist(alle.Inten))
 
   if (methGEV == "GEV") {

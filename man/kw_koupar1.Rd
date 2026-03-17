@@ -14,39 +14,39 @@ kw_koupar1(
 )
 }
 \arguments{
-\item{Theta}{Der erste Koutsoyiannis-Parameter}
+\item{Theta}{Erster Koutsoyiannis-Parameter.}
 
-\item{Inten.Daten}{der extrahierten jaehrlichen Serien, nicht als maximale Niederschlagsvolume, sondern als maximale Niederschlagsintensitaet in mm/h, angegeben fuer jede Dauer (D) und jedes Jahr. Format ist data.frame(ncol = Dauer, nrow=Jahre)}
+\item{Inten.Daten}{Maximale Niederschlagsintensitäten (in mm/h) der extrahierten jährlichen Serien, angegeben für jede Dauerstufe und jedes Jahr. Format ist \code{data.frame(ncol = Dauer, nrow = Jahre)}.}
 
-\item{Dauern}{Dauern (h), die fuer die Berechnung der jaehrlichen Serien verwendet sind, in Stunden!}
+\item{Dauern}{Dauerstufen in Stunden, die für die Berechnung der jährlichen Serien verwendet worden sind.}
 
-\item{Partition}{die Anzahl der Extremwerte pro Dauer, die in die Berechnung der Gesamtintensitaet einbezogen werden sollen.}
+\item{Partition}{Anzahl der Extremwerte pro Dauerstufe, die in die Berechnung der Gesamtintensität einbezogen werden sollen.}
 
-\item{nD}{Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer}
+\item{nD}{Anzahl der Jahre bzw. Anzahl der Extremewerte für jede Dauerstufe.}
 
-\item{m}{Hoechster Rang fuer die Intensitaeten}
+\item{m}{Höchster Rang für die Niederschlagsintensitäten.}
 }
 \value{
 KW Kruskal-Wallis Teststatistik
 }
 \description{
-Optimierung des 1. Koutsoyiannis-Parameters zur Skalierung der Intensitaeten je nach Dauer entsprechend der robusten Methode (basierend auf der Kruskal-Wallis-Statistik) wie in Koutsoyiannis et al. 1998
+Optimierung des 1. Koutsoyiannis-Parameters zur Skalierung der Intensitäten nach Dauerstufe entsprechend der robusten Methode (basierend auf der Kruskal-Wallis-Statistik) nach Koutsoyiannis et al. 1998.
 }
 \details{
-Die Optimierung der Koutsoyiannis-Parameter durch Minimierung der Kruskal-Wallis-Statistik (KW):
+Optimierung der Koutsoyiannis-Parameter durch Minimierung der Kruskal-Wallis-Statistik (KW):
 \deqn{KW =  \frac{12}{m(m+1)} \sum_{D=1}^{k} n_D ( \bar{r}_D - \frac{m+1}{2} )^2}
 wo:
 \itemize{
-\item \eqn{m} Hoechster Rang fuer die Intensitaeten: Anzahl aller Beobachtungen fuer die gesamten Dauern
-\item \eqn{k} Anzahl aller Dauern, die fuer die Berechnung der jaehrlichen Serien verwendet sind
-\item \eqn{n_D} Anzahl der Jahre oder Anzahl der Extremewerte fuer jede Dauer \eqn{D} .
-\item \eqn{\bar{r}_D} Mittlerer Rang fuer die Stichprobe jede Dauer \eqn{D}
+\item \eqn{m} Höchster Rang für die Niederschlagsintensitäten: Anzahl aller Beobachtungen für die gesamten Dauerstufen.
+\item \eqn{k} Anzahl aller Dauerstufen, die für die Berechnung der jährlichen Serien verwendet worden sind.
+\item \eqn{n_D} Anzahl der Jahre bzw. Anzahl der Extremewerte für jede Dauerstufe \eqn{D}.
+\item \eqn{\bar{r}_D} Mittlerer Rang für die Stichprobe jede Dauerstufe \eqn{D}.
 }
 \deqn{KW\left( \theta,\eta \right) \rightarrow Min}
 wo:
 \itemize{
-\item \eqn{\theta} Der 1. Koutsoyiannis-Parameter
-\item \eqn{\eta} Der 2. Koutsoyiannis-Parameter
+\item \eqn{\theta} Erster Koutsoyiannis-Parameter.
+\item \eqn{\eta} Zweiter Koutsoyiannis-Parameter.
 }
 }
 \keyword{internal}

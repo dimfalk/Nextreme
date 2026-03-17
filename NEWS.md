@@ -1,30 +1,32 @@
-# Nextreme 1.3.0
+# Nextreme 1.3.1
 
-## 2026-02-18 | @dimfalk
+## 2026-03-17 | @dimfalk
 
-1. Nextreme vignette is now made available in /vignettes/Nextreme.Rmd
+1. Nextreme vignette is now made available in `/vignettes/Nextreme.Rmd`.
 
-2. Nextreme vignette and package manual are now available as pdf files in /inst/doc/
+2. Nextreme vignette and package manual are now available as pdf files in `/inst/doc/`.
 
-3. minor code and text restyling of Nextreme vignette to enhance readability
+3. minor code and text restyling of Nextreme vignette to enhance readability.
 
-4. README.Rmd is now available
+4. `README.Rmd` is now available.
 
-5. all functions are now consistently exported using the `@export` roxygen2 tag
+5. all functions are now consistently exported using the `@export` roxygen2 tag.
 
-6. major code re-styling making use of `{styler}` to enhance readability
+6. function documentation has been reformatted and partly rephrased.
 
-7. `{scales}` dependency removed
+7. major code re-styling making use of `{styler}` to enhance readability.
 
-8. `Kostra2020_Parameter()` and `Kostra2020_hN_Schaetzung()`: downloaded files are now cleaned after execution
+8. `{scales}` dependency removed.
 
-9. `Trend_vs_Sprung()`: `sil = T` was changed to `silent = TRUE` as suggested by R CMD Check
+9. `Kostra2020_Parameter()` and `Kostra2020_hN_Schaetzung()`: downloaded files are now cleaned after execution.
 
-10. `Parameter_Schaetzung()`: Non-ASCII characters were removed from documentation as suggested by R CMD Check
+10. `Trend_vs_Sprung()`: `sil = T` was changed to `silent = TRUE` as suggested by R CMD Check.
 
-11. `Unsicherheit_Schaetzung()` and `Tn_Schaetzung()`: modified argument order to support recognition
+11. `Parameter_Schaetzung()`: Non-ASCII characters were removed from documentation as suggested by R CMD Check.
 
-12. implementation of basic unit tests making use of `{testthat}`
+12. `Unsicherheit_Schaetzung()` and `Tn_Schaetzung()`: modified argument order to support recognition.
+
+13. implementation of basic unit tests making use of `{testthat}`.
 
 
 

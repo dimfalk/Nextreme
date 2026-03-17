@@ -3,32 +3,30 @@
 \docType{data}
 \name{Goerlitz_maxSerie}
 \alias{Goerlitz_maxSerie}
-\title{Data: Jaehrliche maximale Regenhoehe}
+\title{Data: Jährliche maximale Niederschlagshöhe}
 \format{
 A data frame with 30 rows and 12 variables:
 \describe{
-\item{5}{jaehrliche maximale Regenhoehe fuer 5 Minuten Dauer}
-\item{10}{jaehrliche maximale Regenhoehe fuer 10 Minuten Dauer}
-\item{15}{jaehrliche maximale Regenhoehe fuer 15 Minuten Dauer}
-\item{30}{jaehrliche maximale Regenhoehe fuer 30 Minuten Dauer}
-\item{60}{jaehrliche maximale Regenhoehe fuer 60 Minuten Dauer}
-\item{120}{jaehrliche maximale Regenhoehe fuer 120 Minuten Dauer}
-\item{360}{jaehrliche maximale Regenhoehe fuer 360 Minuten Dauer}
-\item{720}{jaehrliche maximale Regenhoehe fuer 720 Minuten Dauer}
-\item{1440}{jaehrliche maximale Regenhoehe fuer 1440 Minuten Dauer}
-\item{2880}{jaehrliche maximale Regenhoehe fuer 2880 Minuten Dauer}
-\item{4320}{jaehrliche maximale Regenhoehe fuer 4320 Minuten Dauer}
-\item{10080}{jaehrliche maximale Regenhoehe fuer 10080 Minuten Dauer}
+\item{5}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 5 Minuten.}
+\item{10}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 10 Minuten.}
+\item{15}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 15 Minuten.}
+\item{30}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 30 Minuten.}
+\item{60}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 60 Minuten.}
+\item{120}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 120 Minuten.}
+\item{360}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 360 Minuten.}
+\item{720}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 720 Minuten.}
+\item{1440}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 1440 Minuten.}
+\item{2880}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 2880 Minuten.}
+\item{4320}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 4320 Minuten.}
+\item{10080}{Jährliche maximale Niederschlagshöhe für die Dauerstufe von 10080 Minuten.}
 }
 }
 \usage{
 Goerlitz_maxSerie
 }
 \description{
-Das Beispiel der jaehrlichen maximalen Regenhoehe fuer die Station Goerlitz.
-Regenhoehe ist mm/Dauer gegeben
-fuer Dauern: 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320 und 10080 Minuten.
-Beobachtungen sind fuer die Jahre von 1991 bis 2020.
+Beispielausgabe der Funktion \code{jaehrliche_maxSerie(..., SerieTyp = "VOL")}
+unter Verwendung des Beispieldatensatzes \code{Regendaten_01684}.
 }
 \examples{
 head(Goerlitz_maxSerie)

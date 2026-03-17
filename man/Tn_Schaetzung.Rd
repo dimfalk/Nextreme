@@ -2,7 +2,7 @@
 % Please edit documentation in R/Tn_Schaetzung.R
 \name{Tn_Schaetzung}
 \alias{Tn_Schaetzung}
-\title{Berechnung der Wiederkehrintervalle fuer bestimmte Starkniederschlaege und Dauern.}
+\title{Schätzung der Wiederkehrintervalle für definierte Niederschlagshöhen und Dauerstufen}
 \usage{
 Tn_Schaetzung(
   extrem.Parameter,
@@ -12,43 +12,55 @@ Tn_Schaetzung(
 )
 }
 \arguments{
-\item{extrem.Parameter}{GEV- und Koutsoyiannis-Parameter fuer die angegebene Serie als einzeiliger data.frame. Die Namen der Variablen im data.frame sind Mu / Sigma / Gamma - jeweils fuer die GEV- Lokations- / Skalen- / Formparameter, und Theta / Eta fuer die 1./ 2.Koustoyiannis-Parameter.}
+\item{extrem.Parameter}{data.frame. Koutsoyiannis- (Theta, Eta) und GEV-Parameter (
+Mu, Sigma, Gamma) auf Basis der verwendeten Serie (einzeilig).}
 
-\item{hN}{Regenhoehen (in mm) fuer jede der Dauern, fuer die die Wiederkehrintervalle geschaetzt werden sollte.}
+\item{hN}{numeric. Niederschlagshöhe (in mm) für jede unter \code{Dauern} verwendete
+Dauerstufe, für die das Wiederkehrintervall geschätzt werden soll.}
 
-\item{Dauern}{die Dauer, fuer die die Regenhoehe berechnet werden soll. Die Dauer sollte in Minuten angegeben werden!}
+\item{Dauern}{numeric. Dauerstufe, auf die sich die Niederschlagshöhe \code{hN} bezieht.
+Die Dauerstufe ist in Minuten anzugeben.}
 
-\item{methGEV}{den Typ der Generalized Extreme Value-Verteilung, die an die jaehrlichen Serien angepasst wurde. Die Optionen sind: "GEV" fuer Typ 2 oder Typ 3 (Form-Parameter ist nicht gleich Null) und "GUM" fuer Typ 1 (Form-Parameter ist gleich Null – Gumbel Verteilung).}
+\item{methGEV}{character. Typ der Generalisierten Extremwertverteilung (GEV),
+die an die jährliche Serie angepasst werden soll:
+\code{"GEV"} für Typ 2 oder Typ 3 (Formparameter \code{!= 0}; Fréchet & Weibull) und
+\code{"GUM"} für Typ 1 (Formparameter \code{== 0}; Gumbel)}
 }
 \value{
-Eine Tabelle im data.frame-Format, die die Wiederkehrintervalle fuer die gegebene Regenhoehe und -dauer enthaelt. Die Spalten geben die Regenhoehe (hN), die Dauer (D) und die Jaehrlichkeit (Tn) an.
+data.frame. Spaltenweise Angabe zur verwendeten Niederschlagshöhe (hN),
+der gewählten Dauerstufe (D) sowie der resultierenden Wiederkehrintervalle (Tn).
 }
 \description{
-Berechnung der Wiederkehrintervalle (in Jahren) fuer bestimmte Regenhoehe (in mm) und -dauern (z.B. 5, 10, 60 und 120min), wenn die Parameter, die die Extremwerte beschreiben, bereits bekannt sind.
-}
-\details{
-R-Funktion zur Berechnung der Wiederkehrintervalle (in Jahren) bestimmter Regenhoehen (in mm) bei verschiedenen Dauern (in Minuten).
+Berechnung der Wiederkehrintervalle (in Jahren) für bestimmte Niederschlagshöhen (in mm)
+und -dauern (z.B. 5, 10, 60 und 120 min), wenn die Parameter, die die Extremwerte
+beschreiben, bereits bekannt sind.
 }
 \examples{
-# Berechnung der Starkregenparameter fuer die Station Goerlitz im Zeitraum 1991-2020,
-# ohne Intervall-oder Sprungkorrektur ueber alle Dauern
-# mit der GEV-Verteilung und dem Formparameter von -0,1
+# Berechnung der Starkregenparameter für die Station Görlitz im Zeitraum 1991-2020,
+# ohne Intervall-oder Sprungkorrektur über alle Dauerstufen mit der GEV-Verteilung
+# und dem Formparameter von -0.1
 Dauern <- c(5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320, 10080)
 extremParameter <- Parameter_Schaetzung(Goerlitz_maxIntSerie, Dauern)
-print(extremParameter)
-# Am 18 Juli 2010 wurden an der Station Goerlitz 58,6 mm in 6 Stunden gemessen.
-# Basierend auf den geschaetzten Parametern betraegt die berechnete Wiederkehrperiode:
-Ta_Ereignis <- Tn_Schaetzung(extremParameter, Dauern = 360, hN = 58.6, methGEV = "GEV")
-# Auf der Grundlage dieser Parameter wird die entsprechende Wiederkehrintervalle fuer
-# die Niederschlagsmenge hN=40 mm und Dauern 60, 120 und 240 Minuten:
-Ta_Ereignis <- Tn_Schaetzung(extremParameter,
-  Dauern = c(60, 120, 360), hN = c(40, 40, 40),
-  methGEV = "GEV"
-)
-# Auf der Grundlage dieser Parameter wird die entsprechende Wiederkehrintervalle fuer
-# die Niederschlagsmenge hN=c(50,90,95) mm und Dauern 240, 720 und 1440 Minuten:
-Ta_Ereignis <- Tn_Schaetzung(extremParameter,
-  Dauern = c(240, 720, 1440), hN = c(50, 90, 95),
-  methGEV = "GEV"
-)
+extremParameter
+
+# Am 18.07.2010 wurden an der Station Görlitz 58.6 mm innerhalb von 6 Stunden gemessen.
+# Basierend auf den geschätzten Parametern beträgt die berechnete Wiederkehrperiode:
+Tn_Schaetzung(extremParameter,
+              hN = 58.6,
+              Dauern = 360,
+              methGEV = "GEV")
+
+# Auf Grundlage dieser Parameter werden die entsprechenden Wiederkehrintervalle für
+# die Niederschlagsmenge von 40 mm in den Dauerstufen 60, 120 und 240 Minuten bestimmt:
+Tn_Schaetzung(extremParameter,
+              hN = c(40, 40, 40),
+              Dauern = c(60, 120, 360),
+              methGEV = "GEV")
+
+# Auf Grundlage dieser Parameter werden die entsprechenden Wiederkehrintervalle für
+# die Niederschlagsmengen von 50, 90, 95 mm in den Dauerstufen 240, 720 und 1440 Minuten bestimmt:
+Tn_Schaetzung(extremParameter,
+              hN = c(50, 90, 95),
+              Dauern = c(240, 720, 1440),
+              methGEV = "GEV")
 }

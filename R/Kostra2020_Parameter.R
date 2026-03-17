@@ -1,20 +1,30 @@
-#' Extraktion der KOSTRA-DWD-2020 Parameter fuer bestimmte Standorte
+#' Extraktion der Kostra-DWD-2020 Parameter für bestimmte Standorte
 #'
 #' @description
-#' Die geschaetzten Parameter von KOSTRA-DWD-2020 werden aus dem DWD-Climate Data Center fuer bestimmte Standorte ausgelesen. Als Eingabe werden die Koordinaten der Standorte benoetigt.
+#' Die geschätzten Parameter aus KOSTRA-DWD-2020 werden aus dem
+#' Climate Data Center des Deutschen Wetterdienstes für bestimmte Standorte bezogen.
 #'
-#' @param Standorte Ein Datenframe mit den Standorten, aus denen die KOSTRA-DWD-2020-Daten extrahiert werden sollen. Der Dataframe sollte drei Spalten haben: die Standort-ID - 'Stations_id', die Laengenkoordinaten - 'geoLaenge' und die Breitenkoordinaten 'geoBreite'. Die Koordinaten sollten in der crs(„+proj=longlat +datum=WGS84“) sein!
-#' @param Temp_Pfad Ein Ordner-Pfad, in den die KOSTRA-Daten heruntergeladen werden koennen.
+#' @param Standorte data.frame. Definition der Standorte, für die KOSTRA-Daten
+#'     extrahiert werden sollen. Der Dataframe muss die folgenden drei Spalten
+#'     aufweisen: Stationskennung in Spalte `"stations_id`, geographische Länge
+#'     in Spalte `geoLaenge` und geographische Breite in Spakte `geoBreite`.
+#'     Die Koordinaten müssen in WGS84 vorliegen.
+#' @param Temp_Pfad character. Ordnerpfad, in den die KOSTRA-Daten heruntergeladen
+#'     werden.
 #'
-#' @details
-#' R-Funktion, die die von KOSTRA-DWD-2020 geschaetzten Parameter in eine bestimmte oder temporaere Datei (Folder) herunterlaedt und die entsprechenden Parameterwerte (Theta - Koutsoyiannis erster Parameter, Eta - Koutsoyiannis zweiter Parameter, Mu - GEV Lokationsparameter, Sigma - GEV Skalenparameter und Gamma - GEV Formparameter) fuer die gewuenschten Positionen liest und zurueckgibt.
-#'
-#' @return Es wird eine Tabelle im Datenframe-Format mit den Koordinaten und den entsprechenden geschaetzten Kostra-DWD-2020 Parametern (in jeder Spalte angegeben) fuer die angegebenen Standorte (in jeder Reihe angegeben) zurueckgegeben. Fuer Standorte, die ausserhalb der KOSTRA-DWD-2020 Bereiche liegen, werden NA-Werte zurueckgegeben.
+#' @return data.frame. Stationskennung, Koordinaten und geschätzte Parameter
+#'     gem. KOSTRA-DWD-2020 für definierte Standorte (pro Zeile).
+#'     Spaltenweise Angabe der nachfolgenden Parameter:
+#'     Theta (1. Koutsoyiannis-Parameter),
+#'     Eta (2. Koutsoyiannis-Parameter),
+#'     Mu (GEV-Lokationsparameter),
+#'     Sigma (GEV-Skalenparameter),
+#'     Gamma (GEV-Formparameter).
 #' @export
 #'
 #' @examples
 #' Station <- data.frame(Stations_id = 01684, geoBreite = 51.1621, geoLaenge = 14.9506)
-#' kostraParameter <- Kostra2020_Parameter(Station)
+#' Kostra2020_Parameter(Station)
 Kostra2020_Parameter <- function(Standorte,
                                  Temp_Pfad = "./") {
 

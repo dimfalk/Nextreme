@@ -5,22 +5,19 @@
 \alias{Regendaten_01684}
 \title{Data: Niederschlagszeitreihe Görlitz}
 \format{
-A data frame with 3155904 rows and 2 variables:
+A data frame with 3.155.904 rows and 2 variables:
 \describe{
-\item{Datum}{A POSIXct value describing the time step as YearMonthDayHourMinute}
-\item{RH}{A numeric measurement for the precipitation in mm/5min}
+\item{Datum}{POSIXct object. Index of the timeseries.}
+\item{RH}{numeric. Precipitation depth (in mm) as coredata of the timeseries.}
 }
 }
 \usage{
 Regendaten_01684
 }
 \description{
-Die Beispiel-Niederschlagszeitreihe fuer die Station Goerlitz:
-in 5min-Zeitschritten und als mm/5min
-Start Time 1991-01-01 00:00
-End Time 2020-12-31 23:55
-Time Zone UTC
-Missing values as NA
+Niederschlagshöhe (in mm) an der DWD-Station 01684 Görlitz als 5-minütliche
+Zeitreihe für den Zeitraum 1991-01-01 00:00 UTC bis 2020-12-31 23:55 UTC. \cr
+Y = 51.1621° N; X = 14.9506° E; Z = 239 m a.s.l.
 }
 \examples{
 head(Regendaten_01684)

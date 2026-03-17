@@ -3,32 +3,30 @@
 \docType{data}
 \name{Goerlitz_maxIntSerie}
 \alias{Goerlitz_maxIntSerie}
-\title{Data: Jaehrliche maximale Regenintensitaet}
+\title{Data: Jährliche maximale Niederschlagsintensität}
 \format{
 A data frame with 30 rows and 12 variables:
 \describe{
-\item{5}{jaehrliche maximale Regenintensitaet fuer 5 Minuten Dauer}
-\item{10}{jaehrliche maximale Regenintensitaet fuer 10 Minuten Dauer}
-\item{15}{jaehrliche maximale Regenintensitaet fuer 15 Minuten Dauer}
-\item{30}{jaehrliche maximale Regenintensitaet fuer 30 Minuten Dauer}
-\item{60}{jaehrliche maximale Regenintensitaet fuer 60 Minuten Dauer}
-\item{120}{jaehrliche maximale Regenintensitaet fuer 120 Minuten Dauer}
-\item{360}{jaehrliche maximale Regenintensitaet fuer 360 Minuten Dauer}
-\item{720}{jaehrliche maximale Regenintensitaet fuer 720 Minuten Dauer}
-\item{1440}{jaehrliche maximale Regenintensitaet fuer 1440 Minuten Dauer}
-\item{2880}{jaehrliche maximale Regenintensitaet fuer 2880 Minuten Dauer}
-\item{4320}{jaehrliche maximale Regenintensitaet fuer 4320 Minuten Dauer}
-\item{10080}{jaehrliche maximale Regenintensitaet fuer 10080 Minuten Dauer}
+\item{5}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 5 Minuten.}
+\item{10}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 10 Minuten.}
+\item{15}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 15 Minuten.}
+\item{30}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 30 Minuten.}
+\item{60}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 60 Minuten.}
+\item{120}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 120 Minuten.}
+\item{360}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 360 Minuten.}
+\item{720}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 720 Minuten.}
+\item{1440}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 1440 Minuten.}
+\item{2880}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 2880 Minuten.}
+\item{4320}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 4320 Minuten.}
+\item{10080}{Jährliche maximale Niederschlagsintensität für die Dauerstufe von 10080 Minuten.}
 }
 }
 \usage{
 Goerlitz_maxIntSerie
 }
 \description{
-Das Beispiel der jaehrlichen maximalen Regenintensitaet fuer die Station Goerlitz
-Regenintensitaet ist in mm/h gegeben
-fuer Dauern: 5, 10, 15, 30, 60, 120, 360, 720, 1440, 2880, 4320 und 10080 Minuten.
-Beobachtungen sind fuer die Jahre von 1991 bis 2020.
+Beispielausgabe der Funktion \code{jaehrliche_maxSerie(..., SerieTyp = "INT")}
+unter Verwendung des Beispieldatensatzes \code{Regendaten_01684}.
 }
 \examples{
 head(Goerlitz_maxIntSerie)

@@ -1,22 +1,28 @@
-#' Berechnung der GEV-Parameter mit einer festen Formparameter
+#' Berechnung der GEV-Parameter mit festem Formparameter
 #'
-#' @param lmom die L-Momente, die zuvor mit dem Paket lmomco berechnet wurden
-#' @param checklmom logische Variable, die entweder TRUE oder FALSE sein kann. Gibt an, ob die L-Momente geprueft werden sollen oder nicht.
-#' @param kappa der feste Wert des Formparameters. Wenn kappa=NULL ist, wird der Formparameter aus den L-Momenten berechnet.
+#' @param lmom list. L-Momente, wie diese zuvor durch `lmomco::lmoms()` berechnet wurden.
+#' @param checklmom logical. Wenn TRUE, werden die L-Momente geprüft.
+#' @param kappa numeric. Fixierter Formparameter. Wenn `kappa = NULL`, wird der Formparameter aus den L-Momenten berechnet.
 #'
 #' @details
-#' R-Funktion zur Berechnung der GEV-Parameter, wenn der Formparameter auf einen bestimmten Wert eingestellt ist.
+#' Berechnung der GEV-Parameter, wenn der Formparameter auf einen Wert fixiert ist.
 #'
-#' @return  Die GEV-Parameter
+#' @return list. Mittels L-Momenten geschätzte GEV-Parameter.
 #' @keywords internal
 #'
 #' @examples
-#' ShapeFix <- 0.1 # (nach Koutsoyiannis 2008)
-#' Formparameter <- ShapeFix * -1 # vorzeichenwechsel aufgrund unterschiedl. Formeln beachten!
-#' pargev2(lmomco::lmoms(1:10), kappa = Formparameter)$para
+#' # (nach Koutsoyiannis 2008)
+#' ShapeFix <- 0.1
+#'
+#' # vorzeichenwechsel aufgrund unterschiedlicher Konventionen beachten!
+#' Formparameter <- ShapeFix * -1
+#'
+#' pargev2(lmomco::lmoms(1:10), kappa = Formparameter)
 pargev2 <- function(lmom,
                     checklmom = TRUE,
-                    kappa = NULL) { # aus lmomco, erweitert um kappa = NULL, wenn kappa != NULL, dann wird mit fixiertem kappa geschuetzt
+                    kappa = NULL) {
+
+  # aus lmomco, erweitert um kappa = NULL. Wenn kappa != NULL, wird mit fixiertem kappa geschützt.
 
   para <- rep(NA, 3)
   names(para) <- c("xi", "alpha", "kappa")
